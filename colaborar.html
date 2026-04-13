@@ -2,381 +2,182 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080808">
 <title>Cotizar Producción — Hadrum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#080808;--white:#F5F0E8;--dim:rgba(245,240,232,0.42);
+  --line:rgba(245,240,232,0.1);--line-a:rgba(200,184,154,0.55);
+  --accent:#C8B89A;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--black);color:var(--white);
+  font-family:var(--sans);font-weight:300;
+  font-size:18px;overflow-x:hidden;line-height:1.7;
+}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:.4}
 
-  :root {
-    --black: #080808;
-    --white: #F2EDE8;
-    --line: rgba(242,237,232,0.1);
-    --line-active: rgba(200,184,154,0.6);
-    --accent: #C8B89A;
-    --dim: rgba(242,237,232,0.3);
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --mono: 'DM Mono', monospace;
-    --sans: 'Helvetica Neue', Helvetica, sans-serif;
-  }
+/* CURSOR */
+.cursor,.cursor-ring{display:none}
+@media(pointer:fine){
+  body{cursor:none}
+  .cursor{display:block;position:fixed;width:10px;height:10px;background:var(--white);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .3s,height .3s}
+  .cursor-ring{display:block;position:fixed;width:40px;height:40px;border:1px solid rgba(245,240,232,0.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s}
+}
 
-  html { scroll-behavior: smooth; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;background:rgba(8,8,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-logo{font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:.4em;text-transform:uppercase;color:var(--white);text-decoration:none}
+.nav-back{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--dim);text-decoration:none;transition:color .3s}
+.nav-back:hover{color:var(--accent)}
 
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--sans);
-    font-weight: 300;
-    cursor: none;
-    overflow-x: hidden;
-    min-height: 100vh;
-  }
+/* HERO */
+.page-hero{padding:9rem 2.5rem 5rem;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;max-width:700px;max-height:700px;background:radial-gradient(circle,rgba(200,184,154,.05) 0%,transparent 65%);pointer-events:none;animation:ambientPulse 10s ease-in-out infinite}
+.page-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.45em;color:var(--accent);text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s ease .2s forwards;display:flex;align-items:center;gap:1rem}
+.page-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--accent)}
+.page-title{font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,6.5vw,6.5rem);line-height:1;letter-spacing:-.02em;opacity:0;animation:fadeUp .9s ease .4s forwards}
+.page-title em{font-style:italic;color:var(--accent)}
+.page-sub{margin-top:1.8rem;font-size:1.05rem;letter-spacing:.05em;line-height:1.8;color:var(--dim);max-width:42ch;opacity:0;animation:fadeUp .9s ease .65s forwards}
 
-  /* NOISE */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9990;
-    opacity: 0.35;
-  }
+/* FORM WRAP */
+.form-wrap{max-width:920px;margin:0 auto;padding:5rem 2.5rem 8rem;opacity:0;animation:fadeUp 1s ease .85s forwards}
 
-  /* CURSOR */
-  .cursor { position: fixed; width: 8px; height: 8px; background: var(--white); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; transition: width .3s, height .3s; }
-  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(242,237,232,0.35); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .4s, height .4s; }
+/* STEP INDICATOR */
+.steps-bar{display:flex;margin-bottom:5rem;border-bottom:1px solid var(--line)}
+.step-dot{flex:1;padding:1.1rem 0;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;color:var(--dim);border-bottom:2px solid transparent;transition:color .35s,border-color .35s;text-transform:uppercase}
+.step-dot.active{color:var(--accent);border-color:var(--accent)}
+.step-dot.done{color:rgba(200,184,154,.45);border-color:rgba(200,184,154,.25)}
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.8rem 3rem;
-    border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(12px);
-    background: rgba(8,8,8,0.7);
-  }
-  .nav-logo { font-family: var(--sans); font-weight: 200; font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; text-decoration: none; color: var(--white); }
-  .nav-back { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--dim); text-decoration: none; transition: color .3s; }
-  .nav-back:hover { color: var(--accent); }
+/* STEPS */
+.form-step{display:none}
+.form-step.active{display:block}
+.step-section-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
+.step-section-label::after{content:'';flex:0 0 40px;height:1px;background:var(--accent);opacity:.35}
 
-  /* HERO */
-  .page-hero {
-    padding: 12rem 3rem 6rem;
-    border-bottom: 1px solid var(--line);
-  }
-  .page-eyebrow {
-    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.4em;
-    color: var(--accent); text-transform: uppercase; margin-bottom: 2rem;
-    opacity: 0; animation: fadeUp .8s ease .2s forwards;
-  }
-  .page-title {
-    font-family: var(--serif); font-weight: 300;
-    font-size: clamp(2.8rem, 6vw, 6rem);
-    line-height: 1; letter-spacing: -0.02em;
-    opacity: 0; animation: fadeUp .9s ease .4s forwards;
-  }
-  .page-title em { font-style: italic; color: var(--accent); }
-  .page-sub {
-    margin-top: 1.5rem;
-    font-size: 0.75rem; letter-spacing: 0.1em; line-height: 1.8;
-    color: var(--dim); max-width: 40ch;
-    opacity: 0; animation: fadeUp .9s ease .6s forwards;
-  }
+/* FIELDS */
+.field-group{margin-bottom:2.8rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:2.8rem}
+label{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.25em;color:var(--dim);text-transform:uppercase;margin-bottom:.85rem}
+label span{color:var(--accent)}
+input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+  color:var(--white);font-family:var(--serif);font-size:1.2rem;font-weight:300;
+  padding:.6rem 0 .9rem;outline:none;transition:border-color .35s;
+  -webkit-appearance:none;appearance:none;border-radius:0;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+input::placeholder,textarea::placeholder{color:rgba(245,240,232,.15);font-style:italic}
+select option{background:#111;color:var(--white)}
+textarea{resize:none;height:100px;line-height:1.65}
 
-  /* FORM LAYOUT */
-  .form-wrap {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 6rem 3rem 8rem;
-    opacity: 0; animation: fadeUp 1s ease .8s forwards;
-  }
+/* PILLS */
+.genre-pills{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+.pill{padding:.6rem 1.25rem;border:1px solid var(--line);font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .25s;user-select:none}
+.pill:hover{border-color:var(--accent);color:var(--accent)}
+.pill.selected{border-color:var(--accent);color:var(--black);background:var(--accent)}
 
-  /* STEP INDICATOR */
-  .steps-indicator {
-    display: flex; gap: 0; margin-bottom: 5rem;
-    border-bottom: 1px solid var(--line);
-  }
-  .step-dot {
-    flex: 1; padding: 1rem 0; text-align: center;
-    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.25em;
-    color: var(--dim); cursor: none;
-    border-bottom: 2px solid transparent;
-    transition: color .3s, border-color .3s;
-    text-transform: uppercase;
-  }
-  .step-dot.active { color: var(--accent); border-color: var(--accent); }
-  .step-dot.done { color: rgba(200,184,154,0.5); border-color: rgba(200,184,154,0.3); }
+/* BUDGET */
+.budget-display{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--white);margin-bottom:1rem;letter-spacing:-.02em;animation:glowPulse 5s ease-in-out infinite}
+.budget-display span{color:var(--accent);font-style:italic}
+input[type="range"]{width:100%;height:1px;background:var(--line);border:none;padding:0;-webkit-appearance:none;appearance:none;cursor:pointer;outline:none;margin-top:1rem}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;transition:transform .2s}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.4)}
+input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:none;cursor:pointer}
+.budget-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:var(--dim);margin-top:.75rem}
 
-  /* FORM STEPS */
-  .form-step { display: none; }
-  .form-step.active { display: block; }
+/* CALENDAR */
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.cal-month{font-family:var(--serif);font-size:1.3rem;font-weight:300;font-style:italic;letter-spacing:.04em}
+.cal-nav{background:none;border:1px solid var(--line);color:var(--dim);width:36px;height:36px;cursor:pointer;font-size:.9rem;transition:all .25s;display:flex;align-items:center;justify-content:center}
+.cal-nav:hover{border-color:var(--accent);color:var(--accent)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day-name{font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;color:var(--dim);text-align:center;padding:.5rem 0;text-transform:uppercase}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.68rem;color:var(--dim);cursor:pointer;transition:all .2s;border:1px solid transparent}
+.cal-day:not(.empty):not(.past):hover{border-color:var(--line);color:var(--white)}
+.cal-day.selected{background:var(--accent);color:var(--black);border-color:var(--accent)}
+.cal-day.today{color:var(--accent)}
+.cal-day.past{opacity:.2;pointer-events:none}
+.cal-day.empty{pointer-events:none}
+.selected-date{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--accent);margin-top:1.2rem;min-height:1.5rem}
 
-  /* SECTION LABEL */
-  .form-section-label {
-    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.35em;
-    color: var(--dim); text-transform: uppercase; margin-bottom: 3rem;
-  }
+/* GUEST COUNTER */
+.counter-wrap{display:flex;align-items:center;gap:1.5rem;margin-top:.5rem}
+.counter-btn{width:40px;height:40px;border:1px solid var(--line);background:none;color:var(--white);font-size:1.2rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center}
+.counter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.counter-val{font-family:var(--serif);font-size:2.2rem;font-weight:300;min-width:3.5ch;text-align:center}
+.counter-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
 
-  /* FIELD GROUP */
-  .field-group { margin-bottom: 2.5rem; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+/* ACTIONS */
+.form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line)}
+.btn-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;color:var(--dim);background:none;border:none;cursor:pointer;text-transform:uppercase;transition:color .3s}
+.btn-back:hover{color:var(--white)}
+.btn-next{padding:1.1rem 2.8rem;border:1px solid rgba(245,240,232,.2);background:none;color:var(--white);font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .4s,border-color .4s}
+.btn-next::before{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.btn-next:hover{color:var(--black);border-color:var(--accent)}
+.btn-next:hover::before{transform:scaleX(1)}
+.btn-next span{position:relative;z-index:1}
 
-  label {
-    display: block; font-family: var(--mono); font-size: 0.58rem;
-    letter-spacing: 0.25em; color: var(--dim); text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-  label span { color: var(--accent); }
+/* SUMMARY */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);margin-bottom:3rem}
+.summary-item{padding:1.6rem 2rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.summary-item:nth-child(even){border-right:none}
+.summary-item:nth-last-child(-n+2){border-bottom:none}
+.summary-key{font-family:var(--mono);font-size:.56rem;letter-spacing:.25em;color:var(--dim);text-transform:uppercase;margin-bottom:.5rem}
+.summary-val{font-family:var(--serif);font-size:1.15rem;font-weight:300}
+.summary-val em{color:var(--accent);font-style:italic}
 
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="number"],
-  select,
-  textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--line);
-    color: var(--white);
-    font-family: var(--serif);
-    font-size: 1.15rem;
-    font-weight: 300;
-    padding: 0.6rem 0 0.8rem;
-    outline: none;
-    transition: border-color .3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    border-radius: 0;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--accent);
-  }
-  input::placeholder, textarea::placeholder {
-    color: rgba(242,237,232,0.15);
-    font-style: italic;
-  }
-  select option { background: #111; color: var(--white); }
-  textarea { resize: none; height: 90px; line-height: 1.6; }
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:7rem 2rem}
+.success-screen.active{display:block}
+.success-icon{width:64px;height:64px;margin:0 auto 2.5rem;border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:glowPulse 3s ease-in-out infinite}
+.success-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,4rem);font-weight:300;margin-bottom:1.2rem}
+.success-title em{font-style:italic;color:var(--accent)}
+.success-sub{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;color:var(--dim);line-height:2}
+.back-link{display:inline-block;margin-top:3rem;font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3);padding-bottom:.25rem;transition:border-color .3s}
+.back-link:hover{border-color:var(--accent)}
 
-  /* GENRE PILLS */
-  .genre-pills {
-    display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem;
-  }
-  .pill {
-    padding: 0.55rem 1.2rem;
-    border: 1px solid var(--line);
-    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--dim);
-    cursor: none; transition: all .25s ease;
-    user-select: none;
-  }
-  .pill:hover { border-color: var(--accent); color: var(--accent); }
-  .pill.selected { border-color: var(--accent); color: var(--black); background: var(--accent); }
+/* PAGE FOOTER */
+.page-footer{padding:2rem 2.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.page-footer span{font-family:var(--mono);font-size:.58rem;letter-spacing:.15em;color:var(--dim)}
 
-  /* BUDGET SLIDER */
-  .budget-display {
-    font-family: var(--serif); font-size: 2.5rem; font-weight: 300;
-    color: var(--white); margin-bottom: 1rem; letter-spacing: -0.02em;
-  }
-  .budget-display span { color: var(--accent); font-style: italic; }
-  input[type="range"] {
-    width: 100%; height: 1px;
-    background: var(--line); border: none; padding: 0;
-    -webkit-appearance: none; appearance: none; cursor: none;
-    outline: none; margin-top: 1rem;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 14px; height: 14px;
-    border-radius: 50%; background: var(--accent); cursor: none;
-    transition: transform .2s;
-  }
-  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.4); }
-  input[type="range"]::-moz-range-thumb {
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--accent); border: none; cursor: none;
-  }
-  .budget-labels {
-    display: flex; justify-content: space-between;
-    font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.15em;
-    color: var(--dim); margin-top: 0.75rem;
-  }
+/* KEYFRAMES */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ambientPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1) translate(-2%,2%)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 30px rgba(200,184,154,.12)}}
 
-  /* CALENDAR */
-  .calendar-wrap { margin-top: 0.5rem; }
-  .cal-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1.5rem;
-  }
-  .cal-month {
-    font-family: var(--serif); font-size: 1.2rem; font-weight: 300;
-    font-style: italic; letter-spacing: 0.05em;
-  }
-  .cal-nav {
-    background: none; border: 1px solid var(--line); color: var(--dim);
-    width: 32px; height: 32px; cursor: none;
-    font-size: 0.8rem; transition: all .25s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
-  .cal-grid {
-    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
-  }
-  .cal-day-name {
-    font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.2em;
-    color: var(--dim); text-align: center; padding: 0.5rem 0;
-    text-transform: uppercase;
-  }
-  .cal-day {
-    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 0.65rem; color: var(--dim);
-    cursor: none; transition: all .2s; border: 1px solid transparent;
-  }
-  .cal-day:not(.empty):not(.past):hover {
-    border-color: var(--line); color: var(--white);
-  }
-  .cal-day.selected {
-    background: var(--accent); color: var(--black);
-    border-color: var(--accent);
-  }
-  .cal-day.today { color: var(--accent); }
-  .cal-day.past { opacity: 0.2; pointer-events: none; }
-  .cal-day.empty { pointer-events: none; }
-  .selected-date {
-    font-family: var(--serif); font-size: 1rem; font-style: italic;
-    color: var(--accent); margin-top: 1.2rem; min-height: 1.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  /* GUEST COUNTER */
-  .counter-wrap {
-    display: flex; align-items: center; gap: 1.5rem; margin-top: 0.5rem;
-  }
-  .counter-btn {
-    width: 36px; height: 36px; border: 1px solid var(--line);
-    background: none; color: var(--white); font-size: 1.1rem;
-    cursor: none; transition: all .25s; display: flex;
-    align-items: center; justify-content: center;
-  }
-  .counter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .counter-val {
-    font-family: var(--serif); font-size: 2rem; font-weight: 300;
-    min-width: 3ch; text-align: center;
-  }
-  .counter-label {
-    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em;
-    color: var(--dim); text-transform: uppercase;
-  }
-
-  /* NAVIGATION BUTTONS */
-  .form-actions {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line);
-  }
-  .btn-back {
-    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.25em;
-    color: var(--dim); background: none; border: none; cursor: none;
-    text-transform: uppercase; transition: color .3s;
-  }
-  .btn-back:hover { color: var(--white); }
-  .btn-next {
-    padding: 1rem 2.5rem; border: 1px solid rgba(242,237,232,0.2);
-    background: none; color: var(--white); font-family: var(--mono);
-    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-    cursor: none; position: relative; overflow: hidden; transition: color .4s, border-color .4s;
-  }
-  .btn-next::before {
-    content: ''; position: absolute; inset: 0;
-    background: var(--accent); transform: scaleX(0);
-    transform-origin: left; transition: transform .4s cubic-bezier(.16,1,.3,1);
-  }
-  .btn-next:hover { color: var(--black); border-color: var(--accent); }
-  .btn-next:hover::before { transform: scaleX(1); }
-  .btn-next span { position: relative; z-index: 1; }
-
-  /* SUMMARY */
-  .summary-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    border: 1px solid var(--line); margin-bottom: 3rem;
-  }
-  .summary-item {
-    padding: 1.5rem 2rem; border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-  .summary-item:nth-child(even) { border-right: none; }
-  .summary-item:nth-last-child(-n+2) { border-bottom: none; }
-  .summary-key {
-    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.25em;
-    color: var(--dim); text-transform: uppercase; margin-bottom: 0.5rem;
-  }
-  .summary-val {
-    font-family: var(--serif); font-size: 1.1rem; font-weight: 300;
-    color: var(--white);
-  }
-  .summary-val em { color: var(--accent); font-style: italic; }
-
-  /* SUCCESS */
-  .success-screen {
-    display: none; text-align: center; padding: 6rem 2rem;
-  }
-  .success-screen.active { display: block; }
-  .success-icon {
-    width: 60px; height: 60px; margin: 0 auto 2rem;
-    border: 1px solid var(--accent); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .success-title {
-    font-family: var(--serif); font-size: clamp(2rem,5vw,3.5rem);
-    font-weight: 300; margin-bottom: 1rem;
-  }
-  .success-title em { font-style: italic; color: var(--accent); }
-  .success-sub {
-    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
-    color: var(--dim); line-height: 1.8;
-  }
-
-  /* FOOTER */
-  .page-footer {
-    padding: 2rem 3rem; border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .page-footer span {
-    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.15em; color: var(--dim);
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .cursor, .cursor-ring { display: none; }
-    body { cursor: auto; }
-    nav { padding: 1.4rem 1.25rem; }
-    .page-hero { padding: 9rem 1.25rem 4rem; }
-    .form-wrap { padding: 4rem 1.25rem 6rem; }
-    .field-row { grid-template-columns: 1fr; gap: 0; }
-    .steps-indicator { gap: 0; }
-    .step-dot { font-size: 0.5rem; padding: 0.8rem 0.25rem; letter-spacing: 0.1em; }
-    .summary-grid { grid-template-columns: 1fr; }
-    .summary-item { border-right: none !important; }
-    .summary-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
-    .summary-item:last-child { border-bottom: none; }
-    .form-actions { flex-direction: column-reverse; gap: 1rem; }
-    .btn-next { width: 100%; text-align: center; }
-    .page-footer { flex-direction: column; gap: 1rem; text-align: center; }
-  }
-
-  @media (max-width: 390px) {
-    .genre-pills { gap: 0.5rem; }
-    .pill { font-size: 0.52rem; padding: 0.45rem 0.9rem; }
-    .cal-day { font-size: 0.55rem; }
-    .budget-display { font-size: 2rem; }
-  }
+/* RESPONSIVE */
+@media(max-width:768px){
+  body{cursor:auto;font-size:17px}
+  .cursor,.cursor-ring{display:none!important}
+  nav{padding:1.2rem 1.4rem}
+  .nav-logo{font-size:.9rem}
+  .page-hero{padding:7rem 1.4rem 4rem}
+  .page-title{font-size:clamp(2.4rem,10vw,4.5rem)}
+  .form-wrap{padding:4rem 1.4rem 6rem}
+  .field-row{grid-template-columns:1fr;gap:0}
+  .step-dot{font-size:.52rem;padding:.85rem .25rem;letter-spacing:.08em}
+  .summary-grid{grid-template-columns:1fr}
+  .summary-item{border-right:none!important}
+  .summary-item:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+  .summary-item:last-child{border-bottom:none}
+  .form-actions{flex-direction:column-reverse;gap:1rem}
+  .btn-next{width:100%;text-align:center}
+  .genre-pills{gap:.5rem}
+  .pill{font-size:.55rem;padding:.5rem 1rem}
+  .page-footer{flex-direction:column;gap:1rem;text-align:center;padding:1.5rem 1.4rem}
+}
+@media(max-width:420px){
+  .step-dot{letter-spacing:0;font-size:.48rem}
+  .cal-day{font-size:.58rem}
+}
 </style>
 </head>
 <body>
@@ -392,28 +193,24 @@
 <div class="page-hero">
   <div class="page-eyebrow">Producción a medida</div>
   <h1 class="page-title">Cuéntanos tu<br><em>visión.</em></h1>
-  <p class="page-sub">Completa este formulario y te contactamos en menos de 24 horas con una propuesta personalizada.</p>
+  <p class="page-sub">Completa este formulario y te contactamos en menos de 24 horas con una propuesta personalizada. Sin compromiso.</p>
 </div>
 
 <div class="form-wrap">
 
-  <!-- STEP INDICATOR -->
-  <div class="steps-indicator">
+  <div class="steps-bar">
     <div class="step-dot active" data-step="1">01 · Tú</div>
     <div class="step-dot" data-step="2">02 · Evento</div>
-    <div class="step-dot" data-step="3">03 · Fecha &amp; Alcance</div>
+    <div class="step-dot" data-step="3">03 · Fecha &amp; Escala</div>
     <div class="step-dot" data-step="4">04 · Confirmar</div>
   </div>
 
   <form id="quoteForm">
-    <!-- Formspree hidden fields -->
     <input type="hidden" name="_subject" value="Nueva cotización Hadrum">
-    <input type="hidden" name="_next" value="">
 
-    <!-- STEP 1: CONTACT -->
+    <!-- STEP 1 -->
     <div class="form-step active" id="step1">
-      <div class="form-section-label">Información de contacto</div>
-
+      <div class="step-section-label">Información de contacto</div>
       <div class="field-row">
         <div class="field-group">
           <label>Nombre completo <span>*</span></label>
@@ -424,18 +221,16 @@
           <input type="text" name="empresa" id="f-empresa" placeholder="Opcional">
         </div>
       </div>
-
       <div class="field-row">
         <div class="field-group">
           <label>Email <span>*</span></label>
           <input type="email" name="email" id="f-email" placeholder="tu@correo.com" required>
         </div>
         <div class="field-group">
-          <label>WhatsApp / Teléfono <span>*</span></label>
+          <label>WhatsApp <span>*</span></label>
           <input type="tel" name="telefono" id="f-telefono" placeholder="+52 55 0000 0000" required>
         </div>
       </div>
-
       <div class="field-group">
         <label>Ciudad del evento <span>*</span></label>
         <select name="ciudad" id="f-ciudad" required>
@@ -450,20 +245,18 @@
           <option>Otro</option>
         </select>
       </div>
-
       <div class="form-actions">
         <span></span>
         <button type="button" class="btn-next" onclick="nextStep(1)"><span>Siguiente →</span></button>
       </div>
     </div>
 
-    <!-- STEP 2: EVENT TYPE -->
+    <!-- STEP 2 -->
     <div class="form-step" id="step2">
-      <div class="form-section-label">Tipo de experiencia</div>
-
+      <div class="step-section-label">Tipo de experiencia</div>
       <div class="field-group">
         <label>Género del evento <span>*</span></label>
-        <div class="genre-pills" id="genrePills">
+        <div class="genre-pills">
           <div class="pill" data-val="Wellness &amp; Ritual">Wellness &amp; Ritual</div>
           <div class="pill" data-val="Night Experience">Night Experience</div>
           <div class="pill" data-val="Wedding Inmersivo">Wedding Inmersivo</div>
@@ -476,45 +269,36 @@
         </div>
         <input type="hidden" name="genero" id="f-genero">
       </div>
-
-      <div class="field-group" style="margin-top:2.5rem;">
+      <div class="field-group" style="margin-top:2.5rem">
         <label>Describe tu visión <span>*</span></label>
         <textarea name="vision" id="f-vision" placeholder="¿Qué quieres que sienta la gente al entrar, durante y al salir de tu evento?" required></textarea>
       </div>
-
       <div class="field-group">
         <label>Referencias o inspiración</label>
         <input type="text" name="referencias" id="f-referencias" placeholder="Links, artistas, marcas, palabras clave…">
       </div>
-
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(2)">← Anterior</button>
         <button type="button" class="btn-next" onclick="nextStep(2)"><span>Siguiente →</span></button>
       </div>
     </div>
 
-    <!-- STEP 3: DATE & SCALE -->
+    <!-- STEP 3 -->
     <div class="form-step" id="step3">
-      <div class="form-section-label">Fecha y dimensiones</div>
-
-      <!-- CALENDAR -->
+      <div class="step-section-label">Fecha y dimensiones</div>
       <div class="field-group">
-        <label>Fecha tentativa del evento <span>*</span></label>
-        <div class="calendar-wrap">
-          <div class="cal-header">
-            <button type="button" class="cal-nav" id="calPrev">‹</button>
-            <div class="cal-month" id="calMonth"></div>
-            <button type="button" class="cal-nav" id="calNext">›</button>
-          </div>
-          <div class="cal-grid" id="calGrid"></div>
-          <div class="selected-date" id="selectedDate">Selecciona una fecha</div>
+        <label>Fecha tentativa <span>*</span></label>
+        <div class="cal-header">
+          <button type="button" class="cal-nav" id="calPrev">‹</button>
+          <div class="cal-month" id="calMonth"></div>
+          <button type="button" class="cal-nav" id="calNext">›</button>
         </div>
-        <input type="hidden" name="fecha" id="f-fecha" required>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="selected-date" id="selectedDate">Selecciona una fecha</div>
+        <input type="hidden" name="fecha" id="f-fecha">
       </div>
-
-      <!-- GUESTS -->
-      <div class="field-group" style="margin-top:3rem;">
-        <label>Número aproximado de invitados <span>*</span></label>
+      <div class="field-group" style="margin-top:3rem">
+        <label>Número de invitados <span>*</span></label>
         <div class="counter-wrap">
           <button type="button" class="counter-btn" id="guestMinus">−</button>
           <div class="counter-val" id="guestVal">50</div>
@@ -523,19 +307,14 @@
         </div>
         <input type="hidden" name="invitados" id="f-invitados" value="50">
       </div>
-
-      <!-- BUDGET -->
-      <div class="field-group" style="margin-top:3rem;">
+      <div class="field-group" style="margin-top:3rem">
         <label>Presupuesto estimado (MXN) <span>*</span></label>
-        <div class="budget-display" id="budgetDisplay">$<span id="budgetVal">150,000</span></div>
+        <div class="budget-display">$<span id="budgetVal">150K</span></div>
         <input type="range" id="budgetSlider" min="30000" max="2000000" step="10000" value="150000">
-        <div class="budget-labels">
-          <span>$30K</span><span>$500K</span><span>$1M</span><span>$2M+</span>
-        </div>
+        <div class="budget-labels"><span>$30K</span><span>$500K</span><span>$1M</span><span>$2M+</span></div>
         <input type="hidden" name="presupuesto" id="f-presupuesto" value="150000">
       </div>
-
-      <div class="field-group" style="margin-top:2.5rem;">
+      <div class="field-group" style="margin-top:2.5rem">
         <label>¿Tienes venue? <span>*</span></label>
         <select name="venue" id="f-venue" required>
           <option value="" disabled selected>Selecciona</option>
@@ -545,50 +324,38 @@
           <option>Abierto a propuestas</option>
         </select>
       </div>
-
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(3)">← Anterior</button>
         <button type="button" class="btn-next" onclick="nextStep(3)"><span>Revisar →</span></button>
       </div>
     </div>
 
-    <!-- STEP 4: CONFIRM -->
+    <!-- STEP 4 -->
     <div class="form-step" id="step4">
-      <div class="form-section-label">Resumen de tu solicitud</div>
-
-      <div class="summary-grid" id="summaryGrid">
-        <!-- filled by JS -->
-      </div>
-
+      <div class="step-section-label">Resumen de tu solicitud</div>
+      <div class="summary-grid" id="summaryGrid"></div>
       <div class="field-group">
         <label>¿Algo más que debamos saber?</label>
-        <textarea name="notas" placeholder="Detalles adicionales, restricciones, fechas alternativas…" style="height:70px;"></textarea>
+        <textarea name="notas" placeholder="Detalles adicionales, restricciones, fechas alternativas…" style="height:80px"></textarea>
       </div>
-
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(4)">← Anterior</button>
         <button type="submit" class="btn-next" id="submitBtn"><span>Enviar solicitud →</span></button>
       </div>
     </div>
-
-  </form><!-- /form -->
+  </form>
 
   <!-- SUCCESS -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C8B89A" stroke-width="1">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C8B89A" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <h2 class="success-title">Tu visión<br><em>ha llegado.</em></h2>
-    <p class="success-sub">
-      Te contactamos en menos de 24 horas.<br>
-      Mientras tanto, el silencio es nuestro.<br><br>
-      — Hadrum
-    </p>
+    <p class="success-sub">Te contactamos en menos de 24 horas.<br>Mientras tanto, el silencio es nuestro.<br><br>— Hadrum</p>
+    <a href="index.html" class="back-link">← Volver al inicio</a>
   </div>
 
-</div><!-- /form-wrap -->
+</div>
 
 <footer class="page-footer">
   <span>Hadrum © 2026</span>
@@ -596,184 +363,150 @@
 </footer>
 
 <script>
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
+if(history.scrollRestoration) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+
+// CURSOR
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+if(cur&&window.matchMedia('(pointer:fine)').matches){
   let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove', e => {
-    mx=e.clientX; my=e.clientY;
-    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
-  });
-  (function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
   document.querySelectorAll('a,button,.pill,.cal-day').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{ cursor.style.width='14px'; cursor.style.height='14px'; ring.style.width='52px'; ring.style.height='52px'; });
-    el.addEventListener('mouseleave',()=>{ cursor.style.width='8px';  cursor.style.height='8px';  ring.style.width='36px'; ring.style.height='36px'; });
+    el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';ring.style.width='56px';ring.style.height='56px'});
+    el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='40px';ring.style.height='40px'});
   });
+}
 
-  // ── GENRE PILLS ────────────────────────────────
-  document.querySelectorAll('.pill').forEach(p => {
-    p.addEventListener('click', () => {
-      document.querySelectorAll('.pill').forEach(x => x.classList.remove('selected'));
-      p.classList.add('selected');
-      document.getElementById('f-genero').value = p.dataset.val;
+// PILLS
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.pill').forEach(x=>x.classList.remove('selected'));
+    p.classList.add('selected');
+    document.getElementById('f-genero').value=p.dataset.val;
+  });
+});
+
+// CALENDAR
+const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const days=['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+let calDate=new Date(),selDate=null;
+calDate.setDate(1);
+function renderCal(){
+  const now=new Date(),y=calDate.getFullYear(),m=calDate.getMonth();
+  document.getElementById('calMonth').textContent=months[m]+' '+y;
+  const g=document.getElementById('calGrid');g.innerHTML='';
+  days.forEach(d=>{const el=document.createElement('div');el.className='cal-day-name';el.textContent=d;g.appendChild(el)});
+  const first=(new Date(y,m,1).getDay()+6)%7;
+  for(let i=0;i<first;i++){const el=document.createElement('div');el.className='cal-day empty';g.appendChild(el)}
+  const total=new Date(y,m+1,0).getDate();
+  for(let d=1;d<=total;d++){
+    const el=document.createElement('div');el.className='cal-day';el.textContent=d;
+    const td=new Date(y,m,d);
+    if(td<new Date(now.getFullYear(),now.getMonth(),now.getDate())) el.classList.add('past');
+    if(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d) el.classList.add('today');
+    if(selDate&&selDate.getFullYear()===y&&selDate.getMonth()===m&&selDate.getDate()===d) el.classList.add('selected');
+    el.addEventListener('click',()=>{
+      selDate=td;
+      const label=`${d} de ${months[m]} de ${y}`;
+      document.getElementById('selectedDate').textContent=label;
+      document.getElementById('f-fecha').value=label;
+      renderCal();
     });
+    g.appendChild(el);
+  }
+}
+document.getElementById('calPrev').addEventListener('click',()=>{calDate.setMonth(calDate.getMonth()-1);renderCal()});
+document.getElementById('calNext').addEventListener('click',()=>{calDate.setMonth(calDate.getMonth()+1);renderCal()});
+renderCal();
+
+// GUEST COUNTER
+const gSteps=[10,20,30,50,75,100,150,200,300,500,750,1000,1500,2000];
+let gIdx=gSteps.indexOf(50);
+function updateG(){document.getElementById('guestVal').textContent=gSteps[gIdx];document.getElementById('f-invitados').value=gSteps[gIdx]}
+document.getElementById('guestMinus').addEventListener('click',()=>{if(gIdx>0){gIdx--;updateG()}});
+document.getElementById('guestPlus').addEventListener('click',()=>{if(gIdx<gSteps.length-1){gIdx++;updateG()}});
+
+// BUDGET
+const slider=document.getElementById('budgetSlider');
+function fmtBudget(v){if(v>=1000000)return(v/1000000).toFixed(1).replace('.0','')+'M';return Math.round(v/1000)+'K'}
+slider.addEventListener('input',()=>{
+  document.getElementById('budgetVal').textContent=fmtBudget(slider.value);
+  document.getElementById('f-presupuesto').value=slider.value;
+});
+
+// STEPS
+function validate(step){
+  if(step===1){
+    const n=document.getElementById('f-nombre').value.trim();
+    const e=document.getElementById('f-email').value.trim();
+    const t=document.getElementById('f-telefono').value.trim();
+    const c=document.getElementById('f-ciudad').value;
+    if(!n||!e||!t||!c){alert('Por favor completa todos los campos requeridos.');return false}
+    if(!/\S+@\S+\.\S+/.test(e)){alert('Email inválido.');return false}
+  }
+  if(step===2){
+    if(!document.getElementById('f-genero').value){alert('Selecciona el tipo de evento.');return false}
+    if(!document.getElementById('f-vision').value.trim()){alert('Cuéntanos tu visión.');return false}
+  }
+  if(step===3){
+    if(!document.getElementById('f-fecha').value){alert('Selecciona una fecha tentativa.');return false}
+  }
+  return true;
+}
+function setStep(n){
+  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((d,i)=>{
+    d.classList.remove('active','done');
+    if(i+1===n) d.classList.add('active');
+    if(i+1<n) d.classList.add('done');
   });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextStep(from){if(!validate(from))return;if(from===3)buildSummary();setStep(from+1)}
+function prevStep(from){setStep(from-1)}
 
-  // ── CALENDAR ───────────────────────────────────
-  const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const days   = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
-  let calDate  = new Date();
-  let selDate  = null;
-  calDate.setDate(1);
-
-  function renderCal() {
-    const now   = new Date();
-    const year  = calDate.getFullYear();
-    const month = calDate.getMonth();
-    document.getElementById('calMonth').textContent = months[month] + ' ' + year;
-    const grid = document.getElementById('calGrid');
-    grid.innerHTML = '';
-    days.forEach(d => { const el=document.createElement('div'); el.className='cal-day-name'; el.textContent=d; grid.appendChild(el); });
-    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Monday start
-    for(let i=0;i<firstDay;i++){ const el=document.createElement('div'); el.className='cal-day empty'; grid.appendChild(el); }
-    const total = new Date(year, month+1, 0).getDate();
-    for(let d=1;d<=total;d++){
-      const el  = document.createElement('div');
-      el.className = 'cal-day';
-      el.textContent = d;
-      const thisDate = new Date(year, month, d);
-      if(thisDate < new Date(now.getFullYear(), now.getMonth(), now.getDate())) { el.classList.add('past'); }
-      if(now.getFullYear()===year && now.getMonth()===month && now.getDate()===d) { el.classList.add('today'); }
-      if(selDate && selDate.getFullYear()===year && selDate.getMonth()===month && selDate.getDate()===d) { el.classList.add('selected'); }
-      el.addEventListener('click', () => {
-        selDate = thisDate;
-        const label = `${d} de ${months[month]} de ${year}`;
-        document.getElementById('selectedDate').textContent = label;
-        document.getElementById('f-fecha').value = label;
-        renderCal();
-      });
-      grid.appendChild(el);
-    }
-  }
-  document.getElementById('calPrev').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()-1); renderCal(); });
-  document.getElementById('calNext').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()+1); renderCal(); });
-  renderCal();
-
-  // ── GUEST COUNTER ──────────────────────────────
-  let guests = 50;
-  const guestSteps = [10,25,50,75,100,150,200,300,500,750,1000,1500,2000];
-  let guestIdx = guestSteps.indexOf(50);
-  function updateGuests(){
-    document.getElementById('guestVal').textContent = guestSteps[guestIdx];
-    document.getElementById('f-invitados').value = guestSteps[guestIdx];
-  }
-  document.getElementById('guestMinus').addEventListener('click', () => { if(guestIdx>0){ guestIdx--; updateGuests(); } });
-  document.getElementById('guestPlus').addEventListener('click',  () => { if(guestIdx<guestSteps.length-1){ guestIdx++; updateGuests(); } });
-
-  // ── BUDGET SLIDER ──────────────────────────────
-  const slider = document.getElementById('budgetSlider');
-  function formatBudget(v){
-    if(v>=1000000) return (v/1000000).toFixed(1).replace('.0','') + 'M';
-    return (v/1000).toFixed(0) + 'K';
-  }
-  slider.addEventListener('input', () => {
-    document.getElementById('budgetVal').textContent = formatBudget(slider.value);
-    document.getElementById('f-presupuesto').value = slider.value;
+function buildSummary(){
+  const data=[
+    ['Nombre',document.getElementById('f-nombre').value],
+    ['Email',document.getElementById('f-email').value],
+    ['WhatsApp',document.getElementById('f-telefono').value],
+    ['Ciudad',document.getElementById('f-ciudad').value],
+    ['Evento',document.getElementById('f-genero').value],
+    ['Fecha',document.getElementById('f-fecha').value],
+    ['Invitados',document.getElementById('f-invitados').value+' personas'],
+    ['Presupuesto','$'+fmtBudget(document.getElementById('f-presupuesto').value)+' MXN'],
+  ];
+  const g=document.getElementById('summaryGrid');g.innerHTML='';
+  data.forEach(([k,v])=>{
+    const item=document.createElement('div');item.className='summary-item';
+    item.innerHTML=`<div class="summary-key">${k}</div><div class="summary-val">${v||'—'}</div>`;
+    g.appendChild(item);
   });
+}
 
-  // ── STEP NAVIGATION ────────────────────────────
-  let currentStep = 1;
-
-  function validateStep(step) {
-    if(step===1){
-      const n=document.getElementById('f-nombre').value.trim();
-      const e=document.getElementById('f-email').value.trim();
-      const t=document.getElementById('f-telefono').value.trim();
-      const c=document.getElementById('f-ciudad').value;
-      if(!n||!e||!t||!c){ alert('Por favor completa todos los campos requeridos.'); return false; }
-      if(!/\S+@\S+\.\S+/.test(e)){ alert('Email inválido.'); return false; }
-    }
-    if(step===2){
-      if(!document.getElementById('f-genero').value){ alert('Selecciona el tipo de evento.'); return false; }
-      if(!document.getElementById('f-vision').value.trim()){ alert('Cuéntanos tu visión.'); return false; }
-    }
-    if(step===3){
-      if(!document.getElementById('f-fecha').value){ alert('Selecciona una fecha tentativa.'); return false; }
-    }
-    return true;
-  }
-
-  function nextStep(from) {
-    if(!validateStep(from)) return;
-    if(from===3) buildSummary();
-    setStep(from+1);
-  }
-  function prevStep(from) { setStep(from-1); }
-
-  function setStep(n) {
-    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-    document.getElementById('step'+n).classList.add('active');
-    document.querySelectorAll('.step-dot').forEach((d,i) => {
-      d.classList.remove('active','done');
-      if(i+1===n) d.classList.add('active');
-      if(i+1<n)  d.classList.add('done');
+// SUBMIT
+document.getElementById('quoteForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.querySelector('span').textContent='Enviando…';btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xlgaeaza',{
+      method:'POST',body:new FormData(e.target),
+      headers:{'Accept':'application/json'}
     });
-    currentStep = n;
-    window.scrollTo({top: document.querySelector('.steps-indicator').offsetTop - 120, behavior:'smooth'});
-  }
-
-  // ── SUMMARY ────────────────────────────────────
-  function buildSummary() {
-    const data = [
-      ['Nombre',    document.getElementById('f-nombre').value],
-      ['Email',     document.getElementById('f-email').value],
-      ['WhatsApp',  document.getElementById('f-telefono').value],
-      ['Ciudad',    document.getElementById('f-ciudad').value],
-      ['Evento',    document.getElementById('f-genero').value],
-      ['Fecha',     document.getElementById('f-fecha').value],
-      ['Invitados', document.getElementById('f-invitados').value + ' personas'],
-      ['Presupuesto', '$' + formatBudget(document.getElementById('f-presupuesto').value) + ' MXN'],
-    ];
-    const grid = document.getElementById('summaryGrid');
-    grid.innerHTML = '';
-    data.forEach(([k,v]) => {
-      const item = document.createElement('div');
-      item.className = 'summary-item';
-      item.innerHTML = `<div class="summary-key">${k}</div><div class="summary-val">${v||'—'}</div>`;
-      grid.appendChild(item);
-    });
-  }
-
-  // ── FORM SUBMIT → FORMSPREE ────────────────────
-  const form = document.getElementById('quoteForm');
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.querySelector('span').textContent = 'Enviando…';
-    btn.disabled = true;
-
-    const data = new FormData(form);
-
-    try {
-      const res = await fetch('https://formspree.io/f/xyzgpjkw', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if(res.ok) {
-        document.getElementById('quoteForm').style.display = 'none';
-        document.getElementById('successScreen').classList.add('active');
-        window.scrollTo({top: 0, behavior:'smooth'});
-      } else {
-        btn.querySelector('span').textContent = 'Error — intenta de nuevo';
-        btn.disabled = false;
-      }
-    } catch(err) {
-      btn.querySelector('span').textContent = 'Error de red — intenta de nuevo';
-      btn.disabled = false;
+    if(res.ok){
+      document.getElementById('quoteForm').style.display='none';
+      document.getElementById('successScreen').classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      btn.querySelector('span').textContent='Error — intenta de nuevo';btn.disabled=false;
     }
-  });
+  } catch(err){
+    btn.querySelector('span').textContent='Error de red — intenta de nuevo';btn.disabled=false;
+  }
+});
 </script>
 </body>
 </html>
