@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotizar Producción — Hadrum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #080808;
+    --white: #F2EDE8;
+    --line: rgba(242,237,232,0.1);
+    --line-active: rgba(200,184,154,0.6);
+    --accent: #C8B89A;
+    --dim: rgba(242,237,232,0.3);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Helvetica Neue', Helvetica, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    cursor: none;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* NOISE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0.35;
+  }
+
+  /* CURSOR */
+  .cursor { position: fixed; width: 8px; height: 8px; background: var(--white); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; transition: width .3s, height .3s; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(242,237,232,0.35); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .4s, height .4s; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.8rem 3rem;
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    background: rgba(8,8,8,0.7);
+  }
+  .nav-logo { font-family: var(--sans); font-weight: 200; font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; text-decoration: none; color: var(--white); }
+  .nav-back { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--dim); text-decoration: none; transition: color .3s; }
+  .nav-back:hover { color: var(--accent); }
+
+  /* HERO */
+  .page-hero {
+    padding: 12rem 3rem 6rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-eyebrow {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.4em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp .8s ease .2s forwards;
+  }
+  .page-title {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    line-height: 1; letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp .9s ease .4s forwards;
+  }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-sub {
+    margin-top: 1.5rem;
+    font-size: 0.75rem; letter-spacing: 0.1em; line-height: 1.8;
+    color: var(--dim); max-width: 40ch;
+    opacity: 0; animation: fadeUp .9s ease .6s forwards;
+  }
+
+  /* FORM LAYOUT */
+  .form-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 6rem 3rem 8rem;
+    opacity: 0; animation: fadeUp 1s ease .8s forwards;
+  }
+
+  /* STEP INDICATOR */
+  .steps-indicator {
+    display: flex; gap: 0; margin-bottom: 5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .step-dot {
+    flex: 1; padding: 1rem 0; text-align: center;
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.25em;
+    color: var(--dim); cursor: none;
+    border-bottom: 2px solid transparent;
+    transition: color .3s, border-color .3s;
+    text-transform: uppercase;
+  }
+  .step-dot.active { color: var(--accent); border-color: var(--accent); }
+  .step-dot.done { color: rgba(200,184,154,0.5); border-color: rgba(200,184,154,0.3); }
+
+  /* FORM STEPS */
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+
+  /* SECTION LABEL */
+  .form-section-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.35em;
+    color: var(--dim); text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  /* FIELD GROUP */
+  .field-group { margin-bottom: 2.5rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+
+  label {
+    display: block; font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.25em; color: var(--dim); text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  label span { color: var(--accent); }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 300;
+    padding: 0.6rem 0 0.8rem;
+    outline: none;
+    transition: border-color .3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+  input::placeholder, textarea::placeholder {
+    color: rgba(242,237,232,0.15);
+    font-style: italic;
+  }
+  select option { background: #111; color: var(--white); }
+  textarea { resize: none; height: 90px; line-height: 1.6; }
+
+  /* GENRE PILLS */
+  .genre-pills {
+    display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem;
+  }
+  .pill {
+    padding: 0.55rem 1.2rem;
+    border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--dim);
+    cursor: none; transition: all .25s ease;
+    user-select: none;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+  .pill.selected { border-color: var(--accent); color: var(--black); background: var(--accent); }
+
+  /* BUDGET SLIDER */
+  .budget-display {
+    font-family: var(--serif); font-size: 2.5rem; font-weight: 300;
+    color: var(--white); margin-bottom: 1rem; letter-spacing: -0.02em;
+  }
+  .budget-display span { color: var(--accent); font-style: italic; }
+  input[type="range"] {
+    width: 100%; height: 1px;
+    background: var(--line); border: none; padding: 0;
+    -webkit-appearance: none; appearance: none; cursor: none;
+    outline: none; margin-top: 1rem;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--accent); cursor: none;
+    transition: transform .2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.4); }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); border: none; cursor: none;
+  }
+  .budget-labels {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.15em;
+    color: var(--dim); margin-top: 0.75rem;
+  }
+
+  /* CALENDAR */
+  .calendar-wrap { margin-top: 0.5rem; }
+  .cal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .cal-month {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 300;
+    font-style: italic; letter-spacing: 0.05em;
+  }
+  .cal-nav {
+    background: none; border: 1px solid var(--line); color: var(--dim);
+    width: 32px; height: 32px; cursor: none;
+    font-size: 0.8rem; transition: all .25s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+  }
+  .cal-day-name {
+    font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.2em;
+    color: var(--dim); text-align: center; padding: 0.5rem 0;
+    text-transform: uppercase;
+  }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.65rem; color: var(--dim);
+    cursor: none; transition: all .2s; border: 1px solid transparent;
+  }
+  .cal-day:not(.empty):not(.past):hover {
+    border-color: var(--line); color: var(--white);
+  }
+  .cal-day.selected {
+    background: var(--accent); color: var(--black);
+    border-color: var(--accent);
+  }
+  .cal-day.today { color: var(--accent); }
+  .cal-day.past { opacity: 0.2; pointer-events: none; }
+  .cal-day.empty { pointer-events: none; }
+  .selected-date {
+    font-family: var(--serif); font-size: 1rem; font-style: italic;
+    color: var(--accent); margin-top: 1.2rem; min-height: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* GUEST COUNTER */
+  .counter-wrap {
+    display: flex; align-items: center; gap: 1.5rem; margin-top: 0.5rem;
+  }
+  .counter-btn {
+    width: 36px; height: 36px; border: 1px solid var(--line);
+    background: none; color: var(--white); font-size: 1.1rem;
+    cursor: none; transition: all .25s; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .counter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .counter-val {
+    font-family: var(--serif); font-size: 2rem; font-weight: 300;
+    min-width: 3ch; text-align: center;
+  }
+  .counter-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em;
+    color: var(--dim); text-transform: uppercase;
+  }
+
+  /* NAVIGATION BUTTONS */
+  .form-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line);
+  }
+  .btn-back {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.25em;
+    color: var(--dim); background: none; border: none; cursor: none;
+    text-transform: uppercase; transition: color .3s;
+  }
+  .btn-back:hover { color: var(--white); }
+  .btn-next {
+    padding: 1rem 2.5rem; border: 1px solid rgba(242,237,232,0.2);
+    background: none; color: var(--white); font-family: var(--mono);
+    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+    cursor: none; position: relative; overflow: hidden; transition: color .4s, border-color .4s;
+  }
+  .btn-next::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--accent); transform: scaleX(0);
+    transform-origin: left; transition: transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .btn-next:hover { color: var(--black); border-color: var(--accent); }
+  .btn-next:hover::before { transform: scaleX(1); }
+  .btn-next span { position: relative; z-index: 1; }
+
+  /* SUMMARY */
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--line); margin-bottom: 3rem;
+  }
+  .summary-item {
+    padding: 1.5rem 2rem; border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .summary-item:nth-child(even) { border-right: none; }
+  .summary-item:nth-last-child(-n+2) { border-bottom: none; }
+  .summary-key {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.25em;
+    color: var(--dim); text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .summary-val {
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 300;
+    color: var(--white);
+  }
+  .summary-val em { color: var(--accent); font-style: italic; }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none; text-align: center; padding: 6rem 2rem;
+  }
+  .success-screen.active { display: block; }
+  .success-icon {
+    width: 60px; height: 60px; margin: 0 auto 2rem;
+    border: 1px solid var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .success-title {
+    font-family: var(--serif); font-size: clamp(2rem,5vw,3.5rem);
+    font-weight: 300; margin-bottom: 1rem;
+  }
+  .success-title em { font-style: italic; color: var(--accent); }
+  .success-sub {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    color: var(--dim); line-height: 1.8;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    padding: 2rem 3rem; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .page-footer span {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.15em; color: var(--dim);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    nav { padding: 1.4rem 1.25rem; }
+    .page-hero { padding: 9rem 1.25rem 4rem; }
+    .form-wrap { padding: 4rem 1.25rem 6rem; }
+    .field-row { grid-template-columns: 1fr; gap: 0; }
+    .steps-indicator { gap: 0; }
+    .step-dot { font-size: 0.5rem; padding: 0.8rem 0.25rem; letter-spacing: 0.1em; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .summary-item { border-right: none !important; }
+    .summary-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .summary-item:last-child { border-bottom: none; }
+    .form-actions { flex-direction: column-reverse; gap: 1rem; }
+    .btn-next { width: 100%; text-align: center; }
+    .page-footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  @media (max-width: 390px) {
+    .genre-pills { gap: 0.5rem; }
+    .pill { font-size: 0.52rem; padding: 0.45rem 0.9rem; }
+    .cal-day { font-size: 0.55rem; }
+    .budget-display { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Hadrum</a>
+  <a href="index.html" class="nav-back">← Volver</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Producción a medida</div>
+  <h1 class="page-title">Cuéntanos tu<br><em>visión.</em></h1>
+  <p class="page-sub">Completa este formulario y te contactamos en menos de 24 horas con una propuesta personalizada.</p>
+</div>
+
+<div class="form-wrap">
+
+  <!-- STEP INDICATOR -->
+  <div class="steps-indicator">
+    <div class="step-dot active" data-step="1">01 · Tú</div>
+    <div class="step-dot" data-step="2">02 · Evento</div>
+    <div class="step-dot" data-step="3">03 · Fecha &amp; Alcance</div>
+    <div class="step-dot" data-step="4">04 · Confirmar</div>
+  </div>
+
+  <form id="quoteForm">
+    <!-- Formspree hidden fields -->
+    <input type="hidden" name="_subject" value="Nueva cotización Hadrum">
+    <input type="hidden" name="_next" value="">
+
+    <!-- STEP 1: CONTACT -->
+    <div class="form-step active" id="step1">
+      <div class="form-section-label">Información de contacto</div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label>Nombre completo <span>*</span></label>
+          <input type="text" name="nombre" id="f-nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="field-group">
+          <label>Empresa / Marca</label>
+          <input type="text" name="empresa" id="f-empresa" placeholder="Opcional">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label>Email <span>*</span></label>
+          <input type="email" name="email" id="f-email" placeholder="tu@correo.com" required>
+        </div>
+        <div class="field-group">
+          <label>WhatsApp / Teléfono <span>*</span></label>
+          <input type="tel" name="telefono" id="f-telefono" placeholder="+52 55 0000 0000" required>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Ciudad del evento <span>*</span></label>
+        <select name="ciudad" id="f-ciudad" required>
+          <option value="" disabled selected>Selecciona una ciudad</option>
+          <option>Ciudad de México</option>
+          <option>Guadalajara</option>
+          <option>Monterrey</option>
+          <option>Tulum / Riviera Maya</option>
+          <option>Puebla</option>
+          <option>Valle de Bravo</option>
+          <option>Internacional</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <span></span>
+        <button type="button" class="btn-next" onclick="nextStep(1)"><span>Siguiente →</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 2: EVENT TYPE -->
+    <div class="form-step" id="step2">
+      <div class="form-section-label">Tipo de experiencia</div>
+
+      <div class="field-group">
+        <label>Género del evento <span>*</span></label>
+        <div class="genre-pills" id="genrePills">
+          <div class="pill" data-val="Wellness &amp; Ritual">Wellness &amp; Ritual</div>
+          <div class="pill" data-val="Night Experience">Night Experience</div>
+          <div class="pill" data-val="Wedding Inmersivo">Wedding Inmersivo</div>
+          <div class="pill" data-val="Cumpleaños Inmersivo">Cumpleaños Inmersivo</div>
+          <div class="pill" data-val="Corporate &amp; Brand">Corporate &amp; Brand</div>
+          <div class="pill" data-val="Art &amp; Performance">Art &amp; Performance</div>
+          <div class="pill" data-val="Gastronomía Inmersiva">Gastronomía Inmersiva</div>
+          <div class="pill" data-val="Retiro &amp; Journey">Retiro &amp; Journey</div>
+          <div class="pill" data-val="Otro">Otro</div>
+        </div>
+        <input type="hidden" name="genero" id="f-genero">
+      </div>
+
+      <div class="field-group" style="margin-top:2.5rem;">
+        <label>Describe tu visión <span>*</span></label>
+        <textarea name="vision" id="f-vision" placeholder="¿Qué quieres que sienta la gente al entrar, durante y al salir de tu evento?" required></textarea>
+      </div>
+
+      <div class="field-group">
+        <label>Referencias o inspiración</label>
+        <input type="text" name="referencias" id="f-referencias" placeholder="Links, artistas, marcas, palabras clave…">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-back" onclick="prevStep(2)">← Anterior</button>
+        <button type="button" class="btn-next" onclick="nextStep(2)"><span>Siguiente →</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: DATE & SCALE -->
+    <div class="form-step" id="step3">
+      <div class="form-section-label">Fecha y dimensiones</div>
+
+      <!-- CALENDAR -->
+      <div class="field-group">
+        <label>Fecha tentativa del evento <span>*</span></label>
+        <div class="calendar-wrap">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" id="calPrev">‹</button>
+            <div class="cal-month" id="calMonth"></div>
+            <button type="button" class="cal-nav" id="calNext">›</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="selected-date" id="selectedDate">Selecciona una fecha</div>
+        </div>
+        <input type="hidden" name="fecha" id="f-fecha" required>
+      </div>
+
+      <!-- GUESTS -->
+      <div class="field-group" style="margin-top:3rem;">
+        <label>Número aproximado de invitados <span>*</span></label>
+        <div class="counter-wrap">
+          <button type="button" class="counter-btn" id="guestMinus">−</button>
+          <div class="counter-val" id="guestVal">50</div>
+          <button type="button" class="counter-btn" id="guestPlus">+</button>
+          <div class="counter-label">personas</div>
+        </div>
+        <input type="hidden" name="invitados" id="f-invitados" value="50">
+      </div>
+
+      <!-- BUDGET -->
+      <div class="field-group" style="margin-top:3rem;">
+        <label>Presupuesto estimado (MXN) <span>*</span></label>
+        <div class="budget-display" id="budgetDisplay">$<span id="budgetVal">150,000</span></div>
+        <input type="range" id="budgetSlider" min="30000" max="2000000" step="10000" value="150000">
+        <div class="budget-labels">
+          <span>$30K</span><span>$500K</span><span>$1M</span><span>$2M+</span>
+        </div>
+        <input type="hidden" name="presupuesto" id="f-presupuesto" value="150000">
+      </div>
+
+      <div class="field-group" style="margin-top:2.5rem;">
+        <label>¿Tienes venue? <span>*</span></label>
+        <select name="venue" id="f-venue" required>
+          <option value="" disabled selected>Selecciona</option>
+          <option>Sí, ya tengo venue confirmado</option>
+          <option>Tengo opciones en mente</option>
+          <option>No, necesito ayuda para encontrarlo</option>
+          <option>Abierto a propuestas</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-back" onclick="prevStep(3)">← Anterior</button>
+        <button type="button" class="btn-next" onclick="nextStep(3)"><span>Revisar →</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 4: CONFIRM -->
+    <div class="form-step" id="step4">
+      <div class="form-section-label">Resumen de tu solicitud</div>
+
+      <div class="summary-grid" id="summaryGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="field-group">
+        <label>¿Algo más que debamos saber?</label>
+        <textarea name="notas" placeholder="Detalles adicionales, restricciones, fechas alternativas…" style="height:70px;"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-back" onclick="prevStep(4)">← Anterior</button>
+        <button type="submit" class="btn-next" id="submitBtn"><span>Enviar solicitud →</span></button>
+      </div>
+    </div>
+
+  </form><!-- /form -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C8B89A" stroke-width="1">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2 class="success-title">Tu visión<br><em>ha llegado.</em></h2>
+    <p class="success-sub">
+      Te contactamos en menos de 24 horas.<br>
+      Mientras tanto, el silencio es nuestro.<br><br>
+      — Hadrum
+    </p>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<footer class="page-footer">
+  <span>Hadrum © 2026</span>
+  <span>hadrum.live</span>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+  });
+  (function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+  document.querySelectorAll('a,button,.pill,.cal-day').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cursor.style.width='14px'; cursor.style.height='14px'; ring.style.width='52px'; ring.style.height='52px'; });
+    el.addEventListener('mouseleave',()=>{ cursor.style.width='8px';  cursor.style.height='8px';  ring.style.width='36px'; ring.style.height='36px'; });
+  });
+
+  // ── GENRE PILLS ────────────────────────────────
+  document.querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach(x => x.classList.remove('selected'));
+      p.classList.add('selected');
+      document.getElementById('f-genero').value = p.dataset.val;
+    });
+  });
+
+  // ── CALENDAR ───────────────────────────────────
+  const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const days   = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  let calDate  = new Date();
+  let selDate  = null;
+  calDate.setDate(1);
+
+  function renderCal() {
+    const now   = new Date();
+    const year  = calDate.getFullYear();
+    const month = calDate.getMonth();
+    document.getElementById('calMonth').textContent = months[month] + ' ' + year;
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    days.forEach(d => { const el=document.createElement('div'); el.className='cal-day-name'; el.textContent=d; grid.appendChild(el); });
+    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Monday start
+    for(let i=0;i<firstDay;i++){ const el=document.createElement('div'); el.className='cal-day empty'; grid.appendChild(el); }
+    const total = new Date(year, month+1, 0).getDate();
+    for(let d=1;d<=total;d++){
+      const el  = document.createElement('div');
+      el.className = 'cal-day';
+      el.textContent = d;
+      const thisDate = new Date(year, month, d);
+      if(thisDate < new Date(now.getFullYear(), now.getMonth(), now.getDate())) { el.classList.add('past'); }
+      if(now.getFullYear()===year && now.getMonth()===month && now.getDate()===d) { el.classList.add('today'); }
+      if(selDate && selDate.getFullYear()===year && selDate.getMonth()===month && selDate.getDate()===d) { el.classList.add('selected'); }
+      el.addEventListener('click', () => {
+        selDate = thisDate;
+        const label = `${d} de ${months[month]} de ${year}`;
+        document.getElementById('selectedDate').textContent = label;
+        document.getElementById('f-fecha').value = label;
+        renderCal();
+      });
+      grid.appendChild(el);
+    }
+  }
+  document.getElementById('calPrev').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()-1); renderCal(); });
+  document.getElementById('calNext').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()+1); renderCal(); });
+  renderCal();
+
+  // ── GUEST COUNTER ──────────────────────────────
+  let guests = 50;
+  const guestSteps = [10,25,50,75,100,150,200,300,500,750,1000,1500,2000];
+  let guestIdx = guestSteps.indexOf(50);
+  function updateGuests(){
+    document.getElementById('guestVal').textContent = guestSteps[guestIdx];
+    document.getElementById('f-invitados').value = guestSteps[guestIdx];
+  }
+  document.getElementById('guestMinus').addEventListener('click', () => { if(guestIdx>0){ guestIdx--; updateGuests(); } });
+  document.getElementById('guestPlus').addEventListener('click',  () => { if(guestIdx<guestSteps.length-1){ guestIdx++; updateGuests(); } });
+
+  // ── BUDGET SLIDER ──────────────────────────────
+  const slider = document.getElementById('budgetSlider');
+  function formatBudget(v){
+    if(v>=1000000) return (v/1000000).toFixed(1).replace('.0','') + 'M';
+    return (v/1000).toFixed(0) + 'K';
+  }
+  slider.addEventListener('input', () => {
+    document.getElementById('budgetVal').textContent = formatBudget(slider.value);
+    document.getElementById('f-presupuesto').value = slider.value;
+  });
+
+  // ── STEP NAVIGATION ────────────────────────────
+  let currentStep = 1;
+
+  function validateStep(step) {
+    if(step===1){
+      const n=document.getElementById('f-nombre').value.trim();
+      const e=document.getElementById('f-email').value.trim();
+      const t=document.getElementById('f-telefono').value.trim();
+      const c=document.getElementById('f-ciudad').value;
+      if(!n||!e||!t||!c){ alert('Por favor completa todos los campos requeridos.'); return false; }
+      if(!/\S+@\S+\.\S+/.test(e)){ alert('Email inválido.'); return false; }
+    }
+    if(step===2){
+      if(!document.getElementById('f-genero').value){ alert('Selecciona el tipo de evento.'); return false; }
+      if(!document.getElementById('f-vision').value.trim()){ alert('Cuéntanos tu visión.'); return false; }
+    }
+    if(step===3){
+      if(!document.getElementById('f-fecha').value){ alert('Selecciona una fecha tentativa.'); return false; }
+    }
+    return true;
+  }
+
+  function nextStep(from) {
+    if(!validateStep(from)) return;
+    if(from===3) buildSummary();
+    setStep(from+1);
+  }
+  function prevStep(from) { setStep(from-1); }
+
+  function setStep(n) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step'+n).classList.add('active');
+    document.querySelectorAll('.step-dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if(i+1===n) d.classList.add('active');
+      if(i+1<n)  d.classList.add('done');
+    });
+    currentStep = n;
+    window.scrollTo({top: document.querySelector('.steps-indicator').offsetTop - 120, behavior:'smooth'});
+  }
+
+  // ── SUMMARY ────────────────────────────────────
+  function buildSummary() {
+    const data = [
+      ['Nombre',    document.getElementById('f-nombre').value],
+      ['Email',     document.getElementById('f-email').value],
+      ['WhatsApp',  document.getElementById('f-telefono').value],
+      ['Ciudad',    document.getElementById('f-ciudad').value],
+      ['Evento',    document.getElementById('f-genero').value],
+      ['Fecha',     document.getElementById('f-fecha').value],
+      ['Invitados', document.getElementById('f-invitados').value + ' personas'],
+      ['Presupuesto', '$' + formatBudget(document.getElementById('f-presupuesto').value) + ' MXN'],
+    ];
+    const grid = document.getElementById('summaryGrid');
+    grid.innerHTML = '';
+    data.forEach(([k,v]) => {
+      const item = document.createElement('div');
+      item.className = 'summary-item';
+      item.innerHTML = `<div class="summary-key">${k}</div><div class="summary-val">${v||'—'}</div>`;
+      grid.appendChild(item);
+    });
+  }
+
+  // ── FORM SUBMIT → FORMSPREE ────────────────────
+  const form = document.getElementById('quoteForm');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.querySelector('span').textContent = 'Enviando…';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch('https://formspree.io/f/xyzgpjkw', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if(res.ok) {
+        document.getElementById('quoteForm').style.display = 'none';
+        document.getElementById('successScreen').classList.add('active');
+        window.scrollTo({top: 0, behavior:'smooth'});
+      } else {
+        btn.querySelector('span').textContent = 'Error — intenta de nuevo';
+        btn.disabled = false;
+      }
+    } catch(err) {
+      btn.querySelector('span').textContent = 'Error de red — intenta de nuevo';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
