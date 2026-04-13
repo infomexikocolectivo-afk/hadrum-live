@@ -67,10 +67,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 }
 .hero-title .line{display:block;min-height:1.05em}
 .hero-title .line:nth-child(2){font-style:italic;color:var(--accent)}
+.hero-title .line:nth-child(4){font-style:italic;color:var(--accent)}
 .char{
   display:inline-block;opacity:0;
-  transform:translateY(22px) skewX(-3deg);
-  transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
+  transform:translateY(14px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);
 }
 .char.visible{opacity:1;transform:translateY(0) skewX(0deg)}
 .char-space{display:inline-block;width:.28em}
@@ -279,6 +280,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
     <span class="line" id="heroLine1"></span>
     <span class="line" id="heroLine2"></span>
     <span class="line" id="heroLine3"></span>
+    <span class="line" id="heroLine4"></span>
   </h1>
   <p class="hero-sub">
     Más de 200 eventos producidos.<br>
@@ -433,7 +435,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
   <div>
     <div class="section-label reveal">04 · Lo que dicen</div>
     <blockquote class="proof-quote reveal reveal-d1">Fue el evento más memorable de mi vida. Mis invitados siguen hablando de él dos años después.</blockquote>
-    <p class="proof-author reveal reveal-d2">— Cliente privado, CDMX 2023</p>
+    <p class="proof-author reveal reveal-d2">— Claudia Valladolid · Hilton CDMX</p>
   </div>
   <div class="proof-stats">
     <div class="proof-stat reveal"><div class="proof-stat-num">+200</div><div class="proof-stat-label">Eventos producidos en 12 años de trayectoria</div></div>
@@ -480,15 +482,16 @@ if(cur){
 
 // TYPEWRITER
 const lines=[
-  {el:document.getElementById('heroLine1'),text:'Entraron a un evento.',delay:400},
-  {el:document.getElementById('heroLine2'),text:'Salieron',delay:1400},
-  {el:document.getElementById('heroLine3'),text:'diferentes.',delay:2100},
+  {el:document.getElementById('heroLine1'),text:'Entraron a un',delay:800},
+  {el:document.getElementById('heroLine2'),text:'evento.',delay:2200},
+  {el:document.getElementById('heroLine3'),text:'Salieron',delay:3600},
+  {el:document.getElementById('heroLine4'),text:'diferentes.',delay:4800},
 ];
 function buildChars(el,text,start){
   [...text].forEach((ch,i)=>{
     const s=document.createElement('span');
     if(ch===' '){s.className='char-space';}
-    else{s.className='char';s.textContent=ch;setTimeout(()=>s.classList.add('visible'),start+i*42);}
+    else{s.className='char';s.textContent=ch;setTimeout(()=>s.classList.add('visible'),start+i*80);}
     el.appendChild(s);
   });
 }
