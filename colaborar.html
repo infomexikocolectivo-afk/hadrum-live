@@ -3,183 +3,435 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#080808">
-<title>Cotizar Producción — Hadrum</title>
+<title>Colaborar — Hadrum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --black:#080808;--white:#F5F0E8;--dim:rgba(245,240,232,0.42);
-  --line:rgba(245,240,232,0.1);--line-a:rgba(200,184,154,0.55);
-  --accent:#C8B89A;
+  --black:#080808;--white:#F5F0E8;
+  --gold:#D4AF6A;--gold2:#E8D5B0;--gold3:#B09050;
+  --line:rgba(245,240,232,0.1);
   --serif:'Cormorant Garamond',Georgia,serif;
-  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --sans:'DM Sans',system-ui,sans-serif;
 }
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
-  background:var(--black);color:var(--white);
-  font-family:var(--sans);font-weight:300;
-  font-size:18px;overflow-x:hidden;line-height:1.7;
-}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:.4}
+body{background:var(--black);color:var(--white);font-family:var(--sans);font-size:18px;line-height:1.7;overflow-x:hidden}
+
+/* NOISE */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:.4}
 
 /* CURSOR */
 .cursor,.cursor-ring{display:none}
 @media(pointer:fine){
   body{cursor:none}
   .cursor{display:block;position:fixed;width:10px;height:10px;background:var(--white);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .3s,height .3s}
-  .cursor-ring{display:block;position:fixed;width:40px;height:40px;border:1px solid rgba(245,240,232,0.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s}
+  .cursor-ring{display:block;position:fixed;width:40px;height:40px;border:1px solid rgba(212,175,106,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s}
 }
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;background:rgba(8,8,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav-logo{font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:.4em;text-transform:uppercase;color:var(--white);text-decoration:none}
-.nav-back{font-family:var(--mono);font-size:.92rem;letter-spacing:.2em;color:var(--white);text-decoration:none;transition:color .3s}
-.nav-back:hover{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;background:rgba(8,8,8,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.nav-logo{font-family:var(--sans);font-weight:500;font-size:1rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);text-decoration:none;animation:goldPulse 6s ease-in-out infinite}
+.nav-back{font-family:var(--mono);font-size:.78rem;letter-spacing:.2em;color:var(--white);text-decoration:none;opacity:.6;transition:opacity .3s,color .3s;border-bottom:1px solid transparent}
+.nav-back:hover{opacity:1;color:var(--gold);border-color:var(--gold)}
 
 /* HERO */
-.page-hero{padding:9rem 2.5rem 5rem;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-.page-hero::before{content:'';position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;max-width:700px;max-height:700px;background:radial-gradient(circle,rgba(200,184,154,.05) 0%,transparent 65%);pointer-events:none;animation:ambientPulse 10s ease-in-out infinite}
-.page-eyebrow{font-family:var(--mono);font-size:.92rem;letter-spacing:.45em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s ease .2s forwards;display:flex;align-items:center;gap:1rem}
-.page-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--accent)}
-.page-title{font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,6.5vw,6.5rem);line-height:1;letter-spacing:-.02em;opacity:0;animation:fadeUp .9s ease .4s forwards}
-.page-title em{font-style:italic;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.page-sub{margin-top:1.8rem;font-size:1.2rem;letter-spacing:.04em;line-height:1.85;color:var(--white);max-width:42ch;opacity:0;animation:fadeUp .9s ease .65s forwards;font-weight:400}
+.page-hero{
+  min-height:55vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:9rem 2.5rem 5rem;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+.page-hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(212,175,106,.06) 0%,transparent 60%);
+  animation:ambientPulse 10s ease-in-out infinite;pointer-events:none;
+}
+/* corner decoration */
+.page-hero::after{content:'';position:absolute;bottom:2rem;right:2rem;width:50px;height:50px;border-bottom:1px solid rgba(212,175,106,.2);border-right:1px solid rgba(212,175,106,.2);animation:cornerPulse 4s ease-in-out infinite}
 
-/* FORM WRAP */
-.form-wrap{max-width:920px;margin:0 auto;padding:5rem 2.5rem 8rem;opacity:0;animation:fadeUp 1s ease .85s forwards}
+.hero-step{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.4em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp .8s ease .3s forwards;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-step::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold)}
+
+.page-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(3rem,7vw,7rem);
+  line-height:1;letter-spacing:-.02em;
+  opacity:0;animation:fadeUp .9s ease .5s forwards;
+}
+.page-title em{
+  font-style:italic;color:var(--gold);
+  animation:goldPulse 5s ease-in-out infinite;
+}
+.page-subtitle{
+  margin-top:2rem;font-size:1.15rem;color:rgba(245,240,232,.7);
+  font-weight:400;max-width:44ch;line-height:1.75;
+  opacity:0;animation:fadeUp .9s ease .7s forwards;
+}
+
+/* PROMISE BAR */
+.promise-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.promise-item{
+  padding:2rem 2.5rem;border-right:1px solid var(--line);
+  display:flex;align-items:center;gap:1.2rem;
+}
+.promise-item:last-child{border-right:none}
+.promise-icon{
+  width:36px;height:36px;flex-shrink:0;
+  border:1px solid var(--gold-dim);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  animation:iconBreath 5s ease-in-out infinite;
+}
+.promise-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.promise-text strong{display:block;font-size:1rem;font-weight:500;color:var(--white)}
+.promise-text span{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+
+/* FORM CONTAINER */
+.form-container{max-width:860px;margin:0 auto;padding:6rem 2.5rem 8rem}
 
 /* STEP INDICATOR */
-.steps-bar{display:flex;margin-bottom:5rem;border-bottom:1px solid var(--line)}
-.step-dot{flex:1;padding:1.1rem 0;text-align:center;font-family:var(--mono);font-size:.88rem;letter-spacing:.18em;color:var(--white);border-bottom:2px solid transparent;transition:color .35s,border-color .35s;text-transform:uppercase;font-weight:400}
-.step-dot.active{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.step-dot.done{color:rgba(200,184,154,.45);border-color:rgba(200,184,154,.25)}
+.steps-bar{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:6rem;padding-bottom:2rem;
+  border-bottom:1px solid var(--line);
+}
+.step-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:.6rem;
+  position:relative;cursor:default;
+}
+.step-item:not(:last-child)::after{
+  content:'';position:absolute;top:16px;left:calc(50% + 16px);
+  right:calc(-50% + 16px);height:1px;
+  background:var(--line);
+}
+.step-item.active:not(:last-child)::after,
+.step-item.done:not(:last-child)::after{
+  background:linear-gradient(to right,var(--gold),var(--line));
+}
+.step-circle{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;
+  color:rgba(245,240,232,.3);background:var(--black);
+  transition:all .4s;position:relative;z-index:1;
+}
+.step-item.active .step-circle{
+  border-color:var(--gold);color:var(--gold);
+  box-shadow:0 0 20px rgba(212,175,106,.2);
+  animation:iconBreath 3s ease-in-out infinite;
+}
+.step-item.done .step-circle{
+  border-color:var(--gold);background:var(--gold);color:var(--black);
+}
+.step-label{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(245,240,232,.3);
+  text-align:center;transition:color .4s;
+}
+.step-item.active .step-label{color:var(--gold)}
+.step-item.done .step-label{color:rgba(212,175,106,.6)}
 
-/* STEPS */
-.form-step{display:none}
+/* FORM STEPS */
+.form-step{display:none;animation:fadeUp .5s ease forwards}
 .form-step.active{display:block}
-.step-section-label{font-family:var(--mono);font-size:.92rem;letter-spacing:.35em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;text-transform:uppercase;margin-bottom:3rem;display:flex;align-items:center;gap:1rem;font-weight:400}
-.step-section-label::after{content:'';flex:0 0 40px;height:1px;background:var(--accent);opacity:.35}
+
+/* STEP TITLE */
+.step-heading{margin-bottom:3.5rem}
+.step-num{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.35em;
+  color:var(--gold);text-transform:uppercase;display:block;margin-bottom:.75rem;
+}
+.step-title-text{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;color:var(--white);
+}
+.step-title-text em{color:var(--gold);font-style:normal}
+.step-hint{
+  margin-top:.75rem;font-size:1rem;color:rgba(245,240,232,.5);
+  font-weight:400;line-height:1.6;
+}
 
 /* FIELDS */
-.field-group{margin-bottom:2.8rem}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:2.8rem}
-label{display:block;font-family:var(--mono);font-size:.92rem;letter-spacing:.25em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;text-transform:uppercase;margin-bottom:.85rem;font-weight:400}
-label span{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-input[type="text"],input[type="email"],input[type="tel"],select,textarea{
-  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
-  color:var(--white);font-family:var(--serif);font-size:1.3rem;font-weight:400;
-  padding:.6rem 0 .9rem;outline:none;transition:border-color .35s;
-  -webkit-appearance:none;appearance:none;border-radius:0;
-}
-input:focus,select:focus,textarea:focus{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-input::placeholder,textarea::placeholder{color:rgba(245,240,232,.15);font-style:italic}
-select option{background:#111;color:var(--white)}
-textarea{resize:none;height:100px;line-height:1.65}
+.field{margin-bottom:3rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:3rem}
 
-/* PILLS */
-.genre-pills{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
-.pill{padding:.65rem 1.35rem;border:1px solid var(--line);font-family:var(--mono);font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white);cursor:pointer;transition:all .25s;user-select:none;font-weight:400}
-.pill:hover{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.pill.selected{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;color:var(--black);background:var(--accent)}
+/* LABEL — grande, dorado, visible */
+label{
+  display:block;
+  font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;
+  margin-bottom:1rem;
+}
+label .req{color:var(--white);opacity:.5}
+
+/* INPUTS — texto blanco grande, línea dorada */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,textarea{
+  width:100%;background:transparent;
+  border:none;border-bottom:2px solid rgba(245,240,232,.2);
+  color:var(--white);font-family:var(--serif);
+  font-size:1.4rem;font-weight:300;
+  padding:.75rem 0 1rem;outline:none;
+  transition:border-color .35s;
+  -webkit-appearance:none;appearance:none;border-radius:0;
+  line-height:1.3;
+}
+input::placeholder,textarea::placeholder{
+  color:rgba(245,240,232,.2);font-style:italic;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--gold);
+}
+select{cursor:pointer}
+select option{background:#111;color:var(--white);font-size:1rem}
+textarea{resize:none;height:110px;line-height:1.6}
+
+/* GENRE PILLS */
+.pills-label{
+  font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;margin-bottom:1.2rem;display:block;
+}
+.genre-pills{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
+.pill{
+  padding:.75rem 1.5rem;
+  border:1px solid rgba(245,240,232,.2);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;
+  text-transform:uppercase;color:rgba(245,240,232,.6);
+  cursor:pointer;transition:all .25s;user-select:none;
+  font-weight:400;
+}
+.pill:hover{border-color:var(--gold);color:var(--gold)}
+.pill.selected{
+  border-color:var(--gold);color:var(--black);
+  background:var(--gold);font-weight:500;
+}
 
 /* BUDGET */
-.budget-display{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--white);margin-bottom:1rem;letter-spacing:-.02em;animation:glowPulse 5s ease-in-out infinite}
-.budget-display span{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;font-style:italic}
-input[type="range"]{width:100%;height:1px;background:var(--line);border:none;padding:0;-webkit-appearance:none;appearance:none;cursor:pointer;outline:none;margin-top:1rem}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;transition:transform .2s}
-input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.4)}
-input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:none;cursor:pointer}
-.budget-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.78rem;letter-spacing:.15em;color:var(--white);margin-top:.75rem}
+.budget-display{
+  font-family:var(--serif);font-size:3.5rem;font-weight:300;
+  color:var(--white);margin-bottom:1.5rem;letter-spacing:-.02em;
+  line-height:1;
+}
+.budget-display em{color:var(--gold);font-style:italic}
+input[type="range"]{
+  width:100%;height:2px;background:rgba(245,240,232,.15);
+  border:none;padding:0;-webkit-appearance:none;appearance:none;
+  cursor:pointer;outline:none;margin-top:.5rem;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;
+  border-radius:50%;background:var(--gold);
+  cursor:pointer;transition:transform .2s;
+  box-shadow:0 0 15px rgba(212,175,106,.4);
+}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.3)}
+input[type="range"]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--gold);border:none;cursor:pointer;
+}
+.budget-labels{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;
+  color:rgba(245,240,232,.3);margin-top:.75rem;
+}
 
 /* CALENDAR */
-.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-.cal-month{font-family:var(--serif);font-size:1.3rem;font-weight:300;font-style:italic;letter-spacing:.04em}
-.cal-nav{background:none;border:1px solid var(--line);color:var(--white);width:36px;height:36px;cursor:pointer;font-size:.9rem;transition:all .25s;display:flex;align-items:center;justify-content:center}
-.cal-nav:hover{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-day-name{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;color:var(--white);text-align:center;padding:.5rem 0;text-transform:uppercase}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.88rem;color:var(--white);cursor:pointer;transition:all .2s;border:1px solid transparent}
-.cal-day:not(.empty):not(.past):hover{border-color:var(--line);color:var(--white)}
-.cal-day.selected{background:var(--accent);color:var(--black);border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.cal-day.today{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
+.cal-wrap{margin-top:.5rem}
+.cal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.5rem;
+}
+.cal-month{
+  font-family:var(--serif);font-size:1.5rem;
+  font-weight:300;font-style:italic;color:var(--white);
+}
+.cal-nav{
+  background:none;border:1px solid rgba(245,240,232,.2);
+  color:var(--white);width:40px;height:40px;cursor:pointer;
+  font-size:1rem;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;
+}
+.cal-nav:hover{border-color:var(--gold);color:var(--gold)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day-name{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;
+  color:var(--gold);text-align:center;padding:.6rem 0;
+  text-transform:uppercase;
+}
+.cal-day{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.75rem;color:rgba(245,240,232,.5);
+  cursor:pointer;transition:all .2s;border:1px solid transparent;
+  font-weight:400;
+}
+.cal-day:not(.empty):not(.past):hover{
+  border-color:rgba(245,240,232,.2);color:var(--white);
+}
+.cal-day.selected{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:500}
+.cal-day.today{color:var(--gold);font-weight:500}
 .cal-day.past{opacity:.2;pointer-events:none}
 .cal-day.empty{pointer-events:none}
-.selected-date{font-family:var(--serif);font-size:1.05rem;font-style:italic;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;margin-top:1.2rem;min-height:1.5rem}
+.selected-date{
+  font-family:var(--serif);font-size:1.2rem;font-style:italic;
+  color:var(--gold);margin-top:1.2rem;min-height:1.8rem;
+}
 
 /* GUEST COUNTER */
 .counter-wrap{display:flex;align-items:center;gap:1.5rem;margin-top:.5rem}
-.counter-btn{width:40px;height:40px;border:1px solid var(--line);background:none;color:var(--white);font-size:1.2rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center}
-.counter-btn:hover{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.counter-val{font-family:var(--serif);font-size:2.2rem;font-weight:300;min-width:3.5ch;text-align:center}
-.counter-label{font-family:var(--mono);font-size:1rem;letter-spacing:.2em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;text-transform:uppercase;font-weight:400}
+.counter-btn{
+  width:44px;height:44px;border:1px solid rgba(245,240,232,.2);
+  background:none;color:var(--white);font-size:1.4rem;
+  cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);
+}
+.counter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.counter-val{
+  font-family:var(--serif);font-size:3rem;font-weight:300;
+  min-width:3ch;text-align:center;color:var(--white);line-height:1;
+}
+.counter-label{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;
+}
+
+/* SUMMARY */
+.summary-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid var(--line);margin-bottom:3rem;
+}
+.summary-item{
+  padding:1.8rem 2rem;border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.summary-item:nth-child(even){border-right:none}
+.summary-item:nth-last-child(-n+2){border-bottom:none}
+.summary-key{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:.6rem;
+}
+.summary-val{
+  font-family:var(--serif);font-size:1.3rem;font-weight:300;color:var(--white);
+}
 
 /* ACTIONS */
-.form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line)}
-.btn-back{font-family:var(--mono);font-size:.9rem;letter-spacing:.25em;color:var(--white);background:none;border:none;cursor:pointer;text-transform:uppercase;transition:color .3s}
+.form-actions{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line);
+}
+.btn-back{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;
+  color:rgba(245,240,232,.4);background:none;border:none;
+  cursor:pointer;text-transform:uppercase;transition:color .3s;
+  padding:.5rem 0;
+}
 .btn-back:hover{color:var(--white)}
-.btn-next{padding:1.1rem 2.8rem;border:1px solid rgba(245,240,232,.2);background:none;color:var(--white);font-family:var(--mono);font-size:.9rem;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .4s,border-color .4s}
-.btn-next::before{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
-.btn-next:hover{color:var(--black);border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
+.btn-next{
+  padding:1.2rem 3rem;
+  border:1px solid rgba(212,175,106,.4);
+  background:none;color:var(--white);
+  font-family:var(--mono);font-size:.75rem;
+  letter-spacing:.3em;text-transform:uppercase;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:color .4s,border-color .4s;
+  font-weight:400;
+}
+.btn-next::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.btn-next:hover{color:var(--black);border-color:var(--gold)}
 .btn-next:hover::before{transform:scaleX(1)}
 .btn-next span{position:relative;z-index:1}
 
-/* SUMMARY */
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);margin-bottom:3rem}
-.summary-item{padding:1.6rem 2rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.summary-item:nth-child(even){border-right:none}
-.summary-item:nth-last-child(-n+2){border-bottom:none}
-.summary-key{font-family:var(--mono);font-size:.8rem;letter-spacing:.25em;color:var(--white);text-transform:uppercase;margin-bottom:.5rem}
-.summary-val{font-family:var(--serif);font-size:1.15rem;font-weight:300}
-.summary-val em{background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;font-style:italic}
-
 /* SUCCESS */
-.success-screen{display:none;text-align:center;padding:7rem 2rem}
-.success-screen.active{display:block}
-.success-icon{width:64px;height:64px;margin:0 auto 2.5rem;border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:glowPulse 3s ease-in-out infinite}
-.success-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,4rem);font-weight:300;margin-bottom:1.2rem}
-.success-title em{font-style:italic;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
-.success-sub{font-family:var(--mono);font-size:.88rem;letter-spacing:.2em;color:var(--white);line-height:2}
-.back-link{display:inline-block;margin-top:3rem;font-family:var(--mono);font-size:.9rem;letter-spacing:.25em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite;text-decoration:none;border-bottom:1px solid rgba(200,184,154,.3);padding-bottom:.25rem;transition:border-color .3s}
-.back-link:hover{border-background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
+.success{display:none;text-align:center;padding:8rem 2rem}
+.success.active{display:block;animation:fadeUp .8s ease forwards}
+.success-icon{
+  width:72px;height:72px;margin:0 auto 2.5rem;
+  border:1px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  animation:iconBreath 3s ease-in-out infinite;
+}
+.success-title{
+  font-family:var(--serif);font-size:clamp(2.5rem,6vw,5rem);
+  font-weight:300;line-height:1.05;margin-bottom:1.5rem;color:var(--white);
+}
+.success-title em{font-style:italic;color:var(--gold)}
+.success-sub{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.2em;
+  color:rgba(245,240,232,.45);line-height:2;margin-bottom:3rem;
+}
+.success-link{
+  display:inline-block;font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.25em;color:var(--gold);text-decoration:none;
+  border-bottom:1px solid rgba(212,175,106,.3);padding-bottom:.25rem;
+  transition:border-color .3s;text-transform:uppercase;
+}
+.success-link:hover{border-color:var(--gold)}
 
-/* PAGE FOOTER */
-.page-footer{padding:2rem 2.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.page-footer span{font-family:var(--mono);font-size:.82rem;letter-spacing:.15em;color:var(--white)}
+/* FOOTER */
+.page-footer{
+  padding:2rem 2.5rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.page-footer span{
+  font-family:var(--mono);font-size:.65rem;
+  letter-spacing:.15em;color:rgba(245,240,232,.25);
+}
 
 /* KEYFRAMES */
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ambientPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1) translate(-2%,2%)}}
-@keyframes glowPulse{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 30px rgba(200,184,154,.12)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes ambientPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes cornerPulse{0%,100%{opacity:.15}50%{opacity:.4}}
+@keyframes iconBreath{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 25px rgba(212,175,106,.25)}}
+@keyframes goldPulse{0%,100%{color:var(--gold)}50%{color:var(--gold2)}}
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  body{cursor:auto;font-size:17px}
+  body{cursor:auto;font-size:16px}
   .cursor,.cursor-ring{display:none!important}
   nav{padding:1.2rem 1.4rem}
-  .nav-logo{font-size:.9rem}
   .page-hero{padding:7rem 1.4rem 4rem}
-  .page-title{font-size:clamp(2.4rem,10vw,4.5rem)}
-  .form-wrap{padding:4rem 1.4rem 6rem}
+  .promise-bar{grid-template-columns:1fr}
+  .promise-item{border-right:none;border-bottom:1px solid var(--line)}
+  .promise-item:last-child{border-bottom:none}
+  .form-container{padding:4rem 1.4rem 6rem}
   .field-row{grid-template-columns:1fr;gap:0}
-  .step-dot{font-size:.75rem;padding:.85rem .25rem;letter-spacing:.08em}
+  .steps-bar{gap:.5rem}
+  .step-label{display:none}
+  .step-item:not(:last-child)::after{display:none}
   .summary-grid{grid-template-columns:1fr}
   .summary-item{border-right:none!important}
   .summary-item:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
   .summary-item:last-child{border-bottom:none}
   .form-actions{flex-direction:column-reverse;gap:1rem}
   .btn-next{width:100%;text-align:center}
-  .genre-pills{gap:.5rem}
-  .pill{font-size:.78rem;padding:.5rem 1rem}
-  .page-footer{flex-direction:column;gap:1rem;text-align:center;padding:1.5rem 1.4rem}
+  .budget-display{font-size:2.5rem}
+  .page-footer{flex-direction:column;gap:.75rem;text-align:center}
 }
 @media(max-width:420px){
-  .step-dot{letter-spacing:0;font-size:.48rem}
-  .cal-day{font-size:.82rem}
+  .genre-pills{gap:.5rem}
+  .pill{font-size:.65rem;padding:.6rem 1rem}
+  .page-title{font-size:clamp(2.2rem,12vw,3.5rem)}
 }
-@keyframes goldShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.gold-text{background:linear-gradient(135deg,#C8B89A 0%,#E8D5B0 40%,#B09870 70%,#C8B89A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 7s ease-in-out infinite}
 </style>
 </head>
 <body>
@@ -187,54 +439,111 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">Hadrum</a>
   <a href="index.html" class="nav-back">← Volver</a>
 </nav>
 
+<!-- HERO -->
 <div class="page-hero">
-  <div class="page-eyebrow">Producción a medida</div>
-  <h1 class="page-title">Cuéntanos tu<br><em>visión.</em></h1>
-  <p class="page-sub">Completa este formulario y te contactamos en menos de 24 horas con una propuesta personalizada. Sin compromiso.</p>
+  <div class="hero-step">Producción a medida</div>
+  <h1 class="page-title">
+    Cuéntanos tu<br><em>visión.</em>
+  </h1>
+  <p class="page-subtitle">
+    Cada gran evento comienza con una conversación.<br>
+    Completa este formulario y te respondemos en menos de 24 horas.
+  </p>
 </div>
 
-<div class="form-wrap">
+<!-- PROMISE BAR -->
+<div class="promise-bar">
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1L10 6H15L11 9.5L12.5 15L8 12L3.5 15L5 9.5L1 6H6Z"/></svg>
+    </div>
+    <div class="promise-text">
+      <strong>Propuesta en 24h</strong>
+      <span>Sin compromiso</span>
+    </div>
+  </div>
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 8L7 10L11 6"/></svg>
+    </div>
+    <div class="promise-text">
+      <strong>NDA incluido</strong>
+      <span>Tu privacidad primero</span>
+    </div>
+  </div>
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 5V8L10 10"/></svg>
+    </div>
+    <div class="promise-text">
+      <strong>Productor dedicado</strong>
+      <span>Solo para tu evento</span>
+    </div>
+  </div>
+</div>
 
-  <div class="steps-bar">
-    <div class="step-dot active" data-step="1">01 · Tú</div>
-    <div class="step-dot" data-step="2">02 · Evento</div>
-    <div class="step-dot" data-step="3">03 · Fecha &amp; Escala</div>
-    <div class="step-dot" data-step="4">04 · Confirmar</div>
+<!-- FORM -->
+<div class="form-container">
+
+  <!-- STEPS -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle">01</div>
+      <div class="step-label">Tú</div>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle">02</div>
+      <div class="step-label">Tu evento</div>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle">03</div>
+      <div class="step-label">Fecha</div>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle">04</div>
+      <div class="step-label">Confirmar</div>
+    </div>
   </div>
 
   <form id="quoteForm">
-    <input type="hidden" name="_subject" value="Nueva cotización Hadrum">
+    <input type="hidden" name="_subject" value="Nueva cotización — Hadrum">
 
-    <!-- STEP 1 -->
+    <!-- PASO 1 -->
     <div class="form-step active" id="step1">
-      <div class="step-section-label">Información de contacto</div>
+      <div class="step-heading">
+        <span class="step-num">Paso 01 de 04</span>
+        <h2 class="step-title-text">¿Quién está<br>detrás de este <em>evento?</em></h2>
+        <p class="step-hint">Cuéntanos quién eres. Así sabemos cómo hablar contigo.</p>
+      </div>
+
       <div class="field-row">
-        <div class="field-group">
-          <label>Nombre completo <span>*</span></label>
+        <div class="field">
+          <label>Nombre completo <span class="req">*</span></label>
           <input type="text" name="nombre" id="f-nombre" placeholder="Tu nombre" required>
         </div>
-        <div class="field-group">
-          <label>Empresa / Marca</label>
+        <div class="field">
+          <label>Empresa o marca</label>
           <input type="text" name="empresa" id="f-empresa" placeholder="Opcional">
         </div>
       </div>
       <div class="field-row">
-        <div class="field-group">
-          <label>Email <span>*</span></label>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
           <input type="email" name="email" id="f-email" placeholder="tu@correo.com" required>
         </div>
-        <div class="field-group">
-          <label>WhatsApp <span>*</span></label>
+        <div class="field">
+          <label>WhatsApp <span class="req">*</span></label>
           <input type="tel" name="telefono" id="f-telefono" placeholder="+52 55 0000 0000" required>
         </div>
       </div>
-      <div class="field-group">
-        <label>Ciudad del evento <span>*</span></label>
+      <div class="field">
+        <label>Ciudad del evento <span class="req">*</span></label>
         <select name="ciudad" id="f-ciudad" required>
           <option value="" disabled selected>Selecciona una ciudad</option>
           <option>Ciudad de México</option>
@@ -247,17 +556,23 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
           <option>Otro</option>
         </select>
       </div>
+
       <div class="form-actions">
         <span></span>
         <button type="button" class="btn-next" onclick="nextStep(1)"><span>Siguiente →</span></button>
       </div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- PASO 2 -->
     <div class="form-step" id="step2">
-      <div class="step-section-label">Tipo de experiencia</div>
-      <div class="field-group">
-        <label>Género del evento <span>*</span></label>
+      <div class="step-heading">
+        <span class="step-num">Paso 02 de 04</span>
+        <h2 class="step-title-text">¿Qué quieres que<br>la gente <em>sienta?</em></h2>
+        <p class="step-hint">No nos digas el tipo de evento — dinos la emoción que buscas.</p>
+      </div>
+
+      <div class="field">
+        <span class="pills-label">Género del evento <span class="req">*</span></span>
         <div class="genre-pills">
           <div class="pill" data-val="Wellness &amp; Ritual">Wellness &amp; Ritual</div>
           <div class="pill" data-val="Night Experience">Night Experience</div>
@@ -271,94 +586,120 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         </div>
         <input type="hidden" name="genero" id="f-genero">
       </div>
-      <div class="field-group" style="margin-top:2.5rem">
-        <label>Describe tu visión <span>*</span></label>
-        <textarea name="vision" id="f-vision" placeholder="¿Qué quieres que sienta la gente al entrar, durante y al salir de tu evento?" required></textarea>
+
+      <div class="field">
+        <label>Describe tu visión <span class="req">*</span></label>
+        <textarea name="vision" id="f-vision" placeholder="¿Qué quieres que sienta la gente al entrar, durante y al salir?" required></textarea>
       </div>
-      <div class="field-group">
+
+      <div class="field">
         <label>Referencias o inspiración</label>
-        <input type="text" name="referencias" id="f-referencias" placeholder="Links, artistas, marcas, palabras clave…">
+        <input type="text" name="referencias" placeholder="Links, artistas, marcas, palabras clave…">
       </div>
+
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(2)">← Anterior</button>
         <button type="button" class="btn-next" onclick="nextStep(2)"><span>Siguiente →</span></button>
       </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- PASO 3 -->
     <div class="form-step" id="step3">
-      <div class="step-section-label">Fecha y dimensiones</div>
-      <div class="field-group">
-        <label>Fecha tentativa <span>*</span></label>
-        <div class="cal-header">
-          <button type="button" class="cal-nav" id="calPrev">‹</button>
-          <div class="cal-month" id="calMonth"></div>
-          <button type="button" class="cal-nav" id="calNext">›</button>
+      <div class="step-heading">
+        <span class="step-num">Paso 03 de 04</span>
+        <h2 class="step-title-text">¿Cuándo y a qué<br><em>escala?</em></h2>
+        <p class="step-hint">Danos los datos logísticos para diseñar una propuesta real.</p>
+      </div>
+
+      <div class="field">
+        <label>Fecha tentativa <span class="req">*</span></label>
+        <div class="cal-wrap">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" id="calPrev">‹</button>
+            <div class="cal-month" id="calMonth"></div>
+            <button type="button" class="cal-nav" id="calNext">›</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="selected-date" id="selectedDate">Selecciona una fecha</div>
         </div>
-        <div class="cal-grid" id="calGrid"></div>
-        <div class="selected-date" id="selectedDate">Selecciona una fecha</div>
         <input type="hidden" name="fecha" id="f-fecha">
       </div>
-      <div class="field-group" style="margin-top:3rem">
-        <label>Número de invitados <span>*</span></label>
+
+      <div class="field">
+        <label>Número de invitados <span class="req">*</span></label>
         <div class="counter-wrap">
-          <button type="button" class="counter-btn" id="guestMinus">−</button>
-          <div class="counter-val" id="guestVal">50</div>
-          <button type="button" class="counter-btn" id="guestPlus">+</button>
-          <div class="counter-label">personas</div>
+          <button type="button" class="counter-btn" id="gMinus">−</button>
+          <div class="counter-val" id="gVal">50</div>
+          <button type="button" class="counter-btn" id="gPlus">+</button>
+          <span class="counter-label">personas</span>
         </div>
         <input type="hidden" name="invitados" id="f-invitados" value="50">
       </div>
-      <div class="field-group" style="margin-top:3rem">
-        <label>Presupuesto estimado (MXN) <span>*</span></label>
-        <div class="budget-display">$<span id="budgetVal">150K</span></div>
+
+      <div class="field">
+        <label>Presupuesto estimado (MXN) <span class="req">*</span></label>
+        <div class="budget-display">$<em id="budgetVal">150K</em></div>
         <input type="range" id="budgetSlider" min="30000" max="2000000" step="10000" value="150000">
         <div class="budget-labels"><span>$30K</span><span>$500K</span><span>$1M</span><span>$2M+</span></div>
         <input type="hidden" name="presupuesto" id="f-presupuesto" value="150000">
       </div>
-      <div class="field-group" style="margin-top:2.5rem">
-        <label>¿Tienes venue? <span>*</span></label>
-        <select name="venue" id="f-venue" required>
+
+      <div class="field">
+        <label>¿Tienes venue?</label>
+        <select name="venue">
           <option value="" disabled selected>Selecciona</option>
-          <option>Sí, ya tengo venue confirmado</option>
+          <option>Sí, confirmado</option>
           <option>Tengo opciones en mente</option>
-          <option>No, necesito ayuda para encontrarlo</option>
+          <option>No, necesito ayuda</option>
           <option>Abierto a propuestas</option>
         </select>
       </div>
+
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(3)">← Anterior</button>
         <button type="button" class="btn-next" onclick="nextStep(3)"><span>Revisar →</span></button>
       </div>
     </div>
 
-    <!-- STEP 4 -->
+    <!-- PASO 4 -->
     <div class="form-step" id="step4">
-      <div class="step-section-label">Resumen de tu solicitud</div>
+      <div class="step-heading">
+        <span class="step-num">Paso 04 de 04</span>
+        <h2 class="step-title-text">Todo listo.<br>Solo falta tu <em>confirmación.</em></h2>
+        <p class="step-hint">Revisa que todo esté correcto antes de enviarnos tu visión.</p>
+      </div>
+
       <div class="summary-grid" id="summaryGrid"></div>
-      <div class="field-group">
+
+      <div class="field">
         <label>¿Algo más que debamos saber?</label>
         <textarea name="notas" placeholder="Detalles adicionales, restricciones, fechas alternativas…" style="height:80px"></textarea>
       </div>
+
       <div class="form-actions">
         <button type="button" class="btn-back" onclick="prevStep(4)">← Anterior</button>
-        <button type="submit" class="btn-next" id="submitBtn"><span>Enviar solicitud →</span></button>
+        <button type="submit" class="btn-next" id="submitBtn"><span>Enviar mi visión →</span></button>
       </div>
     </div>
   </form>
 
   <!-- SUCCESS -->
-  <div class="success-screen" id="successScreen">
+  <div class="success" id="successScreen">
     <div class="success-icon">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C8B89A" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF6A" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <h2 class="success-title">Tu visión<br><em>ha llegado.</em></h2>
-    <p class="success-sub">Te contactamos en menos de 24 horas.<br>Mientras tanto, el silencio es nuestro.<br><br>— Hadrum</p>
-    <a href="index.html" class="back-link">← Volver al inicio</a>
+    <p class="success-sub">
+      Te contactamos en menos de 24 horas.<br>
+      Mientras tanto, el silencio es nuestro.<br><br>
+      — Hadrum
+    </p>
+    <a href="index.html" class="success-link">← Volver al inicio</a>
   </div>
 
 </div>
 
+<!-- FOOTER -->
 <footer class="page-footer">
   <span>Hadrum © 2026</span>
   <span>hadrum.live</span>
@@ -405,9 +746,9 @@ function renderCal(){
   for(let d=1;d<=total;d++){
     const el=document.createElement('div');el.className='cal-day';el.textContent=d;
     const td=new Date(y,m,d);
-    if(td<new Date(now.getFullYear(),now.getMonth(),now.getDate())) el.classList.add('past');
-    if(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d) el.classList.add('today');
-    if(selDate&&selDate.getFullYear()===y&&selDate.getMonth()===m&&selDate.getDate()===d) el.classList.add('selected');
+    if(td<new Date(now.getFullYear(),now.getMonth(),now.getDate()))el.classList.add('past');
+    if(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d)el.classList.add('today');
+    if(selDate&&selDate.getFullYear()===y&&selDate.getMonth()===m&&selDate.getDate()===d)el.classList.add('selected');
     el.addEventListener('click',()=>{
       selDate=td;
       const label=`${d} de ${months[m]} de ${y}`;
@@ -425,21 +766,21 @@ renderCal();
 // GUEST COUNTER
 const gSteps=[10,20,30,50,75,100,150,200,300,500,750,1000,1500,2000];
 let gIdx=gSteps.indexOf(50);
-function updateG(){document.getElementById('guestVal').textContent=gSteps[gIdx];document.getElementById('f-invitados').value=gSteps[gIdx]}
-document.getElementById('guestMinus').addEventListener('click',()=>{if(gIdx>0){gIdx--;updateG()}});
-document.getElementById('guestPlus').addEventListener('click',()=>{if(gIdx<gSteps.length-1){gIdx++;updateG()}});
+function updateG(){document.getElementById('gVal').textContent=gSteps[gIdx];document.getElementById('f-invitados').value=gSteps[gIdx]}
+document.getElementById('gMinus').addEventListener('click',()=>{if(gIdx>0){gIdx--;updateG()}});
+document.getElementById('gPlus').addEventListener('click',()=>{if(gIdx<gSteps.length-1){gIdx++;updateG()}});
 
 // BUDGET
 const slider=document.getElementById('budgetSlider');
-function fmtBudget(v){if(v>=1000000)return(v/1000000).toFixed(1).replace('.0','')+'M';return Math.round(v/1000)+'K'}
+function fmtB(v){if(v>=1000000)return(v/1000000).toFixed(1).replace('.0','')+'M';return Math.round(v/1000)+'K'}
 slider.addEventListener('input',()=>{
-  document.getElementById('budgetVal').textContent=fmtBudget(slider.value);
+  document.getElementById('budgetVal').textContent=fmtB(slider.value);
   document.getElementById('f-presupuesto').value=slider.value;
 });
 
 // STEPS
-function validate(step){
-  if(step===1){
+function validate(s){
+  if(s===1){
     const n=document.getElementById('f-nombre').value.trim();
     const e=document.getElementById('f-email').value.trim();
     const t=document.getElementById('f-telefono').value.trim();
@@ -447,11 +788,11 @@ function validate(step){
     if(!n||!e||!t||!c){alert('Por favor completa todos los campos requeridos.');return false}
     if(!/\S+@\S+\.\S+/.test(e)){alert('Email inválido.');return false}
   }
-  if(step===2){
+  if(s===2){
     if(!document.getElementById('f-genero').value){alert('Selecciona el tipo de evento.');return false}
     if(!document.getElementById('f-vision').value.trim()){alert('Cuéntanos tu visión.');return false}
   }
-  if(step===3){
+  if(s===3){
     if(!document.getElementById('f-fecha').value){alert('Selecciona una fecha tentativa.');return false}
   }
   return true;
@@ -459,10 +800,10 @@ function validate(step){
 function setStep(n){
   document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
   document.getElementById('step'+n).classList.add('active');
-  document.querySelectorAll('.step-dot').forEach((d,i)=>{
+  document.querySelectorAll('.step-item').forEach((d,i)=>{
     d.classList.remove('active','done');
-    if(i+1===n) d.classList.add('active');
-    if(i+1<n) d.classList.add('done');
+    if(i+1===n)d.classList.add('active');
+    if(i+1<n)d.classList.add('done');
   });
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -478,7 +819,7 @@ function buildSummary(){
     ['Evento',document.getElementById('f-genero').value],
     ['Fecha',document.getElementById('f-fecha').value],
     ['Invitados',document.getElementById('f-invitados').value+' personas'],
-    ['Presupuesto','$'+fmtBudget(document.getElementById('f-presupuesto').value)+' MXN'],
+    ['Presupuesto','$'+fmtB(document.getElementById('f-presupuesto').value)+' MXN'],
   ];
   const g=document.getElementById('summaryGrid');g.innerHTML='';
   data.forEach(([k,v])=>{
@@ -502,10 +843,10 @@ document.getElementById('quoteForm').addEventListener('submit',async e=>{
       document.getElementById('quoteForm').style.display='none';
       document.getElementById('successScreen').classList.add('active');
       window.scrollTo({top:0,behavior:'smooth'});
-    } else {
+    }else{
       btn.querySelector('span').textContent='Error — intenta de nuevo';btn.disabled=false;
     }
-  } catch(err){
+  }catch(err){
     btn.querySelector('span').textContent='Error de red — intenta de nuevo';btn.disabled=false;
   }
 });
