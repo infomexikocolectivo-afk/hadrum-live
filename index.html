@@ -52,7 +52,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .nav-cta:hover{background:var(--accent);color:var(--black)}
 
 /* ══ HERO ═════════════════════════════════════════════════ */
-.hero{min-height:100dvh;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:8rem 2.5rem 7rem;position:relative;overflow:hidden}
+.hero{min-height:100dvh;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:8rem 2.5rem 7rem;position:relative;overflow:hidden;background-image:linear-gradient(to bottom,rgba(8,8,8,.78) 0%,rgba(8,8,8,.58) 35%,rgba(8,8,8,.70) 65%,rgba(8,8,8,.92) 100%),url('hadrum-cena-inmersiva-terraza-mexico-noche.jpg');background-size:cover;background-position:center 30%;background-repeat:no-repeat;background-attachment:fixed}
 
 /* Animated ambient orb */
 .hero::before{content:'';position:absolute;top:10%;left:-15%;width:80vw;height:80vw;max-width:900px;max-height:900px;background:radial-gradient(circle,rgba(200,184,154,.06) 0%,transparent 65%);pointer-events:none;animation:ambientPulse 9s ease-in-out infinite}
@@ -69,13 +69,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 /* Lines 1 & 3: white */
 .hero-title .line:nth-child(1),.hero-title .line:nth-child(3){color:var(--white)}
 
-/* Lines 2 & 4: gold gradient animated */
+/* Lines 2 & 4: dorado sólido — compatible iOS/Safari */
 .hero-title .line:nth-child(2),.hero-title .line:nth-child(4){
   font-style:italic;
-  background:linear-gradient(135deg,#C8B89A 0%,#F0DFB8 35%,#E8D5B0 50%,#B09870 75%,#C8B89A 100%);
-  background-size:300% 300%;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:goldShiftSlow 8s ease-in-out infinite;
+}
+.hero-title .line:nth-child(2) .char,
+.hero-title .line:nth-child(4) .char{
+  display:inline;
+  opacity:0;
+  color:#D4AF6A;
+  transition:opacity .7s cubic-bezier(.16,1,.3,1);
+}
+.hero-title .line:nth-child(2) .char.visible,
+.hero-title .line:nth-child(4) .char.visible{
+  opacity:1;
+}
+.hero-title .line:nth-child(2) .char-space,
+.hero-title .line:nth-child(4) .char-space{
+  display:inline;
 }
 
 .char{display:inline-block;opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
@@ -121,20 +132,61 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 
 /* ══ STATS ════════════════════════════════════════════════ */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.stat-item{padding:4rem 2.5rem;border-right:1px solid var(--line);position:relative;overflow:hidden}
+.stat-item{
+  padding:4rem 2.5rem;border-right:1px solid var(--line);
+  position:relative;overflow:hidden;
+  transition:background .5s;
+}
 .stat-item:last-child{border-right:none}
+.stat-item::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:2px;background:linear-gradient(to right,transparent,rgba(200,184,154,.35),transparent);
+  transform:scaleX(0);transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.stat-item:hover::before{transform:scaleX(1)}
 
-/* Subtle hover glow */
-.stat-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(200,184,154,.05),transparent 70%);opacity:0;transition:opacity .5s}
-.stat-item:hover::after{opacity:1}
+/* Números — cada uno con su animación propia */
+.stat-number{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(3.5rem,5.5vw,6rem);
+  line-height:1;display:block;margin-bottom:1.2rem;
+  color:#D4AF6A; /* sólido para iOS */
+}
+/* 200+ — pulso lento */
+.stat-number.n-200{animation:numPulse 6s ease-in-out infinite}
+/* 8 — rotación en Y suave */
+.stat-number.n-8{animation:numFlip 8s ease-in-out infinite}
+/* 98% — brillo que va y viene */
+.stat-number.n-98{animation:numGlow 7s ease-in-out infinite}
+/* 100% — escala que respira */
+.stat-number.n-100{animation:numBreathe 5s ease-in-out infinite}
 
-.stat-number{font-family:var(--serif);font-weight:300;font-size:clamp(3.5rem,5.5vw,6rem);line-height:1;display:block;margin-bottom:1rem;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300%;animation:goldShiftSlow 7s ease-in-out infinite}
-.stat-number .plus{-webkit-text-fill-color:transparent}
-.stat-label{font-family:var(--mono);font-size:1rem;letter-spacing:.2em;color:var(--white);text-transform:uppercase;line-height:1.7;font-weight:400}
-.stat-sub{font-size:1rem;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;margin-top:.5rem;font-family:var(--sans);font-weight:400;animation:goldShift 8s ease-in-out infinite}
+.stat-label{
+  font-family:var(--mono);font-size:1rem;letter-spacing:.18em;
+  color:var(--white);text-transform:uppercase;line-height:1.75;font-weight:400;
+  display:block;
+}
+.stat-sub{
+  font-size:.95rem;color:#C8B89A;margin-top:.6rem;
+  font-family:var(--sans);font-weight:400;font-style:italic;
+}
 
-/* Decorative stat icon */
-.stat-icon{position:absolute;bottom:1.5rem;right:1.5rem;opacity:.07;animation:rotateSlow 20s linear infinite}
+@keyframes numPulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.04);opacity:.85}
+}
+@keyframes numFlip{
+  0%,100%{transform:rotateY(0deg)}
+  50%{transform:rotateY(8deg)}
+}
+@keyframes numGlow{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.4) drop-shadow(0 0 12px rgba(200,184,154,.4))}
+}
+@keyframes numBreathe{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-4px) scale(1.05)}
+}
 
 /* ══ STORY ════════════════════════════════════════════════ */
 .story{padding:9rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center;border-top:1px solid var(--line)}
@@ -179,41 +231,188 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .genre-item:hover .genre-icon{opacity:.8;transform:rotate(15deg)}
 
 /* ══ PROCESS ══════════════════════════════════════════════ */
-.process{padding:9rem 2.5rem;background:#0b0b0b;position:relative;overflow:hidden}
+.process{
+  padding:9rem 2.5rem;
+  background:#080808;
+  position:relative;overflow:hidden;
+  border-top:1px solid var(--line);
+}
 
-/* Animated background grid */
-.process::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(200,184,154,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(200,184,154,.02) 1px,transparent 1px);background-size:60px 60px;animation:gridDrift 20s linear infinite;pointer-events:none}
+/* Línea horizontal que conecta todas las fases */
+.process-timeline-line{
+  position:absolute;
+  top:50%;left:2.5rem;right:2.5rem;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(200,184,154,.15) 10%,rgba(200,184,154,.15) 90%,transparent);
+  pointer-events:none;
+}
 
-.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;margin-top:4rem}
-.process-step{padding-top:2rem;border-top:1px solid var(--line);position:relative}
+.process-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:5rem;
+}
+.process-header-right{
+  font-family:var(--serif);font-size:clamp(3rem,6vw,7rem);
+  font-weight:300;font-style:italic;color:transparent;
+  -webkit-text-stroke:1px rgba(200,184,154,.12);
+  line-height:1;letter-spacing:-.02em;
+  animation:floatSlow 12s ease-in-out infinite;
+  pointer-events:none;user-select:none;
+}
 
-/* Animated number in background */
-.step-bg-num{position:absolute;top:-1rem;right:0;font-family:var(--serif);font-size:8rem;font-weight:300;color:transparent;-webkit-text-stroke:1px rgba(200,184,154,.04);line-height:1;pointer-events:none;animation:floatSlow 6s ease-in-out infinite}
+/* Grid de 5 fases */
+.process-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0;
+  position:relative;
+}
 
-.step-num{font-family:var(--mono);font-size:1rem;letter-spacing:.3em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;margin-bottom:2rem;display:block;font-weight:400;animation:goldShift 7s ease-in-out infinite}
-.step-title{font-family:var(--serif);font-weight:400;font-size:2rem;font-style:italic;margin-bottom:1.2rem;line-height:1.2;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300%;animation:goldShiftSlow 9s ease-in-out infinite}
-.step-desc{font-size:1.15rem;line-height:1.85;color:var(--white);font-weight:400}
-.step-line{display:block;width:0;height:1px;background:linear-gradient(to right,#C8B89A,#E8D5B0,transparent);margin-top:1.8rem;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
-.process-step.line-visible .step-line{width:70%}
+.process-step{
+  padding:3rem 2rem 3rem;
+  border-left:1px solid var(--line);
+  position:relative;
+  transition:background .5s;
+}
+.process-step:last-child{border-right:1px solid var(--line)}
+.process-step:hover{background:rgba(200,184,154,.02)}
 
-/* Decorative process icon */
-.step-icon{width:32px;height:32px;margin-bottom:1.5rem;opacity:.6}
+/* Número de fase — grande y sutil */
+.step-phase{
+  font-family:var(--serif);font-weight:300;
+  font-size:5rem;line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(200,184,154,.15);
+  display:block;margin-bottom:2rem;
+  transition:color .5s,-webkit-text-stroke .5s;
+  animation:floatSlow 8s ease-in-out infinite;
+}
+.process-step:nth-child(2) .step-phase{animation-delay:1s}
+.process-step:nth-child(3) .step-phase{animation-delay:2s}
+.process-step:nth-child(4) .step-phase{animation-delay:3s}
+.process-step:nth-child(5) .step-phase{animation-delay:4s}
+.process-step:hover .step-phase{
+  -webkit-text-stroke:1px rgba(200,184,154,.5);
+}
+
+/* Punto conector en la línea */
+.step-dot{
+  position:absolute;top:-6px;left:50%;
+  transform:translateX(-50%);
+  width:11px;height:11px;border-radius:50%;
+  border:1px solid rgba(200,184,154,.35);
+  background:var(--black);
+  transition:background .4s,border-color .4s,box-shadow .4s;
+}
+.process-step:hover .step-dot{
+  background:#D4AF6A;
+  border-color:#D4AF6A;
+  box-shadow:0 0 20px rgba(212,175,106,.35);
+}
+
+.step-tag{
+  font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.3em;color:#C8B89A;
+  text-transform:uppercase;margin-bottom:1.2rem;
+  display:block;font-weight:400;
+}
+.step-title{
+  font-family:var(--serif);font-weight:400;
+  font-size:1.5rem;font-style:italic;
+  margin-bottom:1.2rem;line-height:1.2;
+  color:var(--white);
+  transition:color .4s;
+}
+.process-step:hover .step-title{color:#D4AF6A}
+
+.step-desc{
+  font-size:.95rem;line-height:1.85;
+  color:rgba(245,240,232,.6);font-weight:400;
+}
+
+/* Palabra clave destacada al pie */
+.step-keyword{
+  display:inline-block;margin-top:2rem;
+  font-family:var(--mono);font-size:.68rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:#D4AF6A;border-bottom:1px solid rgba(212,175,106,.3);
+  padding-bottom:.2rem;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .4s,transform .4s;
+}
+.process-step:hover .step-keyword{opacity:1;transform:translateY(0)}
+
+/* Barra de progreso animada en cada fase */
+.step-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(to right,#D4AF6A,#E8D5B0);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+.process-step.line-visible .step-bar{transform:scaleX(1)}
 
 /* ══ PROOF ════════════════════════════════════════════════ */
-.proof{padding:8rem 2.5rem;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:start;position:relative}
+.proof{padding:8rem 2.5rem;border-top:1px solid var(--line);position:relative}
 
-.proof-quote{font-family:var(--serif);font-size:clamp(1.5rem,2.5vw,2.2rem);font-style:italic;font-weight:300;line-height:1.4;color:var(--white)}
-.proof-quote::before{content:'\201C';display:block;font-size:5rem;line-height:1;margin-bottom:.5rem;font-style:normal;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 5s ease-in-out infinite}
-.proof-author{font-family:var(--mono);font-size:.88rem;letter-spacing:.25em;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;margin-top:1.5rem;text-transform:uppercase;animation:goldShift 8s ease-in-out infinite}
+/* Quote centrada arriba */
+.proof-top{
+  text-align:center;margin-bottom:6rem;
+  padding-bottom:5rem;border-bottom:1px solid var(--line);
+}
+.proof-quote{
+  font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.6rem);
+  font-style:italic;font-weight:300;line-height:1.45;
+  color:var(--white);max-width:32ch;margin:0 auto;
+}
+.proof-quote::before{
+  content:'\201C';display:block;font-size:4rem;line-height:1;
+  margin-bottom:.75rem;font-style:normal;
+  color:#D4AF6A;animation:numGlow 6s ease-in-out infinite;
+}
+.proof-author{
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.25em;
+  color:#C8B89A;margin-top:1.5rem;text-transform:uppercase;
+}
 
-.proof-stats{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
-.proof-stat{padding:2rem;border:1px solid var(--line);transition:border-color .4s;position:relative;overflow:hidden}
-.proof-stat::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(200,184,154,.04),transparent 70%);opacity:0;transition:opacity .4s}
-.proof-stat:hover::before{opacity:1}
-.proof-stat:hover{border-color:rgba(200,184,154,.3)}
+/* Stats en fila horizontal tipo editorial */
+.proof-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+.proof-stat{
+  padding:2.5rem 2rem;border-right:1px solid var(--line);
+  position:relative;
+  transition:background .4s;
+}
+.proof-stat:last-child{border-right:none}
+.proof-stat:hover{background:rgba(200,184,154,.03)}
 
-.proof-stat-num{font-family:var(--serif);font-size:3rem;font-weight:300;line-height:1;margin-bottom:.5rem;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300%;animation:goldShiftSlow 8s ease-in-out infinite}
-.proof-stat-label{font-size:1.1rem;color:var(--white);line-height:1.65;font-weight:400}
+/* Línea dorada animada arriba de cada stat */
+.proof-stat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,#D4AF6A,transparent);
+  transform:scaleX(0);transition:transform .8s cubic-bezier(.16,1,.3,1);
+}
+.proof-stat:hover::before{transform:scaleX(1)}
+.proof-stat.visible::before{transform:scaleX(.4)}
+
+.proof-stat-num{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(2.8rem,4vw,4rem);
+  line-height:1;margin-bottom:.75rem;
+  color:#D4AF6A;display:block;
+}
+/* Animaciones individuales */
+.proof-stat:nth-child(1) .proof-stat-num{animation:numPulse 7s ease-in-out infinite}
+.proof-stat:nth-child(2) .proof-stat-num{animation:numBreathe 6s ease-in-out infinite}
+.proof-stat:nth-child(3) .proof-stat-num{animation:numGlow 8s ease-in-out infinite}
+.proof-stat:nth-child(4) .proof-stat-num{animation:numFlip 9s ease-in-out infinite}
+
+.proof-stat-label{
+  font-size:1rem;color:var(--white);
+  line-height:1.65;font-weight:400;
+}
 
 /* ══ CTA ══════════════════════════════════════════════════ */
 .cta-section{padding:12rem 2.5rem;text-align:center;position:relative;overflow:hidden}
@@ -241,9 +440,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 /* ══ FOOTER ═══════════════════════════════════════════════ */
 footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
 .footer-logo{font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:.35em;text-transform:uppercase;background:var(--gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:goldShift 9s ease-in-out infinite}
-.footer-links{display:flex;gap:2rem;list-style:none}
-.footer-links a{font-family:var(--mono);font-size:1rem;letter-spacing:.2em;color:var(--white);text-decoration:none;transition:color .3s}
-.footer-links a:hover{color:var(--accent)}
+.footer-quote{font-family:var(--serif);font-size:1rem;font-style:italic;font-weight:300;color:rgba(245,240,232,.45);line-height:1.6;text-align:center}
+.footer-quote span{display:block;font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;font-style:normal;color:#C8B89A;margin-top:.5rem;text-transform:uppercase}
 .footer-copy{font-family:var(--mono);font-size:.88rem;letter-spacing:.15em;color:rgba(245,240,232,.35)}
 
 /* ══ REVEAL ═══════════════════════════════════════════════ */
@@ -255,7 +453,116 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 /* ══ SVG GOLD GRADIENT DEF ════════════════════════════════ */
 /* Used for icon strokes */
 
-/* ══ KEYFRAMES ════════════════════════════════════════════ */
+/* ══ ANIMATED WORDS ═══════════════════════════════════════ */
+
+/* 1. "arquitectura del tiempo." — shimmer sweep MUY LENTO */
+.anim-arquitectura{
+  display:inline;position:relative;
+  background:linear-gradient(90deg,#C8B89A 0%,#F5E6C0 40%,#C8B89A 60%,#E8D5B0 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmerSweep 8s ease-in-out infinite;
+}
+
+/* 2. "200+" — pulso suave y lento */
+.anim-200{display:inline-block;animation:countPulse 6s ease-in-out infinite}
+
+/* 3. "98%" — glow suave */
+.anim-98{display:inline-block;animation:flickerGlow 7s ease-in-out infinite}
+
+/* 4. "100%" — respira escala */
+.anim-100{display:inline-block;animation:breatheScale 5s ease-in-out infinite}
+
+/* 5. "nunca se olvida." — ola lenta letra por letra */
+.anim-nunca{display:inline}
+.anim-nunca .w{display:inline-block;animation:letterWave 5s ease-in-out infinite}
+.anim-nunca .w:nth-child(1){animation-delay:0s}
+.anim-nunca .w:nth-child(2){animation-delay:.15s}
+.anim-nunca .w:nth-child(3){animation-delay:.30s}
+.anim-nunca .w:nth-child(4){animation-delay:.45s}
+.anim-nunca .w:nth-child(5){animation-delay:.60s}
+.anim-nunca .w:nth-child(6){animation-delay:.75s}
+.anim-nunca .w:nth-child(7){animation-delay:.90s}
+.anim-nunca .w:nth-child(8){animation-delay:1.05s}
+.anim-nunca .w:nth-child(9){animation-delay:1.20s}
+.anim-nunca .w:nth-child(10){animation-delay:1.35s}
+.anim-nunca .w:nth-child(11){animation-delay:1.50s}
+.anim-nunca .w:nth-child(12){animation-delay:1.65s}
+.anim-nunca .w:nth-child(13){animation-delay:1.80s}
+.anim-nunca .w:nth-child(14){animation-delay:1.95s}
+.anim-nunca .w:nth-child(15){animation-delay:2.10s}
+
+/* 6. "Lo que producimos" — glow lento */
+.anim-producimos{display:inline-block;animation:slideGlow 8s ease-in-out infinite}
+
+/* 7. "08 géneros" — flip muy suave */
+.anim-generos{display:inline-block;animation:flipScale 7s ease-in-out infinite}
+
+/* 8. "Escuchamos" — cursor parpadea */
+.anim-escuchamos{display:inline;position:relative}
+.anim-escuchamos::after{
+  content:'|';position:absolute;right:-.2em;
+  color:#D4AF6A;animation:cursorBlink 1.8s step-end infinite;
+  font-style:normal;
+}
+
+/* 9. "merece existir?" — ciclo de color lento */
+.anim-merece{
+  display:inline;
+  background:linear-gradient(135deg,#C8B89A,#F0DFB8,#D4AF6A,#C8B89A);
+  background-size:400% 400%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:colorCycle 8s ease-in-out infinite;
+}
+
+/* 10. "24h" — tick reloj suave */
+.anim-24{display:inline-block;animation:clockTick 4s ease-in-out infinite}
+
+/* ══ WORD ANIMATION KEYFRAMES ═════════════════════════════ */
+@keyframes shimmerSweep{
+  0%,100%{background-position:100% 0}
+  50%{background-position:0% 0}
+}
+@keyframes countPulse{
+  0%,100%{transform:scale(1);filter:brightness(1)}
+  50%{transform:scale(1.05);filter:brightness(1.25)}
+}
+@keyframes flickerGlow{
+  0%,100%{filter:brightness(1)}
+  30%{filter:brightness(.85)}
+  60%{filter:brightness(1.35)}
+  80%{filter:brightness(1.15)}
+}
+@keyframes breatheScale{
+  0%,100%{transform:scale(1) translateY(0)}
+  50%{transform:scale(1.06) translateY(-3px)}
+}
+@keyframes letterWave{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+@keyframes slideGlow{
+  0%,100%{letter-spacing:inherit;filter:brightness(1)}
+  50%{letter-spacing:.04em;filter:brightness(1.2)}
+}
+@keyframes flipScale{
+  0%,100%{transform:scaleX(1)}
+  40%{transform:scaleX(1.03)}
+  60%{transform:scaleX(.98)}
+}
+@keyframes cursorBlink{
+  0%,100%{opacity:1}50%{opacity:0}
+}
+@keyframes colorCycle{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+@keyframes clockTick{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-3px) rotate(-1deg)}
+  75%{transform:translateY(3px) rotate(1deg)}
+}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
@@ -288,6 +595,10 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 @keyframes arcPulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}}
 
 /* ══ RESPONSIVE ═══════════════════════════════════════════ */
+@media(max-width:1200px){
+  .process-grid{grid-template-columns:repeat(3,1fr)}
+  .process-step:nth-child(4),.process-step:nth-child(5){border-top:1px solid var(--line)}
+}
 @media(max-width:1024px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat-item:nth-child(2){border-right:none}
@@ -304,15 +615,19 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
   nav{padding:1.2rem 1.4rem}
   .nav-logo{font-size:.9rem}
   .nav-cta{font-size:.72rem;padding:.5rem .9rem;letter-spacing:.1em}
-  .hero{padding:7rem 1.4rem 6rem;min-height:100dvh}
+  .hero{padding:7rem 1.4rem 6rem;min-height:100dvh;background-attachment:scroll;background-position:center center}
   .hero-eyebrow{font-size:.78rem;margin-bottom:2rem}
   .hero-sub{font-size:1rem}
   .hero-dots{display:none}
   .manifesto,.genres,.cta-section,.proof,.story{padding-left:1.4rem;padding-right:1.4rem}
   .manifesto,.genres,.story,.proof{padding-top:6rem;padding-bottom:6rem}
   .process{padding:6rem 1.4rem}
-  .process-grid{grid-template-columns:1fr;gap:2.5rem}
-  .step-bg-num{display:none}
+  .process-grid{grid-template-columns:1fr;gap:0}
+  .process-step{border-left:none;border-top:1px solid var(--line);padding:2.5rem 0}
+  .process-step:last-child{border-right:none}
+  .step-dot{display:none}
+  .process-timeline-line{display:none}
+  .step-phase{font-size:3.5rem;margin-bottom:1.5rem}
   .stats{grid-template-columns:1fr 1fr}
   .stat-item{padding:2.5rem 1.4rem}
   .genres-header{flex-direction:column;gap:.75rem;margin-bottom:2.5rem}
@@ -325,6 +640,8 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
   .footer-links{flex-wrap:wrap;gap:1.2rem}
   .ticker-item{font-size:.88rem;padding:0 1.4rem}
   .proof-stats{grid-template-columns:1fr 1fr}
+  .proof-stat{border-right:none;border-bottom:1px solid var(--line)}
+  .proof-stat:last-child{border-bottom:none}
   .cta-arcs{display:none}
 }
 @media(max-width:420px){
@@ -376,8 +693,8 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
     <span class="line" id="heroLine4"></span>
   </h1>
   <p class="hero-sub">
-    Más de 200 eventos producidos.<br>
-    Cada uno diseñado para que algo en ti<br>no vuelva a ser lo mismo.
+    Diseñamos cada segundo para que algo<br>
+    en ti no vuelva a ser lo mismo.
   </p>
   <div class="scroll-arrow" onclick="document.querySelector('.ticker-wrap').scrollIntoView({behavior:'smooth'})">
     <span>Descubre</span>
@@ -414,7 +731,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
   <div>
     <p class="manifesto-text reveal reveal-d1">
       Un evento no es un servicio.<br>
-      Es una <em>arquitectura del tiempo.</em><br>
+      Es una <em><span class="anim-arquitectura">arquitectura del tiempo.</span></em><br>
       Cada segundo, diseñado<br>
       para que algo cambie.
     </p>
@@ -429,27 +746,22 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 <!-- STATS -->
 <section class="stats">
   <div class="stat-item reveal">
-    <!-- Decorative rotating icon -->
-    <svg class="stat-icon" viewBox="0 0 40 40" fill="none" stroke="url(#goldGrad)" stroke-width=".5"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="4"/></svg>
-    <span class="stat-number"><span class="count-up" data-target="200">0</span><span class="plus">+</span></span>
+    <span class="stat-number n-200"><span class="count-up" data-target="200">0</span>+</span>
     <span class="stat-label">Eventos<br>producidos</span>
     <div class="stat-sub">Desde 2012</div>
   </div>
   <div class="stat-item reveal reveal-d1">
-    <svg class="stat-icon" viewBox="0 0 40 40" fill="none" stroke="url(#goldGrad)" stroke-width=".5"><rect x="8" y="8" width="24" height="24" rx="2"/><line x1="8" y1="20" x2="32" y2="20"/><line x1="20" y1="8" x2="20" y2="32"/></svg>
-    <span class="stat-number"><span class="count-up" data-target="8">0</span></span>
+    <span class="stat-number n-8"><span class="count-up" data-target="8">0</span></span>
     <span class="stat-label">Géneros de<br>experiencia</span>
     <div class="stat-sub">Cada uno diferente</div>
   </div>
   <div class="stat-item reveal reveal-d2">
-    <svg class="stat-icon" viewBox="0 0 40 40" fill="none" stroke="url(#goldGrad)" stroke-width=".5"><path d="M20 6 L24 16 L36 16 L26 22 L30 32 L20 26 L10 32 L14 22 L4 16 L16 16 Z"/></svg>
-    <span class="stat-number"><span class="count-up" data-target="98">0</span><span class="plus">%</span></span>
+    <span class="stat-number n-98"><span class="count-up" data-target="98">0</span>%</span>
     <span class="stat-label">Clientes que<br>repiten</span>
     <div class="stat-sub">Hablan por sí solos</div>
   </div>
   <div class="stat-item reveal reveal-d3">
-    <svg class="stat-icon" viewBox="0 0 40 40" fill="none" stroke="url(#goldGrad)" stroke-width=".5"><circle cx="20" cy="20" r="14"/><polyline points="20,10 20,20 27,27"/></svg>
-    <span class="stat-number"><span class="count-up" data-target="100">0</span><span class="plus">%</span></span>
+    <span class="stat-number n-100"><span class="count-up" data-target="100">0</span>%</span>
     <span class="stat-label">Diseño<br>a medida</span>
     <div class="stat-sub">Nada es genérico</div>
   </div>
@@ -459,7 +771,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 <section class="story">
   <div class="story-text">
     <div class="section-label reveal">02 · Por qué Hadrum</div>
-    <h2 class="reveal reveal-d1">La diferencia entre un evento<br>y algo que <em>nunca se olvida.</em></h2>
+    <h2 class="reveal reveal-d1">La diferencia entre un evento<br>y algo que <em><span class="anim-nunca"><span class="w">n</span><span class="w">u</span><span class="w">n</span><span class="w">c</span><span class="w">a</span><span class="w"> </span><span class="w">s</span><span class="w">e</span><span class="w"> </span><span class="w">o</span><span class="w">l</span><span class="w">v</span><span class="w">i</span><span class="w">d</span><span class="w">a</span><span class="w">.</span></span></em></h2>
     <p class="reveal reveal-d2">La mayoría de los eventos se olvidan al día siguiente. El tuyo no tiene que ser así. Cuando cada elemento — la luz, el sonido, el espacio, el tiempo — está orquestado con intención, algo diferente ocurre en las personas.</p>
     <p class="reveal reveal-d3">No salen iguales. Y eso es exactamente lo que producimos.</p>
   </div>
@@ -478,8 +790,8 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 <section class="genres">
   <div class="genres-bg-num">08</div>
   <div class="genres-header">
-    <h2 class="genres-title reveal">Lo que producimos</h2>
-    <span class="genres-count reveal">08 géneros</span>
+    <h2 class="genres-title reveal"><span class="anim-producimos">Lo que producimos</span></h2>
+    <span class="genres-count reveal"><span class="anim-generos">08 géneros</span></span>
   </div>
   <ul class="genre-list">
     <li class="genre-item reveal"><div class="genre-left"><span class="genre-num">01</span><span class="genre-name">Wellness &amp; Ritual</span></div><span class="genre-tag">Consciencia</span><svg class="genre-icon" viewBox="0 0 32 32" fill="none" stroke="url(#goldGrad)" stroke-width="1"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1" fill="url(#goldGrad)"/></svg></li>
@@ -495,32 +807,63 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 
 <!-- PROCESS -->
 <section class="process">
-  <div class="section-label reveal">03 · Cómo trabajamos</div>
+  <div class="process-header">
+    <div class="section-label reveal">03 · Metodología</div>
+    <div class="process-header-right">Hadrum</div>
+  </div>
+
   <div class="process-grid">
+
     <div class="process-step reveal">
-      <div class="step-bg-num">1</div>
-      <svg class="step-icon" viewBox="0 0 32 32" fill="none" stroke="url(#goldGrad)" stroke-width="1"><path d="M4 16 Q4 8 16 8 Q28 8 28 16"/><circle cx="16" cy="22" r="6"/><line x1="16" y1="16" x2="16" y2="22"/></svg>
-      <span class="step-num">01</span>
-      <h3 class="step-title">Escuchamos</h3>
-      <p class="step-desc">Todo comienza con una conversación. Entendemos qué quieres sentir — y qué quieres que sientan los demás — antes de diseñar cualquier cosa.</p>
-      <span class="step-line"></span>
+      <div class="step-dot"></div>
+      <span class="step-phase">01</span>
+      <span class="step-tag">Diagnóstico</span>
+      <h3 class="step-title"><span class="anim-escuchamos">Escuchamos</span></h3>
+      <p class="step-desc">Antes de proponer cualquier cosa, escuchamos. No el brief — la emoción detrás del evento. Lo que quieres que la gente sienta, recuerde y cuente.</p>
+      <span class="step-keyword">Sesión de visión →</span>
+      <span class="step-bar"></span>
     </div>
+
     <div class="process-step reveal reveal-d1">
-      <div class="step-bg-num">2</div>
-      <svg class="step-icon" viewBox="0 0 32 32" fill="none" stroke="url(#goldGrad)" stroke-width="1"><rect x="4" y="4" width="24" height="24" rx="1"/><line x1="4" y1="12" x2="28" y2="12"/><line x1="12" y1="12" x2="12" y2="28"/></svg>
-      <span class="step-num">02</span>
-      <h3 class="step-title">Arquitectamos</h3>
-      <p class="step-desc">Diseñamos cada momento como una partitura. Luz, sonido, espacio, tiempo, temperatura emocional — todo con intención.</p>
-      <span class="step-line"></span>
+      <div class="step-dot"></div>
+      <span class="step-phase">02</span>
+      <span class="step-tag">Estrategia</span>
+      <h3 class="step-title">Diseñamos</h3>
+      <p class="step-desc">Cada evento tiene una narrativa. Construimos el arco emocional: apertura, tensión, clímax, cierre. Como una obra — no como una lista de actividades.</p>
+      <span class="step-keyword">Propuesta narrativa →</span>
+      <span class="step-bar"></span>
     </div>
+
     <div class="process-step reveal reveal-d2">
-      <div class="step-bg-num">3</div>
-      <svg class="step-icon" viewBox="0 0 32 32" fill="none" stroke="url(#goldGrad)" stroke-width="1"><circle cx="16" cy="16" r="12"/><polyline points="10,16 14,20 22,12"/></svg>
-      <span class="step-num">03</span>
-      <h3 class="step-title">Ejecutamos</h3>
-      <p class="step-desc">Producción impecable. Sin sorpresas negativas. Solo la experiencia que diseñamos juntos, viva y exactamente como la imaginamos.</p>
-      <span class="step-line"></span>
+      <div class="step-dot"></div>
+      <span class="step-phase">03</span>
+      <span class="step-tag">Arquitectura</span>
+      <h3 class="step-title">Orquestamos</h3>
+      <p class="step-desc">Luz, sonido, espacio, tiempo, aroma, temperatura. Cada variable es una nota. Aquí componemos la partitura completa del evento.</p>
+      <span class="step-keyword">Dirección técnica →</span>
+      <span class="step-bar"></span>
     </div>
+
+    <div class="process-step reveal reveal-d3">
+      <div class="step-dot"></div>
+      <span class="step-phase">04</span>
+      <span class="step-tag">Producción</span>
+      <h3 class="step-title">Ejecutamos</h3>
+      <p class="step-desc">Producción de precisión quirúrgica. Nuestro equipo anticipa cada variable. El día del evento, tú vives la experiencia — nosotros la sostenemos.</p>
+      <span class="step-keyword">Operación en campo →</span>
+      <span class="step-bar"></span>
+    </div>
+
+    <div class="process-step reveal reveal-d3">
+      <div class="step-dot"></div>
+      <span class="step-phase">05</span>
+      <span class="step-tag">Legado</span>
+      <h3 class="step-title">Perduramos</h3>
+      <p class="step-desc">Después del evento, entregamos memoria. Registro, análisis de experiencia y cierre documental. Tu evento no termina — se convierte en referencia.</p>
+      <span class="step-keyword">Entrega de legado →</span>
+      <span class="step-bar"></span>
+    </div>
+
   </div>
 </section>
 
@@ -546,16 +889,28 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 
 <!-- PROOF -->
 <section class="proof">
-  <div>
-    <div class="section-label reveal">04 · Lo que dicen</div>
+  <div class="proof-top">
+    <div class="section-label reveal" style="justify-content:center">04 · Lo que dicen</div>
     <blockquote class="proof-quote reveal reveal-d1">Fue el evento más memorable de mi vida. Mis invitados siguen hablando de él dos años después.</blockquote>
     <p class="proof-author reveal reveal-d2">— Claudia Valladolid · Hilton CDMX</p>
   </div>
   <div class="proof-stats">
-    <div class="proof-stat reveal"><div class="proof-stat-num">+200</div><div class="proof-stat-label">Eventos producidos en 12 años de trayectoria</div></div>
-    <div class="proof-stat reveal reveal-d1"><div class="proof-stat-num">8</div><div class="proof-stat-label">Géneros de experiencia, cada uno diseñado desde cero</div></div>
-    <div class="proof-stat reveal reveal-d2"><div class="proof-stat-num">98%</div><div class="proof-stat-label">De nuestros clientes nos recomiendan o vuelven</div></div>
-    <div class="proof-stat reveal reveal-d3"><div class="proof-stat-num">24h</div><div class="proof-stat-label">Tiempo máximo de respuesta a tu cotización</div></div>
+    <div class="proof-stat reveal">
+      <span class="proof-stat-num">NDA</span>
+      <div class="proof-stat-label">Contrato de confidencialidad en cada proyecto — tu evento, tu privacidad</div>
+    </div>
+    <div class="proof-stat reveal reveal-d1">
+      <span class="proof-stat-num">1:1</span>
+      <div class="proof-stat-label">Un productor dedicado exclusivamente a tu evento, de inicio a fin</div>
+    </div>
+    <div class="proof-stat reveal reveal-d2">
+      <span class="proof-stat-num">0</span>
+      <div class="proof-stat-label">Sorpresas el día del evento — producción impecable o lo resolvemos sin que lo notes</div>
+    </div>
+    <div class="proof-stat reveal reveal-d3">
+      <span class="proof-stat-num">24h</span>
+      <div class="proof-stat-label">Para responderte con una propuesta real, detallada y sin compromiso</div>
+    </div>
   </div>
 </section>
 
@@ -569,7 +924,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
   </div>
   <div class="cta-bg">Hadrum</div>
   <div class="cta-eyebrow reveal">05 · El siguiente paso</div>
-  <h2 class="cta-title reveal reveal-d1">¿Tienes un evento<br>que <em>merece existir?</em></h2>
+  <h2 class="cta-title reveal reveal-d1">¿Tienes un evento<br>que <em><span class="anim-merece">merece existir?</span></em></h2>
   <p class="cta-subtitle reveal reveal-d2">Cuéntanos tu visión. En menos de 24 horas tienes una propuesta personalizada y sin compromiso.</p>
   <a href="colaborar.html" class="cta-btn reveal reveal-d3"><span>Cotizar mi evento →</span></a>
 </section>
@@ -577,11 +932,7 @@ footer{padding:2.5rem;border-top:1px solid var(--line);display:flex;justify-cont
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Hadrum © 2026</div>
-  <ul class="footer-links">
-    <li><a href="#">Instagram</a></li>
-    <li><a href="#">WhatsApp</a></li>
-    <li><a href="colaborar.html">Cotizar</a></li>
-  </ul>
+  <p class="footer-quote">"El detalle no es el detalle. El detalle es el diseño."<br><span>— Charles Eames</span></p>
   <div class="footer-copy">hadrum.live</div>
 </footer>
 
