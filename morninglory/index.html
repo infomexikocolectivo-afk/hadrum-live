@@ -74,8 +74,8 @@
   }
 
   @keyframes screenIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   /* ========== LOGO (firma arriba) ========== */
@@ -474,113 +474,8 @@
     gap: 24px;
     width: 100%;
   }
-
-  /* ========== SCREEN 3 — PHILOSOPHY ========== */
-  #screen-philo .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px 0 10px;
-  }
-  #screen-philo .top-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding-top: 8px;
-  }
-  #screen-philo .headline {
-    font-size: clamp(22px, 6.2vw, 30px);
-    padding: 0 8px;
-    line-height: 1.1;
-  }
-  /* Underline that draws itself under "science" / "científico" */
-  .draw-word {
-    position: relative;
-    display: inline-block;
-  }
-  .draw-word::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -3px;
-    width: 100%;
-    height: 1.5px;
-    background: var(--gold-warm);
-    transform-origin: left;
-    animation: drawLine 3.8s ease-in-out infinite;
-    box-shadow: 0 0 8px rgba(193,146,71,0.5);
-  }
-  @keyframes drawLine {
-    0%       { transform: scaleX(0); transform-origin: left; }
-    40%      { transform: scaleX(1); transform-origin: left; }
-    50%, 60% { transform: scaleX(1); transform-origin: right; }
-    100%     { transform: scaleX(0); transform-origin: right; }
-  }
-
-  #screen-philo .mid-block {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 4px 2px;
-  }
-  /* Benefit row: number | text */
-  .benefit {
-    display: grid;
-    grid-template-columns: 76px 1fr;
-    align-items: baseline;
-    gap: 14px;
-    padding: 9px 0;
-    border-bottom: 1px solid rgba(193, 146, 71, 0.12);
-    opacity: 0;
-    transform: translateX(-8px);
-    animation: benefitIn 0.6s ease-out forwards;
-  }
-  .benefit:last-child {
-    border-bottom: none;
-  }
   @keyframes benefitIn {
     to { opacity: 1; transform: translateX(0); }
-  }
-  .benefit-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: 26px;
-    color: var(--gold-warm);
-    line-height: 1;
-    text-align: right;
-    letter-spacing: -0.01em;
-    text-shadow: 0 0 18px rgba(193, 146, 71, 0.25);
-    white-space: nowrap;
-  }
-  .benefit-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 12.5px;
-    line-height: 1.4;
-    color: var(--cream-soft);
-    letter-spacing: 0.005em;
-    font-weight: 300;
-  }
-
-  .philo-closing {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--gold-soft);
-    letter-spacing: 0.01em;
-    text-align: center;
-    opacity: 0.9;
-    padding: 0 8px;
-    line-height: 1.4;
-  }
-  #screen-philo .bottom-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding-top: 4px;
   }
 
   /* ========== SCREEN 4 — PROGRAM ========== */
@@ -697,65 +592,6 @@
     border-top: 1px solid rgba(193,146,71,0.2);
     padding-top: 8px;
     line-height: 1.5;
-  }
-
-  /* ========== SCREEN 5 — ARTISTS ========== */
-  #screen-artists .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px 0 10px;
-  }
-  #screen-artists .top-block {
-    padding-top: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .artists-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 4px 0;
-  }
-  .artist-card {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(193,146,71,0.12);
-    opacity: 0;
-    animation: benefitIn 0.5s ease-out forwards;
-  }
-  .artist-card:last-child { border-bottom: none; }
-  .artist-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    color: var(--cream);
-    text-transform: uppercase;
-  }
-  .artist-role {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--gold-warm);
-    margin: 1px 0 4px;
-  }
-  .artist-bio {
-    font-family: 'Inter', sans-serif;
-    font-size: 11.5px;
-    color: var(--cream-soft);
-    font-weight: 300;
-    line-height: 1.45;
-    letter-spacing: 0.005em;
-  }
-  .artist-handle {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    color: var(--gold-soft);
-    letter-spacing: 0.12em;
-    opacity: 0.7;
-    margin-top: 3px;
   }
 
   /* ========== SCREEN 6 — RESERVE ========== */
@@ -934,33 +770,29 @@
   @media (max-height: 760px) {
     #screen-teaser .headline { font-size: 38px; }
     .teaser-img { width: min(70%, 260px); }
-    .benefit { padding: 7px 0; }
-    .benefit-num { font-size: 24px; }
-    .benefit-text { font-size: 12px; }
+    .philo-body-inline .benefit { padding: 4px 0; }
+    .philo-body-inline .benefit-num { font-size: 15px; }
+    .philo-body-inline .benefit-text { font-size: 10.5px; }
   }
   @media (max-height: 700px) {
     #screen-teaser .headline { font-size: 34px; }
-    #screen-philo .headline { font-size: 22px; }
     .counter-display { font-size: 88px; }
     .detail-line { font-size: 12px; }
     .teaser-img { width: min(58%, 220px); }
     #screen-teaser .top-block { gap: 14px; padding-top: 10px; }
-    .benefit { padding: 6px 0; gap: 10px; grid-template-columns: 64px 1fr; }
-    .benefit-num { font-size: 22px; }
-    .benefit-text { font-size: 11.5px; line-height: 1.35; }
-    .philo-closing { font-size: 13px; }
+    .philo-body-inline { gap: 4px; }
+    .philo-body-inline .benefit-num { font-size: 14px; min-width: 34px; }
+    .philo-body-inline .benefit-text { font-size: 10px; line-height: 1.35; }
   }
   @media (max-height: 620px) {
     .logo-sig { height: 44px; }
     .logo-sig img { height: 34px; }
     #screen-teaser .headline { font-size: 28px; }
-    #screen-philo .headline { font-size: 20px; }
     .counter-display { font-size: 74px; }
     .screen { padding-top: 14px; padding-bottom: 16px; }
     .teaser-img { width: min(48%, 180px); }
-    .benefit { padding: 4px 0; grid-template-columns: 58px 1fr; }
-    .benefit-num { font-size: 19px; }
-    .benefit-text { font-size: 11px; line-height: 1.3; }
+    .philo-body-inline .benefit-num { font-size: 13px; min-width: 30px; }
+    .philo-body-inline .benefit-text { font-size: 9.5px; line-height: 1.3; }
   }
 
   /* larger screens: contain the layout so it still feels mobile */
@@ -1174,8 +1006,7 @@
   const COPY = {
     en: {
       teaserHeadline: '<em>A natural</em><br><em><span class="shimmer-word">high</span> before noon.</em>',
-      philoHeadline: '<em>Six reasons,<br>backed by <span class="draw-word">science</span>.</em>',
-      philoBody: [
+            philoBody: [
         { class: 'benefit', num: '−54%', text: 'anxiety reduction from dancing — 44% more effective than meditation.' },
         { class: 'benefit', num: '4×', text: 'neurochemical release: dopamine, serotonin, endorphins & oxytocin, naturally.' },
         { class: 'benefit', num: '+30%', text: 'healthy morning cortisol from early light — sharper focus all day.' },
@@ -1194,32 +1025,11 @@
         { time: '1:40 PM',  label: 'CLOSING',        desc: 'Javier Cupertino Yepes · Live sitar · Sound healing' },
         { time: '2:30 PM',  label: 'EXIT',           desc: 'Conscious' },
       ],
-      wellness: 'Ceremonial cacao · Fresh juices · Infused water · Seasonal fruits',
-      artists: [
-        {
-          name: 'ŌME',
-          role: 'DJ & Sound Director',
-          bio: 'César Del Pino — one of Mexico\'s most representative figures in multicultural electronic music. 10K+ SoundCloud · 223 tracks · Cinematic composer · @mexikocolectivo.',
-          handle: '@omemusicmx'
-        },
-        {
-          name: 'MAYA',
-          role: 'Movement & Contact Arts',
-          bio: 'She guides bodies before the music does. Her contact arts practice creates the conditions for the body to move without thinking. The opening that makes everything possible.',
-          handle: '@bosque.dentro'
-        },
-        {
-          name: 'JAVIER CUPERTINO YEPES',
-          role: 'Sitar & Sound Healing',
-          bio: 'Composer · Sitarist · Sound Healer. Trained in the Etawah Gharana — one of the oldest classical sitar traditions of Northern India. He closes the circle.',
-          handle: '@javier.cupertino.yepes'
-        }
-      ]
+      wellness: 'Ceremonial cacao · Fresh juices · Infused water · Seasonal fruits'
     },
     es: {
       teaserHeadline: '<em>Un viaje</em><br><em><span class="shimmer-word">natural</span> antes del mediodía.</em>',
-      philoHeadline: '<em>Seis razones,<br>con respaldo <span class="draw-word">científico</span>.</em>',
-      philoBody: [
+            philoBody: [
         { class: 'benefit', num: '−54%', text: 'menos ansiedad al bailar — 44% más efectivo que meditar.' },
         { class: 'benefit', num: '4×', text: 'neuroquímicos liberados: dopamina, serotonina, endorfinas y oxitocina, natural.' },
         { class: 'benefit', num: '+30%', text: 'cortisol matutino sano con la luz temprana — foco el resto del día.' },
@@ -1238,27 +1048,7 @@
         { time: '1:40 PM',  label: 'CIERRE',           desc: 'Javier Cupertino Yepes · Sitar en vivo · Sound healing' },
         { time: '2:30 PM',  label: 'SALIDA',           desc: 'Consciente' },
       ],
-      wellness: 'Cacao ceremonial · Jugos frescos · Agua infusionada · Frutas de temporada',
-      artists: [
-        {
-          name: 'ŌME',
-          role: 'DJ & Director de Sonido',
-          bio: 'César Del Pino — figura representativa de la música electrónica multicultural de México. +10K en SoundCloud · 223 tracks · Compositor de soundtracks · @mexikocolectivo.',
-          handle: '@omemusicmx'
-        },
-        {
-          name: 'MAYA',
-          role: 'Movimiento & Contact Arts',
-          bio: 'Guía el cuerpo antes de que llegue la música. Su práctica en contact arts crea las condiciones para moverse sin pensar. El opening que hace posible todo lo que viene.',
-          handle: '@bosque.dentro'
-        },
-        {
-          name: 'JAVIER CUPERTINO YEPES',
-          role: 'Sitar & Sound Healing',
-          bio: 'Compositor · Sitarista · Sanador de sonido. Formado en la Etawah Gharana — una de las tradiciones clásicas del sitar más antiguas del norte de India. Cierra el círculo.',
-          handle: '@javier.cupertino.yepes'
-        }
-      ]
+      wellness: 'Cacao ceremonial · Jugos frescos · Agua infusionada · Frutas de temporada'
     }
   };
 
@@ -1283,8 +1073,6 @@
 
     // Inject headlines (these have embedded spans)
     document.getElementById('teaser-headline').innerHTML = COPY[lang].teaserHeadline;
-    const philoHeadlineEl = document.getElementById('philo-headline');
-    if (philoHeadlineEl) philoHeadlineEl.innerHTML = COPY[lang].philoHeadline;
 
     // Build program screen
     const c = COPY[lang];
@@ -1308,23 +1096,6 @@
       tl.appendChild(row);
     });
     document.getElementById('prog-wellness').textContent = c.wellness;
-
-    // Build artists screen (removed from flow, skip if element not present)
-    const grid = document.getElementById('artists-grid');
-    if (grid) {
-      grid.innerHTML = '';
-      c.artists.forEach((artist, i) => {
-        const card = document.createElement('div');
-        card.className = 'artist-card';
-        card.style.animationDelay = (i * 100) + 'ms';
-        card.innerHTML = `
-          <div class="artist-name">${artist.name}</div>
-          <div class="artist-role">${artist.role}</div>
-          <div class="artist-bio">${artist.bio}</div>
-          <div class="artist-handle">${artist.handle}</div>`;
-        grid.appendChild(card);
-      });
-    }
 
     // Build philo body (inline in teaser)
     const body = document.getElementById('philo-body-inline');
