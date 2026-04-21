@@ -65,16 +65,7 @@
     padding: max(env(safe-area-inset-top), 20px) 28px max(env(safe-area-inset-bottom), 24px);
     opacity: 0;
     transition: opacity 0.8s ease;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;      /* Firefox */
-    -ms-overflow-style: none;   /* IE/Edge legacy */
-  }
-  .screen::-webkit-scrollbar {
-    display: none;              /* Chrome, Safari, Edge */
-    width: 0;
-    height: 0;
+    overflow: hidden;
   }
   .screen.active {
     display: flex;
@@ -105,7 +96,7 @@
 
   /* ========== SCREEN 1 — LANGUAGE ========== */
   #screen-lang .content {
-    min-height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -114,7 +105,6 @@
     position: relative;
     z-index: 100;
     isolation: isolate;
-    width: 100%;
   }
   .logo-hero {
     width: min(62vw, 240px);
@@ -380,12 +370,14 @@
 
   /* ========== SCREEN 2 — TEASER ========== */
   #screen-teaser .content {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
     padding: 12px 0 16px;
     width: 100%;
+    min-height: 0;
   }
   #screen-teaser .top-block {
     display: flex;
@@ -490,11 +482,12 @@
 
   /* ========== SCREEN 4 — PROGRAM ========== */
   #screen-program .content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    justify-content: space-between;
     padding: 8px 0 10px;
-    width: 100%;
+    min-height: 0;
   }
   #screen-program .top-block {
     display: flex;
@@ -606,11 +599,12 @@
 
   /* ========== SCREEN 6 — RESERVE ========== */
   #screen-reserve .content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    justify-content: space-between;
     padding: 12px 0 12px;
-    width: 100%;
+    min-height: 0;
   }
   #screen-reserve .top-block {
     display: flex;
@@ -1017,12 +1011,9 @@
     en: {
       teaserHeadline: '<em>A natural</em><br><em><span class="shimmer-word">high</span> before noon.</em>',
             philoBody: [
-        { class: 'benefit', num: '−54%', text: 'anxiety reduction from dancing — 44% more effective than meditation.' },
-        { class: 'benefit', num: '4×', text: 'neurochemical release: dopamine, serotonin, endorphins & oxytocin, naturally.' },
-        { class: 'benefit', num: '+30%', text: 'healthy morning cortisol from early light — sharper focus all day.' },
-        { class: 'benefit', num: '0', text: 'alcohol. No hangover. No Sunday crash. Memory intact.' },
-        { class: 'benefit', num: '33', text: 'people moving in sync — group dance deepens social bonding.' },
-        { class: 'benefit', num: '11 AM', text: 'sleep cycle reset. You\'ll fall asleep tonight like a child.' }
+        { class: 'benefit', num: '−54%', text: 'anxiety from dancing — more effective than meditation.' },
+        { class: 'benefit', num: '0', text: 'alcohol. No hangover. No Sunday crash.' },
+        { class: 'benefit', num: '33', text: 'people moving in sync — deep social bonding.' }
       ],
       programHeadlineSub: 'hours. One arc.',
       programArc: 'From the floor to ecstasy — and back.',
@@ -1040,12 +1031,9 @@
     es: {
       teaserHeadline: '<em>Un viaje</em><br><em><span class="shimmer-word">natural</span> antes del mediodía.</em>',
             philoBody: [
-        { class: 'benefit', num: '−54%', text: 'menos ansiedad al bailar — 44% más efectivo que meditar.' },
-        { class: 'benefit', num: '4×', text: 'neuroquímicos liberados: dopamina, serotonina, endorfinas y oxitocina, natural.' },
-        { class: 'benefit', num: '+30%', text: 'cortisol matutino sano con la luz temprana — foco el resto del día.' },
-        { class: 'benefit', num: '0', text: 'alcohol. Sin cruda. Sin bajón. Memoria intacta del evento.' },
-        { class: 'benefit', num: '33', text: 'personas moviéndose en sincronía — el baile grupal profundiza el vínculo.' },
-        { class: 'benefit', num: '11 AM', text: 'reinicio del ciclo del sueño. Esta noche duermes como niño.' }
+        { class: 'benefit', num: '−54%', text: 'menos ansiedad al bailar — más efectivo que meditar.' },
+        { class: 'benefit', num: '0', text: 'alcohol. Sin cruda. Sin bajón del domingo.' },
+        { class: 'benefit', num: '33', text: 'personas en sincronía — vínculo social profundo.' }
       ],
       programHeadlineSub: 'horas. Un arco.',
       programArc: 'Del suelo al éxtasis — y de regreso.',
