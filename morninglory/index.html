@@ -65,7 +65,16 @@
     padding: max(env(safe-area-inset-top), 20px) 28px max(env(safe-area-inset-bottom), 24px);
     opacity: 0;
     transition: opacity 0.8s ease;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge legacy */
+  }
+  .screen::-webkit-scrollbar {
+    display: none;              /* Chrome, Safari, Edge */
+    width: 0;
+    height: 0;
   }
   .screen.active {
     display: flex;
@@ -96,7 +105,7 @@
 
   /* ========== SCREEN 1 — LANGUAGE ========== */
   #screen-lang .content {
-    flex: 1;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -105,6 +114,7 @@
     position: relative;
     z-index: 100;
     isolation: isolate;
+    width: 100%;
   }
   .logo-hero {
     width: min(62vw, 240px);
@@ -370,12 +380,12 @@
 
   /* ========== SCREEN 2 — TEASER ========== */
   #screen-teaser .content {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 12px 0 16px;
+    width: 100%;
   }
   #screen-teaser .top-block {
     display: flex;
@@ -480,11 +490,11 @@
 
   /* ========== SCREEN 4 — PROGRAM ========== */
   #screen-program .content {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 16px;
     padding: 8px 0 10px;
+    width: 100%;
   }
   #screen-program .top-block {
     display: flex;
@@ -596,11 +606,11 @@
 
   /* ========== SCREEN 6 — RESERVE ========== */
   #screen-reserve .content {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 18px;
     padding: 12px 0 12px;
+    width: 100%;
   }
   #screen-reserve .top-block {
     display: flex;
