@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="description" content="UMBRA II — Minimal house & live band night in Condesa, Mexico City. Thursday, April 30, 2026.">
+<meta property="og:title" content="UMBRA II · Minimal House & Live Band · Condesa, CDMX">
+<meta property="og:description" content="Thursday 04.30 · Campeche 367, Condesa · 9PM – 3AM">
+<title>UMBRA II — The shadow returns</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #E8E2D4;
+  --ink: #1A0F10;
+  --ink-soft: rgba(26, 15, 16, 0.62);
+  --ink-faint: rgba(26, 15, 16, 0.22);
+  --ink-hairline: rgba(26, 15, 16, 0.18);
+  --burgundy: #5C1E2A;
+  --burgundy-deep: #3B1820;
+  --burgundy-light: #D8A5AE;
+
+  --font: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body {
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: var(--font);
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.11;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.06 0 0 0 0 0.06 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+}
+
+/* ========= NAV ========= */
+.nav-top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.nav-top > * { pointer-events: auto; }
+
+.logo {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.logo sup {
+  font-size: 10px;
+  vertical-align: super;
+  color: var(--burgundy);
+  margin-left: 3px;
+  font-weight: 400;
+}
+
+.page-indicator {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.page-indicator::before {
+  content: ''; width: 40px; height: 1px; background: var(--ink-soft);
+}
+
+/* ========= PAGES CONTAINER ========= */
+.pages {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  padding: 100px 48px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+}
+.page.active { opacity: 1; visibility: visible; }
+
+/* ===================================================
+   PAGE 1 — HERO
+   =================================================== */
+.page-1 .hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1500px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+.kicker {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 500;
+}
+.kicker::before {
+  content: ''; width: 40px; height: 1px; background: var(--ink-soft);
+}
+
+.hero-title {
+  font-weight: 200;
+  font-size: clamp(80px, 13vw, 200px);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  margin-bottom: 0;
+  color: var(--ink);
+  position: relative;
+}
+
+.hero-title .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px);
+}
+.page-1.active .hero-title .char {
+  animation: charReveal 1.2s var(--ease-out-expo) forwards;
+}
+.page-1.active .hero-title .char:nth-child(1) { animation-delay: 0.3s; }
+.page-1.active .hero-title .char:nth-child(2) { animation-delay: 0.4s; }
+.page-1.active .hero-title .char:nth-child(3) { animation-delay: 0.5s; }
+.page-1.active .hero-title .char:nth-child(4) { animation-delay: 0.6s; }
+.page-1.active .hero-title .char:nth-child(5) { animation-delay: 0.7s; }
+
+.hero-title sup {
+  font-size: 0.3em;
+  font-weight: 300;
+  vertical-align: super;
+  margin-left: 0.06em;
+  color: var(--burgundy);
+  letter-spacing: 0;
+  opacity: 0;
+}
+.page-1.active .hero-title sup {
+  animation: fadeUp 1.2s var(--ease-out-expo) 1.2s forwards;
+}
+
+.hero-tagline {
+  font-size: clamp(18px, 1.8vw, 22px);
+  margin-top: 28px;
+  color: var(--ink);
+  line-height: 1.35;
+  max-width: 480px;
+  font-weight: 300;
+  opacity: 0;
+}
+.page-1.active .hero-tagline {
+  animation: fadeUp 1s var(--ease-out-expo) 1.5s forwards;
+}
+
+.hero-date-row {
+  margin-top: 40px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  opacity: 0;
+  flex-wrap: wrap;
+}
+.page-1.active .hero-date-row {
+  animation: fadeUp 1s var(--ease-out-expo) 1.8s forwards;
+}
+.hero-date-row span {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.hero-date-row strong { color: var(--ink); font-weight: 500; }
+
+.hero-cta {
+  margin-top: 56px;
+  opacity: 0;
+}
+.page-1.active .hero-cta {
+  animation: fadeUp 1s var(--ease-out-expo) 2.1s forwards;
+}
+
+/* ========= BLOB STAGE ========= */
+.blob-stage {
+  position: relative;
+  aspect-ratio: 4/5;
+  width: 100%;
+  max-height: 70vh;
+  justify-self: end;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.blob-1 {
+  top: 5%; right: 5%;
+  width: 58%;
+  aspect-ratio: 1/1;
+  background: radial-gradient(circle at 60% 40%,
+    var(--burgundy) 0%,
+    var(--burgundy-deep) 45%,
+    rgba(92, 30, 42, 0.4) 75%,
+    transparent 100%);
+  animation: blob1-breathe 8s ease-in-out infinite;
+}
+
+.blob-2 {
+  bottom: 8%; left: 2%;
+  width: 62%;
+  aspect-ratio: 1/1;
+  background: radial-gradient(circle at 40% 60%,
+    var(--burgundy) 0%,
+    var(--burgundy-deep) 45%,
+    rgba(92, 30, 42, 0.4) 75%,
+    transparent 100%);
+  animation: blob2-breathe 11s ease-in-out infinite;
+}
+
+.blob::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n2'><feTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n2)' opacity='0.55'/></svg>");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  animation: noise-flicker 0.6s steps(4) infinite;
+}
+
+@keyframes blob1-breathe {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.03) translate(-1%, 1%); }
+}
+@keyframes blob2-breathe {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.04) translate(1%, -1%); }
+}
+@keyframes noise-flicker {
+  0% { background-position: 0 0; }
+  25% { background-position: -20px 10px; }
+  50% { background-position: 15px -25px; }
+  75% { background-position: -10px 20px; }
+  100% { background-position: 0 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes charReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========= BOTÓN CTA (reutilizable) ========= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 40px;
+  background: var(--ink);
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s var(--ease-smooth);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--burgundy);
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out-expo);
+  z-index: 0;
+}
+.btn:hover::before { transform: translateY(0); }
+.btn > * { position: relative; z-index: 1; }
+.btn-arrow {
+  font-size: 16px;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.btn:hover .btn-arrow { transform: translateX(6px); }
+
+/* Botón inverso (cream bg) */
+.btn-light {
+  background: var(--cream);
+  color: var(--ink);
+}
+.btn-light::before { background: var(--burgundy); }
+.btn-light:hover { color: var(--cream); }
+
+/* Botón outline (minimal) */
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.btn-outline::before { background: var(--ink); }
+.btn-outline:hover { color: var(--cream); }
+
+/* ===================================================
+   PAGE 2 — DETAILS (Line-up + Info)
+   =================================================== */
+.page-2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1500px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.page-2-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
+}
+
+.p2-col h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 500;
+}
+.p2-col h2::before {
+  content: ''; width: 40px; height: 1px; background: var(--ink-soft);
+}
+
+/* LINE-UP LIST */
+.lineup-list { list-style: none; }
+.lineup-list li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--ink-hairline);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.page-2.active .lineup-list li {
+  animation: slideIn 0.8s var(--ease-out-expo) forwards;
+}
+.page-2.active .lineup-list li:nth-child(1) { animation-delay: 0.3s; }
+.page-2.active .lineup-list li:nth-child(2) { animation-delay: 0.4s; }
+.page-2.active .lineup-list li:nth-child(3) { animation-delay: 0.5s; }
+.page-2.active .lineup-list li:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes slideIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.artist-name {
+  font-size: clamp(24px, 2.8vw, 38px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-weight: 300;
+}
+
+.artist-role {
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-align: right;
+  max-width: 180px;
+  flex-shrink: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* EVENT INFO */
+.event-title {
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin-bottom: 20px;
+  opacity: 0;
+}
+.page-2.active .event-title {
+  animation: fadeUp 1s var(--ease-out-expo) 0.4s forwards;
+}
+
+.event-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+  max-width: 450px;
+  font-weight: 300;
+  opacity: 0;
+}
+.page-2.active .event-desc {
+  animation: fadeUp 1s var(--ease-out-expo) 0.6s forwards;
+}
+
+.spec-table {
+  border-top: 1px solid var(--ink-hairline);
+  opacity: 0;
+}
+.page-2.active .spec-table {
+  animation: fadeUp 1s var(--ease-out-expo) 0.8s forwards;
+}
+.spec-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--ink-hairline);
+  align-items: baseline;
+  gap: 18px;
+}
+.spec-key {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.spec-val {
+  font-size: 13px;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+
+.p2-cta {
+  margin-top: 28px;
+  opacity: 0;
+}
+.page-2.active .p2-cta {
+  animation: fadeUp 1s var(--ease-out-expo) 1s forwards;
+}
+
+/* ===================================================
+   PAGE 3 — TICKETS CTA
+   =================================================== */
+.page-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+/* Blobs de fondo en page 3 */
+.page-3::before,
+.page-3::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0;
+  pointer-events: none;
+}
+.page-3.active::before {
+  animation: fadeInBlob 1.5s var(--ease-out-expo) 0.3s forwards, blob1-breathe 14s ease-in-out infinite 1.5s;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--burgundy) 0%, transparent 70%);
+  top: 10%; left: 10%;
+}
+.page-3.active::after {
+  animation: fadeInBlob 1.5s var(--ease-out-expo) 0.5s forwards, blob2-breathe 17s ease-in-out infinite 1.5s;
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, var(--burgundy-deep) 0%, transparent 70%);
+  bottom: 15%; right: 12%;
+}
+@keyframes fadeInBlob {
+  to { opacity: 0.35; }
+}
+
+.cta-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+  font-weight: 500;
+  opacity: 0;
+}
+.page-3.active .cta-eyebrow {
+  animation: fadeUp 1s var(--ease-out-expo) 0.3s forwards;
+}
+
+.cta-title {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 200;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin-bottom: 28px;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+.page-3.active .cta-title {
+  animation: fadeUp 1.2s var(--ease-out-expo) 0.5s forwards;
+}
+
+.cta-sub {
+  font-size: clamp(15px, 1.4vw, 17px);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  font-weight: 300;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+.page-3.active .cta-sub {
+  animation: fadeUp 1s var(--ease-out-expo) 0.7s forwards;
+}
+
+.ticket-single {
+  margin: 0 auto 40px;
+  max-width: 480px;
+  padding: 44px 40px;
+  border: 1px solid var(--ink-hairline);
+  background: rgba(232, 226, 212, 0.55);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.page-3.active .ticket-single {
+  animation: fadeUp 1s var(--ease-out-expo) 0.9s forwards;
+}
+
+.ticket-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.ticket-price {
+  font-size: clamp(64px, 8vw, 96px);
+  letter-spacing: -0.04em;
+  font-weight: 200;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.ticket-price .currency {
+  font-size: 0.4em;
+  vertical-align: top;
+  margin-right: 6px;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
+.ticket-currency-note {
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  font-weight: 500;
+}
+
+.ticket-includes {
+  border-top: 1px solid var(--ink-hairline);
+  padding-top: 20px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.ticket-includes strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+.page-3.active .cta-buttons {
+  animation: fadeUp 1s var(--ease-out-expo) 1.1s forwards;
+}
+
+.cta-footer-note {
+  margin-top: 56px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.cta-footer-note::before,
+.cta-footer-note::after {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--ink-faint);
+}
+.page-3.active .cta-footer-note {
+  animation: fadeUp 1s var(--ease-out-expo) 1.3s forwards;
+}
+
+/* ===================================================
+   NAV CONTROLS BOTTOM
+   =================================================== */
+.nav-controls {
+  position: fixed;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  z-index: 100;
+  mix-blend-mode: multiply;
+}
+
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.4s var(--ease-out-expo);
+}
+.nav-dot.active {
+  background: var(--ink);
+  transform: scale(1.2);
+}
+.nav-dot:hover { background: var(--burgundy); border-color: var(--burgundy); }
+
+.nav-arrow {
+  width: 44px; height: 44px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s var(--ease-smooth);
+  color: var(--ink);
+  font-size: 14px;
+  padding: 0;
+  font-family: inherit;
+}
+.nav-arrow:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+.nav-arrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+.nav-arrow:disabled:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+/* ===================================================
+   RESPONSIVE
+   =================================================== */
+@media (max-width: 900px) {
+  .nav-top { padding: 20px 24px; }
+  .page { padding: 80px 24px 120px; }
+
+  /* PAGE 1 mobile */
+  .page-1 .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-content: center;
+  }
+  .blob-stage {
+    order: -1;
+    aspect-ratio: 1/1;
+    max-height: 28vh;
+    justify-self: center;
+    width: 70%;
+  }
+  .hero-title { font-size: 22vw; }
+  .hero-tagline { font-size: 16px; }
+  .hero-cta { margin-top: 32px; }
+
+  /* PAGE 2 mobile */
+  .page-2-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 0 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .page-2-grid::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .p2-col h2 { margin-bottom: 16px; }
+  .artist-name { font-size: 22px; }
+  .artist-role { font-size: 10px; max-width: 120px; }
+  .lineup-list li { padding: 12px 0; }
+  .event-title { font-size: 24px; margin-bottom: 14px; }
+  .event-desc { font-size: 13px; margin-bottom: 18px; }
+  .spec-row { grid-template-columns: 90px 1fr; padding: 9px 0; gap: 12px; }
+  .spec-val { font-size: 12px; }
+  .spec-key { font-size: 9px; }
+
+  /* PAGE 3 mobile */
+  .ticket-single { padding: 32px 24px; max-width: 100%; }
+  .ticket-price { font-size: 56px; }
+  .cta-title { font-size: 14vw; }
+  .cta-buttons { flex-direction: column; width: 100%; }
+  .btn { width: 100%; justify-content: center; padding: 18px 24px; font-size: 11px; }
+
+  .nav-controls { bottom: 24px; gap: 10px; }
+  .nav-arrow { width: 40px; height: 40px; }
+}
+
+@media (max-width: 500px) {
+  .hero-date-row { gap: 20px; }
+  .hero-date-row span { font-size: 11px; }
+}
+
+/* Prevent any accidental scroll */
+html, body { overscroll-behavior: none; }
+</style>
+</head>
+<body>
+
+<!-- ====== NAV TOP ====== -->
+<div class="nav-top">
+  <div class="logo">Umbra<sup>II</sup></div>
+  <div class="page-indicator">
+    <span id="currentPage">01</span> <span style="opacity:0.4;">/</span> 03
+  </div>
+</div>
+
+<!-- ====== PAGES ====== -->
+<div class="pages">
+
+  <!-- ============ PAGE 1: HERO ============ -->
+  <section class="page page-1 active" data-page="1">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="kicker">Second Edition · Condesa, CDMX</div>
+        <h1 class="hero-title">
+          <span class="char">U</span><span class="char">M</span><span class="char">B</span><span class="char">R</span><span class="char">A</span><sup>II</sup>
+        </h1>
+        <p class="hero-tagline">The shadow returns. A night of minimal house, hypnotic grooves and a live band crossing paths with the decks.</p>
+
+        <div class="hero-date-row">
+          <span><strong>Thu 04.30</strong> · 2026</span>
+          <span>9 PM — 3 AM</span>
+          <span>Campeche 367</span>
+        </div>
+
+        <div class="hero-cta">
+          <button class="btn" data-go="2">
+            <span>Explore the night</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="blob-stage">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 2: DETAILS ============ -->
+  <section class="page page-2" data-page="2">
+    <div class="page-2-grid">
+
+      <!-- LINE-UP -->
+      <div class="p2-col">
+        <h2>Line—Up</h2>
+        <ul class="lineup-list">
+          <li>
+            <div class="artist-name">Juancho Nu</div>
+            <div class="artist-role">Headliner<br>minimal · deep house</div>
+          </li>
+          <li>
+            <div class="artist-name">B+</div>
+            <div class="artist-role">Selector<br>dub techno</div>
+          </li>
+          <li>
+            <div class="artist-name">Ética</div>
+            <div class="artist-role">Live Band<br>organic electronica</div>
+          </li>
+          <li>
+            <div class="artist-name">Ōme</div>
+            <div class="artist-role">Opening<br>ambient · slow house</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- EVENT INFO -->
+      <div class="p2-col">
+        <h2>The night</h2>
+        <div class="event-title">Not a party <span style="color:var(--burgundy);">of hits</span>. A night for listening.</div>
+        <p class="event-desc">UMBRA was born from an obsession with minimal house, dub techno and organic electronic music — rebuilt for Mexico City. For the second edition we're bringing a live band into the booth.</p>
+
+        <div class="spec-table">
+          <div class="spec-row">
+            <div class="spec-key">Date</div>
+            <div class="spec-val">Thursday, April 30, 2026</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Hours</div>
+            <div class="spec-val">9:00 PM — 3:00 AM</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Venue</div>
+            <div class="spec-val">Campeche 367, Condesa, CDMX</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Age</div>
+            <div class="spec-val">18+ · official ID required</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Dress code</div>
+            <div class="spec-val">None. Come as you are.</div>
+          </div>
+        </div>
+
+        <div class="p2-cta">
+          <button class="btn" data-go="3">
+            <span>Get tickets</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3: TICKETS ============ -->
+  <section class="page page-3" data-page="3">
+    <div class="cta-wrap">
+      <div class="cta-eyebrow">Reserve your place in the shadow</div>
+      <h2 class="cta-title">Tickets available</h2>
+      <p class="cta-sub">Limited capacity. Secure your spot before the night sells out.</p>
+
+      <div class="ticket-single">
+        <div class="ticket-label">General Admission</div>
+        <div class="ticket-price"><span class="currency">$</span>250</div>
+        <div class="ticket-currency-note">MXN</div>
+        <div class="ticket-includes">
+          Full access to the night<br>
+          <strong>9 PM — 3 AM</strong>
+        </div>
+      </div>
+
+      <div class="cta-buttons">
+        <a href="https://www.eventbrite.com/e/umbra-ii-minimal-house-live-band-condesa-cdmx-tickets-1988000508035" target="_blank" rel="noopener" class="btn">
+          <span>Buy on Eventbrite</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="cta-footer-note">See you in the shadow.</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ====== NAV CONTROLS ====== -->
+<div class="nav-controls">
+  <button class="nav-arrow" id="prevBtn" aria-label="Previous">←</button>
+  <button class="nav-dot active" data-page="1" aria-label="Page 1"></button>
+  <button class="nav-dot" data-page="2" aria-label="Page 2"></button>
+  <button class="nav-dot" data-page="3" aria-label="Page 3"></button>
+  <button class="nav-arrow" id="nextBtn" aria-label="Next">→</button>
+</div>
+
+<script>
+// ============ PAGE CONTROLLER ============
+const pages = document.querySelectorAll('.page');
+const dots = document.querySelectorAll('.nav-dot');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const pageIndicator = document.getElementById('currentPage');
+const totalPages = pages.length;
+let currentPage = 1;
+let isAnimating = false;
+
+function goToPage(pageNum) {
+  if (isAnimating || pageNum === currentPage || pageNum < 1 || pageNum > totalPages) return;
+  isAnimating = true;
+
+  pages.forEach(p => p.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+
+  // Force reflow to reset animations
+  requestAnimationFrame(() => {
+    const targetPage = document.querySelector(`.page[data-page="${pageNum}"]`);
+    const targetDot = document.querySelector(`.nav-dot[data-page="${pageNum}"]`);
+    if (targetPage) targetPage.classList.add('active');
+    if (targetDot) targetDot.classList.add('active');
+
+    currentPage = pageNum;
+    pageIndicator.textContent = String(pageNum).padStart(2, '0');
+    updateArrowStates();
+
+    setTimeout(() => { isAnimating = false; }, 800);
+  });
+}
+
+function updateArrowStates() {
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+}
+
+// Event listeners
+prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const page = parseInt(dot.dataset.page);
+    goToPage(page);
+  });
+});
+
+// Botones "Explore" y "Get tickets" dentro de las páginas
+document.querySelectorAll('[data-go]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = parseInt(btn.dataset.go);
+    goToPage(target);
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    goToPage(currentPage + 1);
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    goToPage(currentPage - 1);
+  }
+});
+
+// Swipe navigation (mobile)
+let touchStartX = 0, touchEndX = 0;
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 60) {
+    if (diff > 0) goToPage(currentPage + 1);
+    else goToPage(currentPage - 1);
+  }
+}, { passive: true });
+
+updateArrowStates();
+</script>
+
+</body>
+</html>
