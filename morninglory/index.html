@@ -341,6 +341,28 @@
     background: linear-gradient(180deg, rgba(193,146,71,0.08), rgba(193,146,71,0.02));
     color: var(--cream);
   }
+  /* WhatsApp variant — keeps the gold elegance, adds a subtle living pulse
+     so it reads as "this opens a real conversation, not a checkout page" */
+  .cta-whatsapp {
+    position: relative;
+  }
+  .cta-whatsapp::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #25d366;
+    box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
+    animation: waPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes waPulse {
+    0%, 100% { opacity: 0.55; transform: translateY(-50%) scale(1); }
+    50%      { opacity: 1;    transform: translateY(-50%) scale(1.25); }
+  }
 
   /* Price badge on reserve screen */
   .price-badge {
@@ -983,14 +1005,15 @@
         <span class="price-amount">$333 <span style="font-size:16px;font-style:normal;font-family:'Inter',sans-serif;letter-spacing:0.1em;color:var(--gold-soft)">MXN</span></span>
         <span class="price-label">≈ $18 USD<br>por persona</span>
       </div>
-      <a class="cta cta-primary"
-         href="https://www.eventbrite.com/e/morning-glory-sober-morning-rave-in-condesa-cdmx-tickets-1987812186761"
+      <a class="cta cta-primary cta-whatsapp"
+         id="reserveCta"
+         href="#"
          target="_blank" rel="noopener"
-         data-en="Reserve on Eventbrite →"
-         data-es="Reservar en Eventbrite →"></a>
+         data-en="Reserve my spot →"
+         data-es="Apartar mi lugar →"></a>
       <div class="micro-copy"
-           data-en="Secure checkout · Confirmation within 24h"
-           data-es="Pago seguro · Confirmación en 24h"></div>
+           data-en="Direct WhatsApp · Reply within the hour"
+           data-es="WhatsApp directo · Respuesta en menos de 1 hora"></div>
     </div>
   </div>
 </section>
@@ -1005,6 +1028,34 @@
   };
 
   const SCREENS = ['screen-lang', 'screen-teaser', 'screen-program', 'screen-reserve'];
+
+  // ========== WHATSAPP LEAD CAPTURE CONFIG ==========
+  // To change the WhatsApp number for future events, only edit WA_NUMBER below.
+  // Format: country code (52 for Mexico) + 10-digit number, no spaces or +.
+  const WA_NUMBER = '525521947632';
+
+  // Pre-written message users send when they tap the CTA.
+  // The {ref} placeholder gets replaced with a tracking source so you can
+  // tell where each lead came from (Meta ad, organic share, etc.)
+  const WA_MESSAGES = {
+    en: 'Hi Ōme 🌅 Saw the page — I want to reserve my spot for Morning Glory on May 3. Can you send me payment info? (ref: {ref})',
+    es: 'Hola Ōme 🌅 Vi la página y quiero apartar mi lugar para Morning Glory del 3 de mayo. ¿Me pasas info de pago? (ref: {ref})'
+  };
+
+  // Reads ?ref=xxx from the URL so Meta ad URLs like
+  // ...index.html?ref=meta-reel1 get tagged in the WhatsApp message.
+  // Falls back to 'direct' for organic/share traffic.
+  function getRefSource() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('ref') || 'direct';
+  }
+
+  // Builds the wa.me link with the localized message + ref tag.
+  function buildWhatsAppLink(lang) {
+    const ref = getRefSource();
+    const message = (WA_MESSAGES[lang] || WA_MESSAGES.es).replace('{ref}', ref);
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+  }
 
   // ========== COPY BANK ==========
   const COPY = {
@@ -1071,6 +1122,12 @@
 
     // Inject headlines (these have embedded spans)
     document.getElementById('teaser-headline').innerHTML = COPY[lang].teaserHeadline;
+
+    // Update WhatsApp CTA link with the right language + ref tag
+    const reserveCta = document.getElementById('reserveCta');
+    if (reserveCta) {
+      reserveCta.setAttribute('href', buildWhatsAppLink(lang));
+    }
 
     // Build program screen
     const c = COPY[lang];
