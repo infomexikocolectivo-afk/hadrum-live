@@ -1,1 +1,975 @@
-d
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#E3D7C0">
+
+<title>WAWA After Party · Vol. III · ŌME & Graahl · CDMX</title>
+
+<meta name="description" content="WAWA After Party · Vol. III. ŌME (DJ set) & Graahl (hybrid live). Sábado 09.05, 22:00. Campeche 367, Condesa, CDMX.">
+<meta property="og:title" content="WAWA After Party · ŌME & Graahl · Condesa CDMX">
+<meta property="og:description" content="Dos lunas, una noche larga. Tercera entrega de WAWA Nights. $200 cover.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+/* WAWA · Two Moons — v3 Refined */
+
+:root {
+  --bone: #E3D7C0;
+  --bone-light: #ECE3D2;
+  --bone-dark: #D5C9B0;
+  --ink: #1A1410;
+  --ink-80: rgba(26, 20, 16, 0.80);
+  --ink-60: rgba(26, 20, 16, 0.60);
+  --ink-40: rgba(26, 20, 16, 0.40);
+  --ink-20: rgba(26, 20, 16, 0.20);
+  --moon-blue: #5A6B7E;
+  --moon-red: #8B2E3A;
+  --ember: #C44518;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-italic: 'Cormorant Garamond', serif;
+  --easing: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* GRAIN OVERLAY */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  opacity: 0.40; mix-blend-mode: multiply;
+}
+.grain svg { width: 100%; height: 100%; }
+
+/* AMBIENT BACKGROUND HALOS */
+.bg-ambient {
+  position: fixed; pointer-events: none; z-index: 1;
+  border-radius: 50%; filter: blur(80px); opacity: 0.32;
+}
+.bg-ambient.blue {
+  width: 60vw; height: 60vw; max-width: 600px; max-height: 600px;
+  background: radial-gradient(circle, var(--moon-blue), transparent 70%);
+  top: -20vw; left: -20vw;
+  animation: drift1 24s ease-in-out infinite;
+}
+.bg-ambient.red {
+  width: 70vw; height: 70vw; max-width: 700px; max-height: 700px;
+  background: radial-gradient(circle, var(--moon-red), transparent 70%);
+  bottom: -30vw; right: -25vw;
+  animation: drift2 28s ease-in-out infinite;
+}
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 60px) scale(1.05); }
+}
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, -40px) scale(1.08); }
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding-top: env(safe-area-inset-top);
+  z-index: 50; pointer-events: none;
+  background: linear-gradient(180deg, var(--bone) 0%, transparent 100%);
+}
+.topbar-inner {
+  padding: 16px clamp(20px, 5vw, 32px);
+  display: flex; justify-content: flex-end; align-items: center;
+}
+.lang-toggle {
+  display: inline-flex; gap: 2px; align-items: center;
+  pointer-events: auto;
+  font-family: var(--font-body); font-size: 12px;
+  letter-spacing: 0.18em; font-weight: 500;
+  background: rgba(26, 20, 16, 0.05);
+  padding: 5px 6px; border-radius: 100px;
+  border: 1px solid var(--ink-20);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.lang-btn {
+  background: none; border: none; color: var(--ink-40);
+  font-family: inherit; font-size: inherit; letter-spacing: inherit; font-weight: 500;
+  cursor: pointer; padding: 4px 10px;
+  border-radius: 100px; transition: all 0.4s var(--easing);
+}
+.lang-btn.active {
+  color: var(--bone); background: var(--ink); font-weight: 600;
+}
+
+/* MAIN STRUCTURE */
+main { position: relative; z-index: 2; }
+section {
+  width: 100%;
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: clamp(80px, 15vh, 120px) clamp(20px, 5vw, 40px) clamp(60px, 10vh, 100px);
+  position: relative;
+}
+
+/* ============================================
+   SECTION 1 — HERO (logo + ilustración fondo)
+   ============================================ */
+.hero {
+  text-align: center;
+  width: 100%; max-width: 540px;
+  position: relative; z-index: 2;
+}
+
+/* Ilustración como fondo MUY sutil */
+.hero-illustration-bg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%; max-width: 600px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  animation: fadeInBg 2.5s var(--easing) 0.5s forwards;
+  filter: contrast(0.85);
+}
+@keyframes fadeInBg {
+  to { opacity: 0.10; }
+}
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Logo WAWA — desde GitHub */
+.hero-logo {
+  width: clamp(220px, 65vw, 340px);
+  height: auto; display: block;
+  margin: 0 auto clamp(28px, 6vw, 40px);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1.2s var(--easing) 0.3s forwards;
+}
+
+.hero-divider {
+  width: 60px; height: 1px;
+  background: var(--ink-40);
+  margin: 0 auto clamp(20px, 4vw, 28px);
+  opacity: 0;
+  animation: fadeIn 1s var(--easing) 0.9s forwards;
+  transform-origin: center;
+  animation-name: dividerExpand;
+}
+@keyframes dividerExpand {
+  0% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+.hero-event {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 11vw, 72px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: clamp(8px, 2vw, 12px);
+}
+
+.hero-event .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: charReveal 0.8s var(--easing) forwards;
+}
+@keyframes charReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-vol {
+  font-family: var(--font-body);
+  font-size: clamp(11px, 2.6vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--ink-80);
+  text-transform: uppercase;
+  margin-bottom: clamp(20px, 5vw, 32px);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--easing) 1.5s forwards;
+}
+
+.hero-tagline {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(15px, 4vw, 19px);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink-80);
+  max-width: 440px;
+  margin: 0 auto clamp(28px, 6vw, 36px);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1.2s var(--easing) 1.8s forwards;
+}
+
+.hero-info {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: clamp(28px, 6vw, 40px);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--easing) 2s forwards;
+}
+
+.hero-info-line {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 3vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.hero-info-line.dim {
+  color: var(--ink-60); font-weight: 400;
+}
+
+.hero-cta-wrap {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--easing) 2.3s forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* SCROLL HINT */
+.scroll-hint {
+  position: absolute;
+  bottom: clamp(20px, 4vh, 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--ink-40);
+  text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0;
+  animation: fadeUp 1.5s var(--easing) 2.7s forwards;
+  z-index: 3;
+}
+.scroll-hint::after {
+  content: '';
+  width: 1px; height: 22px;
+  background: var(--ink-40);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0.3); transform-origin: top; opacity: 0.3; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+}
+
+/* ============================================
+   CTA buttons
+   ============================================ */
+.cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 30px;
+  background: var(--ink);
+  color: var(--bone-light);
+  font-family: var(--font-body);
+  font-size: clamp(12px, 3vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s var(--easing);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  min-height: 48px;
+}
+.cta-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(196, 69, 24, 0.35), transparent);
+  transition: left 0.8s var(--easing);
+}
+.cta-primary:hover::before, .cta-primary:active::before { left: 100%; }
+.cta-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(26, 20, 16, 0.20); }
+.cta-primary:active { transform: translateY(0); }
+.cta-primary .arrow { transition: transform 0.4s var(--easing); display: inline-block; }
+.cta-primary:hover .arrow { transform: translateX(3px); }
+.cta-primary.full { width: 100%; max-width: 360px; }
+
+.cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 26px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(12px, 3vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.4s var(--easing);
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  min-height: 46px;
+  width: 100%;
+  max-width: 360px;
+}
+.cta-secondary:hover, .cta-secondary:active {
+  background: var(--ink);
+  color: var(--bone-light);
+}
+
+/* ============================================
+   SECTION 2 — LINE-UP
+   ============================================ */
+.lineup { width: 100%; max-width: 600px; }
+
+.section-kicker {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  margin-bottom: clamp(28px, 6vw, 44px);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+}
+.section-kicker::before, .section-kicker::after {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--ink-40);
+}
+
+.dj-card {
+  margin-bottom: clamp(32px, 7vw, 48px);
+  padding-bottom: clamp(28px, 6vw, 40px);
+  border-bottom: 1px solid var(--ink-20);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s var(--easing), transform 0.9s var(--easing);
+}
+.dj-card:last-of-type { border-bottom: none; margin-bottom: clamp(24px, 5vw, 36px); }
+.dj-card.visible { opacity: 1; transform: translateY(0); }
+
+.dj-header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.dj-name {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 11vw, 60px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.dj-role {
+  font-family: var(--font-body);
+  font-size: clamp(10px, 2.5vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--ink-60);
+  text-transform: uppercase;
+}
+
+.dj-bio {
+  font-family: var(--font-body);
+  font-size: clamp(13px, 3.2vw, 14px);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-80);
+}
+.dj-bio strong { color: var(--ink); font-weight: 600; }
+.dj-bio em {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: 1.08em;
+  color: var(--ink);
+}
+
+.dj-bio-extended {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.7s var(--easing);
+}
+.dj-card.expanded .dj-bio-extended { max-height: 1500px; }
+
+.dj-bio-extended-inner { padding-top: 16px; }
+.dj-bio-extended-inner p {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 3vw, 13px);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-80);
+  margin-bottom: 12px;
+}
+.dj-bio-extended-inner p:last-child { margin-bottom: 0; }
+.dj-bio-extended-inner strong { color: var(--ink); font-weight: 600; }
+
+.dj-venues {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 16px;
+}
+.dj-venue-tag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  padding: 5px 10px;
+  border: 1px solid var(--ink-20);
+  border-radius: 100px;
+  white-space: nowrap;
+  background: rgba(26, 20, 16, 0.02);
+}
+
+.dj-expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  background: none;
+  border: 1px solid var(--ink-40);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 9px 16px;
+  border-radius: 100px;
+  transition: all 0.4s var(--easing);
+  min-height: 36px;
+}
+.dj-expand:hover, .dj-expand:active {
+  background: var(--ink);
+  color: var(--bone-light);
+  border-color: var(--ink);
+}
+
+.dj-expand-icon {
+  display: inline-block;
+  width: 11px; height: 11px;
+  position: relative;
+  transition: transform 0.5s var(--easing);
+}
+.dj-expand-icon::before, .dj-expand-icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  transition: transform 0.4s var(--easing);
+}
+.dj-expand-icon::before { top: 50%; left: 0; width: 100%; height: 1.5px; transform: translateY(-50%); }
+.dj-expand-icon::after { top: 0; left: 50%; width: 1.5px; height: 100%; transform: translateX(-50%); }
+.dj-card.expanded .dj-expand-icon::after { transform: translateX(-50%) scaleY(0); }
+
+.lineup-cta { margin-top: clamp(20px, 4vw, 32px); text-align: center; }
+
+/* ============================================
+   SECTION 3 — TICKETS
+   ============================================ */
+.tickets {
+  text-align: center;
+  width: 100%; max-width: 460px;
+}
+
+.tickets-card {
+  background: var(--bone-light);
+  border: 1px solid var(--ink-20);
+  border-radius: 24px;
+  padding: clamp(32px, 7vw, 48px) clamp(24px, 5vw, 36px);
+  margin-bottom: clamp(20px, 5vw, 28px);
+  position: relative;
+  overflow: hidden;
+}
+.tickets-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(196, 69, 24, 0.10), transparent 50%);
+  animation: emberGlow 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes emberGlow {
+  0%, 100% { transform: scale(0.85); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.tickets-label {
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.tickets-price {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 22vw, 110px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.tickets-currency {
+  font-family: var(--font-body);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: clamp(20px, 5vw, 28px);
+  position: relative;
+}
+
+.tickets-divider {
+  width: 48px; height: 1px;
+  background: var(--ink-40);
+  margin: 0 auto clamp(16px, 4vw, 24px);
+  position: relative;
+}
+
+.tickets-includes {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 3vw, 13px);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink-80);
+  position: relative;
+}
+
+.tickets-cta-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 12px;
+  margin-bottom: clamp(24px, 5vw, 32px);
+}
+
+.tickets-policies {
+  font-family: var(--font-body);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  margin-bottom: clamp(16px, 4vw, 24px);
+}
+
+.tickets-footer {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(13px, 3.2vw, 15px);
+  color: var(--ink-60);
+  letter-spacing: 0.05em;
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- GRAIN -->
+<div class="grain">
+<svg xmlns="http://www.w3.org/2000/svg">
+<filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="5"/><feColorMatrix values="0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.4 0"/></filter>
+<rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+</div>
+
+<!-- AMBIENT BACKGROUNDS -->
+<div class="bg-ambient blue"></div>
+<div class="bg-ambient red"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+<div class="topbar-inner">
+<div class="lang-toggle">
+<button class="lang-btn active" data-lang="es">ES</button>
+<button class="lang-btn" data-lang="en">EN</button>
+</div>
+</div>
+</div>
+
+<main>
+
+<!-- ===== HERO ===== -->
+<section class="hero-section" id="hero">
+
+<!-- Ilustración como fondo MUY sutil -->
+<img class="hero-illustration-bg"
+     src="https://raw.githubusercontent.com/infomexikocolectivo-afk/hadrum-live/main/wawa/magnific_handdrawn-ink-illustratio_2862012096.png"
+     alt=""
+     aria-hidden="true"
+     loading="eager">
+
+<div class="hero">
+
+<!-- Logo WAWA oficial desde GitHub -->
+<img class="hero-logo"
+     src="https://raw.githubusercontent.com/infomexikocolectivo-afk/hadrum-live/main/wawa/wawa-logo.png"
+     alt="WAWA Vinyl & Spirits Club"
+     loading="eager">
+
+<div class="hero-divider"></div>
+
+<h1 class="hero-event"><span data-i18n-chars="hero.event">After Party</span></h1>
+<div class="hero-vol" data-i18n="hero.vol">Vol. III</div>
+
+<p class="hero-tagline" data-i18n="hero.tagline">Dos lunas, una noche larga, after hours bajo tierra.</p>
+
+<div class="hero-info">
+<div class="hero-info-line" data-i18n="hero.date">Sábado · 09 Mayo · 22:00</div>
+<div class="hero-info-line dim" data-i18n="hero.venue">Campeche 367, Hipódromo Condesa</div>
+</div>
+
+<div class="hero-cta-wrap">
+<a href="#tickets" class="cta-primary">
+<span data-i18n="hero.cta">Ver entradas</span>
+<span class="arrow">→</span>
+</a>
+</div>
+
+</div>
+
+<div class="scroll-hint" data-i18n="hero.scroll">Scroll</div>
+</section>
+
+<!-- ===== LINE-UP ===== -->
+<section id="lineup">
+<div class="lineup">
+
+<h2 class="section-kicker" data-i18n="lineup.title">Line-up</h2>
+
+<div class="dj-card" id="dj1">
+<div class="dj-header">
+<span class="dj-name">ŌME</span>
+<span class="dj-role" data-i18n="lineup.ome.role">DJ Set</span>
+</div>
+<p class="dj-bio" data-i18n="lineup.ome.bio">Productor y DJ mexicano con <strong>+1M reproducciones en SoundCloud</strong>. Sonido ritual, sensual, hipnótico — percusión tribal orgánica que viaja del tango al balkan, del flamenco al maccabi.</p>
+<div class="dj-bio-extended">
+<div class="dj-bio-extended-inner">
+<p data-i18n="lineup.ome.ext1">Lanzamientos en sellos como <strong>Supermatic Sounds</strong> (UK), TRNDMUSIK, Afterhour Sounds (Alemania), LNDKHN (Ibiza), Casa Caos (Brasil), Rambalkoshe (Armenia) y Levela (Rusia).</p>
+<p data-i18n="lineup.ome.ext2">Tracks llevados en sets por <strong>Mira, Geju, Be Svendsen, Goldcap y Guy Laliberté</strong> (Cirque du Soleil). Único mexicano con set inmersivo en vivo en el Museo Rambalkoshe en Armenia.</p>
+<p data-i18n="lineup.ome.ext3">Su audiencia núcleo vive entre <strong>Berlín, Frankfurt y Viena</strong>. Residencias en Supra, Musak y Puntarenas.</p>
+<div class="dj-venues">
+<span class="dj-venue-tag">Burning Man</span>
+<span class="dj-venue-tag">Nomade Tulum</span>
+<span class="dj-venue-tag">Azulik</span>
+<span class="dj-venue-tag">Gardens of Babylon</span>
+<span class="dj-venue-tag">MAIA Contemporary</span>
+</div>
+</div>
+</div>
+<button class="dj-expand" data-target="dj1" aria-expanded="false">
+<span data-i18n="lineup.expand">Más sobre ŌME</span>
+<span class="dj-expand-icon" aria-hidden="true"></span>
+</button>
+</div>
+
+<div class="dj-card" id="dj2">
+<div class="dj-header">
+<span class="dj-name">GRAAHL</span>
+<span class="dj-role" data-i18n="lineup.graahl.role">Hybrid Live</span>
+</div>
+<p class="dj-bio" data-i18n="lineup.graahl.bio">Artista sonoro y compositor en CDMX. Estudios en filosofía del sonido en el <strong>MUAC</strong>. Sus piezas toman <em>la contemplación como acto de resistencia</em>.</p>
+<div class="dj-bio-extended">
+<div class="dj-bio-extended-inner">
+<p data-i18n="lineup.graahl.ext1">Su práctica se sitúa en la intersección del <strong>arte sonoro y performance en vivo</strong> de experimentación electrónica. Sus obras y lives investigan la intersección entre filosofía y tecnología.</p>
+<p data-i18n="lineup.graahl.ext2">Sus piezas se nutren de <strong>grabaciones de campo procesadas, síntesis digital, texturas drone, ruido industrial y composición electroacústica</strong> — oscilando entre el azar y la precisión, la decadencia y la emergencia.</p>
+<p data-i18n="lineup.graahl.ext3">Trabajos recientes incluyen presentación en vivo en el <strong>Centro de Cultura Digital</strong> (CDMX 2025), transmisión en RadioAlhara (Belén/Jerusalén 2025), pieza sonora en el Museo del Periodismo (Guadalajara 2025), y diseño de sonido para Berenice Olmedo en Kunsthall Trondheim (Noruega 2024).</p>
+<div class="dj-venues">
+<span class="dj-venue-tag">Centro Cultura Digital</span>
+<span class="dj-venue-tag">RadioAlhara</span>
+<span class="dj-venue-tag">Museo del Periodismo</span>
+<span class="dj-venue-tag">Kunsthall Trondheim</span>
+<span class="dj-venue-tag">MUAC</span>
+</div>
+</div>
+</div>
+<button class="dj-expand" data-target="dj2" aria-expanded="false">
+<span data-i18n="lineup.expand2">Más sobre Graahl</span>
+<span class="dj-expand-icon" aria-hidden="true"></span>
+</button>
+</div>
+
+<div class="lineup-cta">
+<a href="#tickets" class="cta-primary">
+<span data-i18n="lineup.cta">Comprar entradas</span>
+<span class="arrow">→</span>
+</a>
+</div>
+
+</div>
+</section>
+
+<!-- ===== TICKETS ===== -->
+<section id="tickets">
+<div class="tickets">
+
+<h2 class="section-kicker" data-i18n="tickets.title">Tickets</h2>
+
+<div class="tickets-card">
+<div class="tickets-label" data-i18n="tickets.label">Cover único</div>
+<div class="tickets-price">$200</div>
+<div class="tickets-currency" data-i18n="tickets.currency">MXN</div>
+<div class="tickets-divider"></div>
+<div class="tickets-includes" data-i18n="tickets.includes">
+ŌME · DJ Set<br>
+Graahl · Hybrid Live<br>
+HiFi audio · Barra completa
+</div>
+</div>
+
+<div class="tickets-cta-wrap">
+<a class="cta-primary full" id="eventbriteLink" target="_blank" rel="noopener">
+<span data-i18n="tickets.ctaBuy">Comprar en Eventbrite</span>
+<span class="arrow">→</span>
+</a>
+<a class="cta-secondary" id="whatsappLink" target="_blank" rel="noopener">
+<span data-i18n="tickets.ctaWhatsapp">WhatsApp para dudas</span>
+<span>↗</span>
+</a>
+</div>
+
+<div class="tickets-policies" data-i18n="tickets.policies">
+Cupo limitado · +18 ID obligatoria
+</div>
+
+<div class="tickets-footer" data-i18n="tickets.footer">
+— Nos vemos bajo dos lunas —
+</div>
+
+</div>
+</section>
+
+</main>
+
+<script>
+const i18n = {
+  es: {
+    'hero.event': 'After Party',
+    'hero.vol': 'Vol. III',
+    'hero.tagline': 'Dos lunas, una noche larga, after hours bajo tierra.',
+    'hero.date': 'Sábado · 09 Mayo · 22:00',
+    'hero.venue': 'Campeche 367, Hipódromo Condesa',
+    'hero.cta': 'Ver entradas',
+    'hero.scroll': 'Scroll',
+    'lineup.title': 'Line-up',
+    'lineup.ome.role': 'DJ Set',
+    'lineup.ome.bio': 'Productor y DJ mexicano con <strong>+1M reproducciones en SoundCloud</strong>. Sonido ritual, sensual, hipnótico — percusión tribal orgánica que viaja del tango al balkan, del flamenco al maccabi.',
+    'lineup.ome.ext1': 'Lanzamientos en sellos como <strong>Supermatic Sounds</strong> (UK), TRNDMUSIK, Afterhour Sounds (Alemania), LNDKHN (Ibiza), Casa Caos (Brasil), Rambalkoshe (Armenia) y Levela (Rusia).',
+    'lineup.ome.ext2': 'Tracks llevados en sets por <strong>Mira, Geju, Be Svendsen, Goldcap y Guy Laliberté</strong> (Cirque du Soleil). Único mexicano con set inmersivo en vivo en el Museo Rambalkoshe en Armenia.',
+    'lineup.ome.ext3': 'Su audiencia núcleo vive entre <strong>Berlín, Frankfurt y Viena</strong>. Residencias en Supra, Musak y Puntarenas.',
+    'lineup.graahl.role': 'Hybrid Live',
+    'lineup.graahl.bio': 'Artista sonoro y compositor en CDMX. Estudios en filosofía del sonido en el <strong>MUAC</strong>. Sus piezas toman <em>la contemplación como acto de resistencia</em>.',
+    'lineup.graahl.ext1': 'Su práctica se sitúa en la intersección del <strong>arte sonoro y performance en vivo</strong> de experimentación electrónica. Sus obras y lives investigan la intersección entre filosofía y tecnología.',
+    'lineup.graahl.ext2': 'Sus piezas se nutren de <strong>grabaciones de campo procesadas, síntesis digital, texturas drone, ruido industrial y composición electroacústica</strong> — oscilando entre el azar y la precisión, la decadencia y la emergencia.',
+    'lineup.graahl.ext3': 'Trabajos recientes incluyen presentación en vivo en el <strong>Centro de Cultura Digital</strong> (CDMX 2025), transmisión en RadioAlhara (Belén/Jerusalén 2025), pieza sonora en el Museo del Periodismo (Guadalajara 2025), y diseño de sonido para Berenice Olmedo en Kunsthall Trondheim (Noruega 2024).',
+    'lineup.expand': 'Más sobre ŌME',
+    'lineup.expand2': 'Más sobre Graahl',
+    'lineup.expand.less': 'Menos',
+    'lineup.cta': 'Comprar entradas',
+    'tickets.title': 'Tickets',
+    'tickets.label': 'Cover único',
+    'tickets.currency': 'MXN',
+    'tickets.includes': 'ŌME · DJ Set<br>Graahl · Hybrid Live<br>HiFi audio · Barra completa',
+    'tickets.ctaBuy': 'Comprar en Eventbrite',
+    'tickets.ctaWhatsapp': 'WhatsApp para dudas',
+    'tickets.policies': 'Cupo limitado · +18 ID obligatoria',
+    'tickets.footer': '— Nos vemos bajo dos lunas —',
+    'whatsapp.message': 'Hola, me interesa la WAWA After Party del sábado 09.05. ¿Me cuentan más?'
+  },
+  en: {
+    'hero.event': 'After Party',
+    'hero.vol': 'Vol. III',
+    'hero.tagline': 'Two moons, one long night, after hours under the surface.',
+    'hero.date': 'Saturday · May 09 · 22:00',
+    'hero.venue': 'Campeche 367, Hipódromo Condesa',
+    'hero.cta': 'See tickets',
+    'hero.scroll': 'Scroll',
+    'lineup.title': 'Line-up',
+    'lineup.ome.role': 'DJ Set',
+    'lineup.ome.bio': 'Mexican producer and DJ with <strong>1M+ plays on SoundCloud</strong>. Ritual, sensual, hypnotic sound — organic tribal percussion that travels from tango to balkan, flamenco to maccabi.',
+    'lineup.ome.ext1': 'Releases on labels like <strong>Supermatic Sounds</strong> (UK), TRNDMUSIK, Afterhour Sounds (Germany), LNDKHN (Ibiza), Casa Caos (Brazil), Rambalkoshe (Armenia) and Levela (Russia).',
+    'lineup.ome.ext2': 'Tracks played in sets by <strong>Mira, Geju, Be Svendsen, Goldcap and Guy Laliberté</strong> (Cirque du Soleil). Only Mexican with an immersive live set at Rambalkoshe Museum in Armenia.',
+    'lineup.ome.ext3': 'His core audience lives between <strong>Berlin, Frankfurt and Vienna</strong>. Residencies at Supra, Musak and Puntarenas.',
+    'lineup.graahl.role': 'Hybrid Live',
+    'lineup.graahl.bio': 'Sound artist and composer based in CDMX. Studies in philosophy of sound at <strong>MUAC</strong>. His pieces take <em>contemplation as an act of resistance</em>.',
+    'lineup.graahl.ext1': 'His practice sits at the intersection of <strong>sound art and live performance</strong> in electronic experimentation. His works investigate the intersection between philosophy and technology.',
+    'lineup.graahl.ext2': 'His pieces draw from <strong>processed field recordings, digital synthesis, drone textures, industrial noise and electroacoustic composition</strong> — oscillating between chance and precision, decay and emergence.',
+    'lineup.graahl.ext3': 'Recent works include a live performance at <strong>Centro de Cultura Digital</strong> (CDMX 2025), a broadcast on RadioAlhara (Bethlehem/Jerusalem 2025), a sound piece at Museo del Periodismo (Guadalajara 2025), and sound design for Berenice Olmedo at Kunsthall Trondheim (Norway 2024).',
+    'lineup.expand': 'More about ŌME',
+    'lineup.expand2': 'More about Graahl',
+    'lineup.expand.less': 'Less',
+    'lineup.cta': 'Get tickets',
+    'tickets.title': 'Tickets',
+    'tickets.label': 'Single cover',
+    'tickets.currency': 'MXN',
+    'tickets.includes': 'ŌME · DJ Set<br>Graahl · Hybrid Live<br>HiFi audio · Full bar',
+    'tickets.ctaBuy': 'Buy on Eventbrite',
+    'tickets.ctaWhatsapp': 'WhatsApp for questions',
+    'tickets.policies': 'Limited capacity · +18 ID required',
+    'tickets.footer': '— See you under two moons —',
+    'whatsapp.message': 'Hi, I\'m interested in WAWA After Party on Saturday 09.05. Tell me more?'
+  }
+};
+
+const state = { lang: 'es' };
+
+function detectLanguage() {
+  const browserLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+  return browserLang.startsWith('en') ? 'en' : 'es';
+}
+
+function applyLanguage(lang) {
+  state.lang = lang;
+  document.documentElement.lang = lang;
+  
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+  });
+  
+  document.querySelectorAll('.dj-expand').forEach(btn => {
+    const targetId = btn.dataset.target;
+    const card = document.getElementById(targetId);
+    const isExpanded = card && card.classList.contains('expanded');
+    const labelSpan = btn.querySelector('span:first-child');
+    if (isExpanded) {
+      labelSpan.textContent = i18n[lang]['lineup.expand.less'];
+    } else {
+      const key = targetId === 'dj1' ? 'lineup.expand' : 'lineup.expand2';
+      labelSpan.textContent = i18n[lang][key];
+    }
+  });
+  
+  applyTitleAnimation();
+  updateLinks();
+}
+
+function applyTitleAnimation() {
+  const titleEl = document.querySelector('[data-i18n-chars="hero.event"]');
+  if (!titleEl) return;
+  const text = i18n[state.lang]['hero.event'];
+  titleEl.innerHTML = '';
+  [...text].forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = ch === ' ' ? '\u00A0' : ch;
+    span.style.animationDelay = `${1.0 + i * 0.05}s`;
+    titleEl.appendChild(span);
+  });
+}
+
+function updateLinks() {
+  const eventbriteUrl = 'https://www.eventbrite.com/e/wawa-after-party-ome-graahl-condesa-cdmx-tickets-1988889295422';
+  const utms = '?aff=landing&utm_source=landing&utm_medium=website&utm_campaign=wawa_volIII';
+  document.getElementById('eventbriteLink').href = eventbriteUrl + utms;
+  
+  const whatsappNumber = '525521947632';
+  const message = encodeURIComponent(i18n[state.lang]['whatsapp.message']);
+  document.getElementById('whatsappLink').href = `https://wa.me/${whatsappNumber}?text=${message}`;
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+});
+
+document.querySelectorAll('.dj-expand').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const targetId = btn.dataset.target;
+    const card = document.getElementById(targetId);
+    const isExpanded = card.classList.toggle('expanded');
+    btn.setAttribute('aria-expanded', isExpanded);
+    const labelSpan = btn.querySelector('span:first-child');
+    if (isExpanded) {
+      labelSpan.textContent = i18n[state.lang]['lineup.expand.less'];
+    } else {
+      const key = targetId === 'dj1' ? 'lineup.expand' : 'lineup.expand2';
+      labelSpan.textContent = i18n[state.lang][key];
+    }
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+document.querySelectorAll('.dj-card').forEach(card => observer.observe(card));
+
+applyLanguage(detectLanguage());
+
+console.log('🌙🌑 WAWA Two Moons — Vol. III');
+console.log('— See you under two moons —');
+</script>
+
+</body>
+</html>
